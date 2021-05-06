@@ -1,0 +1,10 @@
+<Context path=""
+    docBase="/etc/xproc-z/vmcp/xproc-z.war"
+    preemptiveAuthentication="true"
+    antiResourceLocking="false">
+  <Valve className="org.apache.catalina.authenticator.BasicAuthenticator" />
+  <Parameter name="xproc-z.main" override="false"
+             value="/etc/xproc-z/vmcp/xproc/xproc-z.xpl"/>
+  <!-- the Solr base URL includes the core name (here "vmcp-public") -->
+  <Parameter name="solr-base-uri" value="http://localhost:8605/solr/vmcp-public/"/>
+</Context>

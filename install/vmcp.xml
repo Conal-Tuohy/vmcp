@@ -1,5 +1,5 @@
 <Context path=""
-    docBase="/etc/xproc-z/vmcp/xproc-z.war"
+    docBase="/etc/xproc-z/xproc-z.war"
     preemptiveAuthentication="true"
     antiResourceLocking="false">
   <Valve className="org.apache.catalina.authenticator.BasicAuthenticator" />

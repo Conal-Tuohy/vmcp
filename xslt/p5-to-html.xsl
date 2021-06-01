@@ -693,7 +693,15 @@
 		</xsl:choose>
 	</xsl:function>
 	<xsl:key name="reference-by-target" match="*[@target]" use="@target"/>
-	<!--<xsl:template match="note[@type='annotation'][@xml:id]" mode="create-content">-->
+	
+	<xsl:template match="note">
+		<details>
+			<xsl:apply-templates mode="create-attributes" select="."/>
+			<summary><xsl:value-of select="@n"/></summary>
+			<xsl:apply-templates/>
+		</details>
+	</xsl:template>
+	
 	<xsl:template match="note[@xml:id]" mode="create-content">
 		<!-- content of an annotation should start with a link back to the note anchor -->
 		<xsl:variable name="annotation-id" select="@xml:id"/>
@@ -708,12 +716,7 @@
 		</header>
 		<xsl:next-match/>
 	</xsl:template>
-	<xsl:template match="note[@type='translation']">
-		<span>
-			<xsl:apply-templates mode="create-attributes" select="."/>
-			<xsl:attribute name="title" select="normalize-space()"/>
-		</span>
-	</xsl:template>
+	
 	<xsl:template match="name[reg]" mode="create-attributes">
 		<xsl:attribute name="title" select="reg"/>
 	</xsl:template>

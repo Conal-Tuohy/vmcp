@@ -149,6 +149,19 @@ div.tei-teiHeader {
 	font-style: italic;
 }
 
+/* TEI footnotes are rendered as details/summary elements */
+details.tei-note.type-footnote {
+	display: inline-block;
+	text-indent: 0;
+}
+/* make footnote superscripted */
+details.tei-note.type-footnote summary {
+	list-style: none;
+	font-size: 0.83em;
+	display: inline;
+	vertical-align: super;
+}
+
 .inline {
 	display: inline;
 }

@@ -125,25 +125,13 @@
 			<chymistry:admin-form/>
 			<chymistry:add-site-navigation/>
 		</p:when>
-		<p:when test="$relative-uri = 'download-bibliography' ">
-			<!-- Download the TEI P5 bibliography file from Xubmit -->
-			<chymistry:download-bibliography/>
-		</p:when>
-		<p:when test="$relative-uri = 'p4/' ">
-			<!-- Download the latest P4 files from Xubmit -->
-			<chymistry:download-source/>
-			<chymistry:add-site-navigation/>
-		</p:when>
 		<p:when test="$relative-uri = 'p5/' ">
-			<p:choose>
-				<p:when test="matches(/c:request/@method, 'POST', 'i')"><!-- re-convert local P4 files to P5 -->
-					<chymistry:convert-source-to-p5/>
-				</p:when>
-				<p:otherwise>
-					<!-- list already-converted files -->
-					<chymistry:list-p5/>
-				</p:otherwise>
-			</p:choose>
+			<!-- list P5 xml files -->
+			<chymistry:list-p5>
+				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+					<p:pipe step="configuration" port="result"/>
+				</p:with-option>
+			</chymistry:list-p5>
 			<chymistry:add-site-navigation/>
 		</p:when>
 		<p:when test="$relative-uri = 'xinclude/' ">
@@ -153,6 +141,9 @@
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'solr/')">
 			<chymistry:p5-as-solr>
+				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+					<p:pipe step="configuration" port="result"/>
+				</p:with-option>
 				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
@@ -180,6 +171,9 @@
 				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
+				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+					<p:pipe step="configuration" port="result"/>
+				</p:with-option>
 			</chymistry:reindex>
 			<chymistry:add-site-navigation/>
 		</p:when>
@@ -189,7 +183,11 @@
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'p5/') ">
 			<!-- Represent an individual P5 text as XML (i.e. raw) -->
-			<chymistry:p5-as-xml/>
+			<chymistry:p5-as-xml>
+				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+					<p:pipe step="configuration" port="result"/>
+				</p:with-option>
+			</chymistry:p5-as-xml>
 		</p:when>
 		<!-- image files corresponding to figures within a text -->
 		<!-- e.g. relative URI = 'text/ALCH000001/figure/foo.gif' -->
@@ -200,15 +198,21 @@
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'text/') ">
 			<!-- Represent an individual P5 text as an HTML page -->
-			<p:variable name="uri-parser" select=" 'text/([^/]*)/.*' "/>
+			<p:variable name="uri-parser" select=" 'text/(.*)/' "/>
+			<p:variable name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+				<p:pipe step="configuration" port="result"/>
+			</p:variable>
+			<!-- TODO sanitise the URI so it doesn't start with a slash or contain '../' anywhere -->
 			<p:variable name="id" select="replace($relative-uri, $uri-parser, '$1')"/>
+			<p:variable name="file-relative-uri" select="concat($id, '.xml')"/>
+			<p:variable name="file-absolute-uri" select="resolve-uri($file-relative-uri, $corpus-base-uri)"/>
 			<p:variable name="base-uri" select="concat(substring-before(/c:request/@href, '/text/'), '/')"/>
 			<p:variable name="manifest-uri" select="concat($base-uri, 'iiif/', $id, '/manifest')"/>
 			<p:www-form-urldecode name="field-values">
 				<p:with-option name="value" select="substring-after(/c:request/@href, '?')"/>
 			</p:www-form-urldecode>
 			<chymistry:p5-as-html name="text-as-html">
-				<p:with-option name="text" select="$id"/>
+				<p:with-option name="href" select="$file-absolute-uri"/>
 				<p:with-option name="base-uri" select="$base-uri"/>
 				<p:input port="source">
 					<p:pipe step="main" port="source"/>
@@ -241,7 +245,11 @@
 			<p:choose>
 				<p:when test="ends-with($relative-uri, '/manifest')">
 					<!-- Represent an individual P5 text as a IIIF manifest -->
-					<chymistry:p5-as-iiif/>
+					<chymistry:p5-as-iiif>
+						<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+							<p:pipe step="configuration" port="result"/>
+						</p:with-option>
+					</chymistry:p5-as-iiif>
 				</p:when>
 				<p:when test="matches($relative-uri, '[^/]*/list/.*')">
 					<chymistry:iiif-annotation-list/>

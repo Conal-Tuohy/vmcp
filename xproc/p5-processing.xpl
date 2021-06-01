@@ -3,12 +3,14 @@
 	xmlns:c="http://www.w3.org/ns/xproc-step" 
 	xmlns:z="https://github.com/Conal-Tuohy/XProc-Z" 
 	xmlns:fn="http://www.w3.org/2005/xpath-functions"
+	xmlns:l="http://xproc.org/library"
 	xmlns:chymistry="tag:conaltuohy.com,2018:chymistry"
 	xmlns:cx="http://xmlcalabash.com/ns/extensions"
 	xmlns:tei="http://www.tei-c.org/ns/1.0">
 	
 	<p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
 	<p:import href="xproc-z-library.xpl"/>
+	<p:import href="recursive-directory-list.xpl"/>
 	
 	<p:declare-step name="update-schema" type="chymistry:update-schema">
 		<p:input port="source"/>
@@ -136,38 +138,35 @@
 		<p:input port="source"/>
 		<p:output port="result"/>
 		<p:option name="solr-base-uri" required="true"/>
+		<p:option name="corpus-base-uri" required="true"/>
 		<!-- reindex all the P5 files -->
 		<p:try>
 			<p:group name="process-directory">
-				<p:directory-list name="list-p5-files" path="../p5/result/" include-filter=".+\.xml$"/>
-				<p:add-xml-base relative="false" all="true"/>
+				<cx:message>
+					<p:with-option name="message" select="concat('corpus base uri=', $corpus-base-uri)"/>
+				</cx:message>
+				<l:recursive-directory-list name="list-p5-files">
+					<p:with-option name="path" select="$corpus-base-uri"/>
+				</l:recursive-directory-list>
+				<p:add-xml-base name="add-xml-base" relative="false" all="true"/>
 				<p:for-each>
 					<p:iteration-source select="//c:file"/>
 					<p:variable name="file-name" select="/c:file/@name"/>
-					<p:variable name="file-id" select="substring-before($file-name, '.xml')"/>
-					<p:variable name="file-uri" select="encode-for-uri($file-name)"/>
-					<p:variable name="input-file" select="resolve-uri($file-uri, /c:file/@xml:base)"/>
-					<p:variable name="output-file" select="concat('../p5/', $file-uri)"/>
+					<p:variable name="file-relative-uri" select="encode-for-uri($file-name)"/>
+					<p:variable name="file-absolute-uri" select="resolve-uri($file-relative-uri, /c:file/@xml:base)"/>
+					<!-- compute an identifier for the document to use in Solr:
+						get the URI of the XML document relative to the corpus root folder, 
+						strip off the '.xml' extension
+					-->
+					<p:variable name="file-id" select="substring-before(substring-after($file-absolute-uri, $corpus-base-uri), '.xml')"/>
 					<cx:message>
-						<p:with-option name="message" select="$file-name"/>
+						<p:with-option name="message" select="concat('indexing ', $file-absolute-uri)"/>
 					</cx:message>
-					<p:load name="read-p5">
-						<p:with-option name="href" select="$input-file"/>
-					</p:load>
-					<!-- TODO normalize (e.g. evaluate rendition/@selector -->
 					<chymistry:convert-p5-to-solr>
 						<p:with-option name="solr-base-uri" select="$solr-base-uri"/>
-						<p:with-option name="text" select="$file-id"/>
+						<p:with-option name="href" select="$file-absolute-uri"/>
+						<p:with-option name="id" select="$file-id"/>
 					</chymistry:convert-p5-to-solr>
-					<!--
-					<p:xslt>
-						<p:with-param name="id" select="$file-id"/>
-						<p:with-param name="solr-base-uri" select="$solr-base-uri"/>
-						<p:input port="stylesheet">
-							<p:pipe step="indexing-stylesheet" port="result"/>
-						</p:input>
-					</p:xslt>
-					-->
 					<p:http-request/>
 				</p:for-each>
 			</p:group>
@@ -180,7 +179,7 @@
 			</p:catch>
 		</p:try>
 		<p:wrap-sequence wrapper="solr-index-responses"/>
-		<p:xslt name="format-schema-update-result">
+		<p:xslt name="render-reindexing-report">
 			<p:input port="parameters"><p:empty/></p:input>
 			<p:input port="stylesheet">
 				<p:inline>
@@ -456,9 +455,13 @@
 		<p:input port="source"/>
 		<p:output port="result"/>
 		<p:option name="solr-base-uri" required="true"/>
+		<p:option name="corpus-base-uri" required="true"/>
+		<p:variable name="file-relative-uri" select="substring-after(/c:request/@href, '/solr/')"/>
+		<p:variable name="file-absolute-uri" select="resolve-uri($file-relative-uri, $corpus-base-uri)"/>
 		<chymistry:convert-p5-to-solr>
 			<p:with-option name="solr-base-uri" select="$solr-base-uri"/>
-			<p:with-option name="text" select="substring-before(substring-after(/c:request/@href, '/solr/'), '/')"/>
+			<p:with-option name="href" select="$file-absolute-uri"/>
+			<p:with-option name="id" select="substring-before($file-relative-uri, '.xml')"/>
 		</chymistry:convert-p5-to-solr>
 		<z:make-http-response content-type="application/xml"/>
 	</p:declare-step>
@@ -467,15 +470,16 @@
 		<p:input port="source"/>
 		<p:output port="result"/>
 		<p:option name="solr-base-uri" required="true"/>
-		<p:option name="text" required="true"/>
+		<p:option name="href" required="true"/>
+		<p:option name="id" required="true"/>
 		<chymistry:generate-indexer name="indexing-stylesheet">
 			<p:with-option name="solr-base-uri" select="$solr-base-uri"/>
 		</chymistry:generate-indexer>
 		<chymistry:p5-text name="text">
-			<p:with-option name="text" select="$text"/>
+			<p:with-option name="href" select="$href"/>
 		</chymistry:p5-text>
 		<p:xslt name="metadata-fields">
-			<p:with-param name="id" select="$text"/>
+			<p:with-param name="id" select="$id"/>
 			<p:with-param name="solr-base-uri" select="$solr-base-uri"/>
 			<p:input port="source">
 				<p:pipe step="text" port="result"/>
@@ -527,10 +531,13 @@
 	<p:declare-step name="p5-as-iiif" type="chymistry:p5-as-iiif">
 		<p:input port="source"/>
 		<p:output port="result"/>
+		<p:option name="corpus-base-uri" required="true"/>
 		<p:variable name="base-uri" select="concat(substring-before(/c:request/@href, '/iiif/'), '/iiif/')"/>
 		<p:variable name="text-id" select="substring-before(substring-after(/c:request/@href, '/iiif/'), '/')"/>
+		<p:variable name="file-relative-uri" select="concat(substring-before(substring-after(/c:request/@href, '/iiif/'), '/manifest'), '.xml')"/>
+		<p:variable name="file-absolute-uri" select="resolve-uri($file-relative-uri, $corpus-base-uri)"/>
 		<chymistry:p5-text>
-			<p:with-option name="text" select="$text-id"/>
+			<p:with-option name="href" select="$file-absolute-uri"/>
 		</chymistry:p5-text>
 		<p:xslt>
 			<p:with-param name="base-uri" select="$base-uri"/>
@@ -602,7 +609,7 @@
 		<p:input port="source"/>
 		<p:output port="result"/>
 		<p:input port="parameters" kind="parameter" primary="true"/>
-		<p:option name="text" required="true"/>
+		<p:option name="href" required="true"/>
 		<p:option name="base-uri" required="true"/>
 		<p:parameters name="configuration">
 			<p:input port="parameters">
@@ -610,7 +617,7 @@
 			</p:input>
 		</p:parameters>
 		<chymistry:p5-text>
-			<p:with-option name="text" select="$text"/>
+			<p:with-option name="href" select="$href"/>
 		</chymistry:p5-text>
 		<p:xslt name="text-as-html">
 			<p:with-param name="google-api-key" select="/c:param-set/c:param[@name='google-api-key']/@value">
@@ -626,9 +633,11 @@
 	<p:declare-step name="p5-as-xml" type="chymistry:p5-as-xml">
 		<p:input port="source"/>
 		<p:output port="result"/>
-		<p:variable name="text" select="substring-after(/c:request/@href, '/p5/')"/>
+		<p:option name="corpus-base-uri" required="true"/>
+		<p:variable name="file-relative-uri" select="substring-after(/c:request/@href, '/p5/')"/>
+		<p:variable name="file-absolute-uri" select="resolve-uri($file-relative-uri, $corpus-base-uri)"/>
 		<chymistry:p5-text name="text">
-			<p:with-option name="text" select="$text"/>
+			<p:with-option name="href" select="$file-absolute-uri"/>
 		</chymistry:p5-text>
 		<z:make-http-response content-type="application/xml"/>
 	</p:declare-step>
@@ -636,9 +645,9 @@
 	<p:declare-step name="p5-text" type="chymistry:p5-text">
 		<!-- loads and normalizes a P5 text ready to be converted into other formats -->
 		<p:output port="result"/>
-		<p:option name="text" required="true"/>
+		<p:option name="href" required="true"/>
 		<p:load name="text">
-			<p:with-option name="href" select="concat('../p5/result/', $text, '.xml')"/>
+			<p:with-option name="href" select="$href"/>
 		</p:load>
 		<p:xslt name="materialise-rendition-selector-links">
 			<p:input port="parameters"><p:empty/></p:input>
@@ -651,9 +660,13 @@
 	<p:declare-step name="list-p5" type="chymistry:list-p5">
 		<p:input port="source"/>
 		<p:output port="result"/>
-		<p:directory-list name="list-p5-files" path="../p5/result/" exclude-filter="schemas.xml" include-filter=".+\.xml$"/>
+		<p:option name="corpus-base-uri" required="true"/>
+		<l:recursive-directory-list name="list-p5-files">
+			<p:with-option name="path" select="$corpus-base-uri"/>
+		</l:recursive-directory-list>
+		<p:add-xml-base name="add-xml-base" relative="false" all="true"/>
 		<p:xslt>
-			<p:input port="parameters"><p:empty/></p:input>
+			<p:with-param name="corpus-base-uri" select="$corpus-base-uri"/>
 			<p:input port="stylesheet">
 				<p:document href="../xslt/html-directory-listing.xsl"/>
 			</p:input>

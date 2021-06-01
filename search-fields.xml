@@ -21,18 +21,6 @@
 
 <!-- Index all documents except where their availability status is "restricted" -->
 <document exclude-when="/TEI/teiHeader/fileDesc/publicationStmt/availability/@status='restricted'">
-	<!--
-	This field defines an "id" field which must identify the text uniquely and persistently. It is used by Solr as a unique identifier.
-	-->
-	<field name="id" xpath="
-		if (/TEI/@xml:id) then 
-			/TEI/@xml:id 
-		else 
-			error(
-				QName('tag:conaltuohy.com,2020:swinburne', 'swinburne:missing-id'), 
-				concat('/TEI/@xml:id is missing from text with title ', /TEI/teiHeader/fileDesc/titleStmt/title)
-			)
-	"/>
 	<!-- 
 	This field defines a "title" field containing a composite value aggregated from various components of the msIdentifier.
 	-->
@@ -76,17 +64,12 @@
 	-->
 	<field name="repository" label="Repository" xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/repository" type="facet"/>
 	<!-- 
-	This field defines a "symbol" facet whose values come from the <char> elements in the header.
-	The value of the facet contains both the symbol itself and its textual name, e.g. "♂ IRON (MARS)".
+	This field defines a "Language" facet whose values come from the <language> elements in the header.
 	-->
 	<field 
-		name="symbol" 
-		label="Symbol" 
-		xpath="
-			for $character 
-			in /TEI/teiHeader/encodingDesc/charDecl/char[charProp[localName='type']/value='symbol']
-			return concat($character/mapping, ' ', $character/charName)
-		"
+		name="language" 
+		label="Language" 
+		xpath="/TEI/teiHeader/profileDesc/langUsage/language"
 		type="facet"/>
 	<!-- 
 	This field defines a "person" facet which uses the string content of <persName> elements, normalized to exclude any text
@@ -105,7 +88,7 @@
 	-->
 	<field
 		name="sort"
-		xpath="/TEI/teiHeader/fileDesc/sourceDesc/biblStruct//date[@xml:id='sort_date']/@when"
+		xpath="string(/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when)"
 		type="sort"/>
 	<!-- 
 	This field defines a "rendition" facet which uses the identifier of the styles used in the text.
@@ -122,47 +105,4 @@
 					$used-rendition
 			"
 		type="facet"/>
-		
-	<!-- This field defines an "external target" facet which records @target URLs which are not local bare-name pointers or references to resources on some other website -->
-	<field
-		name="external-target"
-		label="External @target"
-		xpath="
-			distinct-values(
-				for $target in //text//*/@target return tokenize($target)
-			)
-				[not(
-					starts-with(., '#') or
-					starts-with(., 'http:') or
-					starts-with(., 'https:') or
-					starts-with(., 'collection:') or
-					starts-with(., 'document:')
-				)]
-		"
-		type="facet"/>
-	<!-- external @corresp URLs -->
-	<field
-		name="external-corresp"
-		label="External @corresp"
-		xpath="
-			distinct-values(
-				for $corresp in //text//*/@corresp return tokenize($corresp)
-			)
-				[not(
-					starts-with(., '#') or
-					starts-with(., 'http:') or
-					starts-with(., 'https:') or
-					starts-with(., 'collection:') or
-					starts-with(., 'document:')
-				)]
-		"
-		type="facet"/>	
-	<!-- usage of our declared reference systems -->
-	<field
-		name="system-ref"
-		label="prefixDef-based references"
-		xpath="
-			distinct-values(//text//*/@target[substring-before(., ':') = /TEI/teiHeader/encodingDesc/listPrefixDef/prefixDef/@ident])
-		"
-		type="facet"/>	
 </document>

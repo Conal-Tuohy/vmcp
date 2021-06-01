@@ -4,22 +4,23 @@
 	xmlns:output="xslt-namespace-alias">
 	<xsl:namespace-alias stylesheet-prefix="output" result-prefix="xsl"/>
 	<!-- transform a "field definition" document into a stylesheet which will transform a TEI P5 XML document into an HTTP request to Solr to add it to the index -->
-	<xsl:param name="id"/>
 	<xsl:param name="solr-base-uri"/>
 	<xsl:template match="/document">
 		<output:stylesheet version="3.0" xpath-default-namespace="http://www.tei-c.org/ns/1.0">
+			<output:param name="id"/>
 			<output:template match="/">
 				<c:request method="post" href="{$solr-base-uri}update">
 					<c:body content-type="application/xml">
 						<output:choose>
 							<output:when test="{@exclude-when}">
 								<delete commitWithin="5000">
-									<id><output:value-of select="normalize-space({field[@name='id']/@xpath})"/></id>
+									<id><output:value-of select="$id"/></id>
 								</delete>
 							</output:when>
 							<output:otherwise>
 								<add commitWithin="5000">
 									<doc>
+										<field name="id"><output:value-of select="$id"/></field>
 										<xsl:for-each select="field[@name][@xpath]">
 											<output:for-each select="{@xpath}">
 												<field name="{@name}"><output:value-of select="normalize-space(.)"/></field>

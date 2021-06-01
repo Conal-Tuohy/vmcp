@@ -6,5 +6,7 @@
   <Parameter name="xproc-z.main" override="false"
              value="/etc/xproc-z/vmcp/xproc/xproc-z.xpl"/>
   <!-- the Solr base URL includes the core name (here "vmcp-public") -->
-  <Parameter name="solr-base-uri" value="http://localhost:8605/solr/vmcp-public/"/>
+  <Parameter name="solr-base-uri" value="http://localhost:8983/solr/public/"/>
+  <!-- location of the TEI files -->
+  <Parameter name="corpus-base-uri" value="/usr/src/xtf/data/tei/"/>
 </Context>

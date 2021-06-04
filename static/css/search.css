@@ -122,3 +122,26 @@ li.matching-snippet a {
 nav.pagination {
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
+}
+ul.pagination {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	column-gap: 0.5em;
+}
+ul.pagination:before{
+	content: "Page:";
+}
+ul.pagination li {
+	list-style-type: none;
+}
+li.page-item.active {
+	font-weight: bold;
+	border-width: thin;
+	border-radius: 0.5em;
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+	border-color: #78130B;
+	border-style: solid;
+}

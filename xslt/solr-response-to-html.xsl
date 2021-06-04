@@ -45,6 +45,7 @@
 			<head>
 				<title>Search</title>
 				<link rel="stylesheet" href="/css/tei.css" type="text/css"/>
+				<link rel="stylesheet" href="/css/search.css" type="text/css"/>
 			</head>
 			<body class="search">
 				<main role="main" class="search">
@@ -90,6 +91,26 @@
 	</xsl:template>
 	
 	<xsl:template name="render-pagination-links">
+		<xsl:if test="$last-page &gt; 1">
+			<!-- there are multiple pages of results -->
+			<nav class="pagination" aria-label="Page navigation">
+				<ul class="pagination">
+					<!-- TODO filter the set of pagination links to include only the first, last, and a fixed-size range centered on the current page -->
+					<xsl:variable name="range" select="$current-page - 3 to $current-page + 3"/>
+					<xsl:variable name="pages" select="
+						(1 to $last-page)[. = (1, $range, $last-page)]
+					"/>
+					<xsl:for-each select="$pages">
+						<xsl:call-template name="create-page-link">
+							<xsl:with-param name="page" select="."/>
+						</xsl:call-template>
+					</xsl:for-each>
+				</ul>
+			</nav>
+		</xsl:if>
+	</xsl:template>
+	
+
 		<xsl:variable name="current-page" select="
 			xs:integer(
 				(
@@ -108,6 +129,7 @@
 				(
 					for $parameter 
 					in $request/c:param
+						[not(@name='page')]
 						[normalize-space(@value)]
 					return concat(
 						encode-for-uri($parameter/@name), '=', encode-for-uri($parameter/@value)
@@ -116,35 +138,29 @@
 				'&amp;'
 			)
 		"/>
-		<xsl:if test="$last-page &gt; 1">
-			<!-- there are multiple pages of results -->
-			<nav aria-label="Page navigation">
-				<ul class="pagination">
-					<xsl:for-each select="1 to $last-page">
-						<xsl:choose>
-							<xsl:when test=".=$current-page">
-								<li class="page-item active" aria-current="page">
-									<a class="page-link" href="#"><xsl:value-of select="."/></a>
-								</li>
-							</xsl:when>
-							<xsl:otherwise>
-								<li class="page-item">
-									<a class="page-link" href="{
-										string-join(
-											(
-												concat($search-base-url, '?page=', .),
-												$search-field-url-parameters
-											),
-											'&amp;'
-										)
-									}"><xsl:value-of select="."/></a>
-								</li>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
-				</ul>
-			</nav>
-		</xsl:if>
+		
+	<xsl:template name="create-page-link">
+		<xsl:param name="page" required="true"/>
+		<xsl:choose>
+			<xsl:when test="$page=$current-page">
+				<li class="page-item active" aria-current="page">
+					<a class="page-link" href="#"><xsl:value-of select="$page"/></a>
+				</li>
+			</xsl:when>
+			<xsl:otherwise>
+				<li class="page-item">
+					<a class="page-link" href="{
+						string-join(
+							(
+								concat($search-base-url, '?page=', $page),
+								$search-field-url-parameters
+							),
+							'&amp;'
+						)
+					}"><xsl:value-of select="$page"/></a>
+				</li>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="render-results">

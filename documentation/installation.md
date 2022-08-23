@@ -46,14 +46,14 @@ This context file specifies the location of the XProc-Z web archive file, and tw
 
 ```xml
 <Context path=""
-    docBase="/srv/services/chymistry-devel-tomcat-8220/xproc-z.war"
+    docBase="/etc/xproc-z/xproc-z.war"
     preemptiveAuthentication="true"
     antiResourceLocking="false">
   <Valve className="org.apache.catalina.authenticator.BasicAuthenticator" />
   <Parameter name="xproc-z.main" override="false"
-             value="/etc/xproc/vmcp/xproc-z.xpl"/>
-  <!-- the Solr base URL includes the core name (here "chymistry") -->
-  <Parameter name="solr-base-uri" value="http://localhost:8605/solr/vmcp/"/>
+             value="/etc/xproc-z/vmcp/xproc-z.xpl"/>
+  <!-- the Solr base URL includes the core name (here "vmcp") -->
+  <Parameter name="solr-base-uri" value="http://localhost:8983/solr/vmcp/"/>
 </Context>
 ```
 

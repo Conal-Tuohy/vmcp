@@ -1,16 +1,16 @@
-The newton_chymistry web application is an XProc pipeline, which is hosted by a Java web Servlet called XProc-Z, which in turn is hosted in Apache Tomcat. The web application also uses an instance of Apache Solr as a search engine. 
+The `vmcp` web application is an XProc pipeline, which is hosted by a Java web Servlet called XProc-Z, which in turn is hosted in Apache Tomcat. The web application also uses an instance of Apache Solr as a search engine. 
 
 # Install and configure Solr
 
-Solr should be installed as a single server (i.e. not the cloud configuration) and configured to have a single database ("core") for each distinct instance of the chymistry web application. In this document the core is called "chymistry", though you can use a different name if you wish.
+Solr should be installed as a single server (i.e. not the cloud configuration) and configured to have a single database ("core") for each distinct instance of the web application. In this document the core is called "vmcp".
 
-Download Solr 7 from https://lucene.apache.org/solr/downloads.html
+Download Solr 7 from https://dlcdn.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
 
 Extract the install script from the tarball, and run it. This installs Solr as a service.
 
 ```bash
-tar -xvf solr-7.7.2.tgz
-sudo solr-7.7.2/bin/install_solr_service.sh solr-7.7.2.tgz 
+tar -xvf solr-8.11.2.tgz
+sudo solr-8.11.2/bin/install_solr_service.sh solr-8.11.2.tgz 
 ```
 
 Then create the Solr "core" (database), here called "vmcp"

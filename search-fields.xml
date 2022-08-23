@@ -19,50 +19,118 @@
 	The XPath version supported is 3.1.
 -->
 
-<!-- Index all documents except where their availability status is "restricted" -->
-<document exclude-when="/TEI/teiHeader/fileDesc/publicationStmt/availability/@status='restricted'">
+<!-- Index all documents except where their status is not "final" -->
+<document exclude-when="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final'" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<!-- 
-	This field defines a "title" field containing a composite value aggregated from various components of the msIdentifier.
+	A "title" field containing a composite value aggregated from various components of the msIdentifier.
 	-->
 	<field name="title"
 		label="Title"
 		xpath="/TEI/teiHeader/fileDesc/titleStmt/title"
 	/>
 	<!--
-	This field defines a text field to contain the brief description of the text as given in the manuscript description.
+	A text field to contain the name of the MS given in the msIdentifier
 	-->
-	<field name="description" label="Description"
-		xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='description']"
+	<field name="ms-name" label="Manuscript"
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/msName"
 	/>
-	<!--
-	"Collection" facet is the title of the monograph in which the work was published
-	-->
-	<field
-		name="collection"
-		label="Collection"
-		xpath="
-			(: select the title of the 'original_collection' if it exists, otherwise fall back to the main title :)
-			(
-				/TEI/teiHeader/fileDesc/sourceDesc/biblStruct/relatedItem/biblStruct[note/@corresp='#original_collection']/monogr/title,
-				/TEI/teiHeader/fileDesc/sourceDesc/biblStruct/monogr/title
-			)[1]
-		"
-		type="facet"/>
 	<!-- Date facet -->
+	<!--
 	<field
 		name="date"
 		label="Date"
-		xpath="/TEI/teiHeader/fileDesc/sourceDesc/biblStruct//date[@xml:id='sort_date']/@when"
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when"
 		type="facet"/>
-		
+		-->
+	<field
+		name="decade"
+		label="Date"
+		xpath="
+			let 
+				$when:= /TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when 
+			return
+				if ($when) then 
+					substring($when, 1, 3) || '0s'
+				else
+					'unknown date'
+		"
+		type="facet">
+		<field
+			name="year"
+			label="Year"
+			xpath="
+				for 
+					$date
+				in
+					/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when[normalize-space()]
+				return
+					substring-before($date, '-')
+				"
+			type="facet">
+			<field
+				name="month"
+				label="Month"
+				xpath="
+					for 
+						$date
+					in
+						/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when[normalize-space()]
+					return
+						let 
+							$date-parts:= tokenize($date, '-'),
+							$year:= $date-parts[1],
+							$month:=$date-parts[2]
+						return
+							string-join(
+								subsequence(
+									($date-parts[1], $date-parts[2], '??'),
+									1,
+									2
+								),
+								'-'
+							)
+				"
+				type="facet">
+				<field
+					name="day"
+					label="Day"
+					xpath="
+						for 
+							$date
+						in
+							/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when[normalize-space()]
+						return
+							let 
+								$date-parts:= tokenize($date, '-'),
+								$year:= $date-parts[1],
+								$month:=$date-parts[2],
+								$day:=$date-parts[3]
+							return
+								string-join(
+									subsequence(
+										($year, $month, $day, '??', '??'),
+										1,
+										3
+									),
+									'-'
+								)
+					"
+					type="facet"/>
+			</field>
+		</field>
+	</field>
 	<!-- 
-	This field defines an "institution" facet whose value is the name of the institution given in the manuscript description.
+	An "institution" facet whose value is the name of the institution given in the manuscript description.
 	-->
+	<!-- unusable until the metadata can be populated by the upconversion pipeline 
 	<field name="institution" label="Institution" xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/institution" type="facet"/>
-	<!-- 
-	This field defines a "repository" facet whose value is the name of the repository given in the manuscript description.
 	-->
+	<!-- 
+	A "repository" facet whose value is the name of the repository given in the manuscript description.
+	-->
+	<!-- unusable until the metadata can be populated by the upconversion pipeline 
 	<field name="repository" label="Repository" xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/repository" type="facet"/>
+	-->
 	<!-- 
 	This field defines a "Language" facet whose values come from the <language> elements in the header.
 	-->
@@ -71,38 +139,43 @@
 		label="Language" 
 		xpath="/TEI/teiHeader/profileDesc/langUsage/language"
 		type="facet"/>
-	<!-- 
-	This field defines a "person" facet which uses the string content of <persName> elements, normalized to exclude any text
-	which is enclosed in <orig> or <abbrev> elements.
-	-->
-	<field
-		name="person"
-		label="People"
-		xpath="for $person-name in /TEI/text//persName return string-join($person-name//text()[not(ancestor::orig)][not(ancestor::abbrev)])"
-		type="facet"/>
+	<!-- The correspondents in the letter -->
+	<field 
+		name="person" 
+		label="Person" 
+		xpath="
+			(
+				/TEI/teiHeader/profileDesc/correspDesc/correspAction,
+				/TEI/teiHeader/fileDesc/sourceDesc/bibl/author
+			)
+		"
+		type="facet"/>		
+	<field 
+		name="author" 
+		label="Author" 
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/author"
+		type="facet"/>		
+	<field 
+		name="recipient" 
+		label="Recipient" 
+		xpath="/TEI/teiHeader/profileDesc/correspDesc/correspAction"
+		type="facet"/>		
 	<!-- 
 	This field, called "sort", is used as a sort key of last resort when displaying search results.
 	When two or more documents are equally relevant to a search (which is the case, for instance, with a blank search,
 	which returns all documents), then the documents will be sorted by date.
-	The field is not intended to be used for searching; only for sorting.
+	The field is not intended to be used for searching; only for sorting, so it uses @type="sort" to exclude it from the search form
 	-->
 	<field
 		name="sort"
 		xpath="string(/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when)"
 		type="sort"/>
 	<!-- 
-	This field defines a "rendition" facet which uses the identifier of the styles used in the text.
+	Taxon facet 
 	-->
 	<field
-		name="rendition"
-		label="Rendition id used but not declared"
-		xpath="
-			for $used-rendition in distinct-values(for $rendition in //*/@rendition return tokenize($rendition))
-			return 
-				if (//rendition/@xml:id = substring-after($used-rendition, '#')) then
-					()
-				else
-					$used-rendition
-			"
+		name="taxon"
+		label="Taxon name"
+		xpath="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term"
 		type="facet"/>
 </document>

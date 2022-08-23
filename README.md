@@ -1,3 +1,3 @@
-# Swinburne website
+# VMCP website
 
-A new version of 'The Algernon Charles Swinburne Project', using XProc pipelines to generate a website based on  TEI XML encodings of Swinburne's works, and using Apache Solr as a search engine.
+A web application using XProc pipelines to generate a website based on TEI XML encodings of the correspondence of Ferdinand von Mueller, using Apache Solr as a search engine.

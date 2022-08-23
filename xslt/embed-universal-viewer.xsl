@@ -26,7 +26,7 @@
 	<xsl:template match="body">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
-			<main role="main" class="flex-shrink-0">
+			<main role="main">
 				<div class="container">
 			<div id="popup" class="popup inactive">
 				<div id="uv" class="uv" data-manifest="{($embedded-manifest-uri, $manifest-uri)[1]}"/>

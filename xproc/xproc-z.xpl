@@ -5,6 +5,7 @@
 	xmlns:z="https://github.com/Conal-Tuohy/XProc-Z" 
 	xmlns:chymistry="tag:conaltuohy.com,2018:chymistry"
 	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:rbg="https://www.rbg.vic.gov.au/"
 	version="1.0" 
 	name="main">
 
@@ -38,7 +39,7 @@
 	
 	<!-- common web application utility pipelines -->
 	<p:import href="xproc-z-library.xpl"/>	
-	<!-- pipelines to produce P5 from a remote repository of P4 text -->
+	<!-- pipelines to produce publishable P5 from source files -->
 	<p:import href="convert-to-p5.xpl"/>	
 	<!-- An administrative UI for the application -->
 	<p:import href="administration.xpl"/>	
@@ -106,7 +107,11 @@
 			<chymistry:add-site-navigation current-uri="/analysis/list-attributes-by-element"/>
 		</p:when>
 		<p:when test="$relative-uri = 'analysis/sample-xml-text' ">
-			<chymistry:sample-xml-text/>
+			<chymistry:sample-xml-text>
+				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+					<p:pipe step="configuration" port="result"/>
+				</p:with-option>
+			</chymistry:sample-xml-text>
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'page/')">
 			<!-- html page -->
@@ -117,7 +122,7 @@
 				<p:with-option name="current-uri" select="concat('/', $relative-uri)"/>
 			</chymistry:add-site-navigation>
 		</p:when>
-		<p:when test="matches($relative-uri, '^(css|font|uv|image|js)/')">
+		<p:when test="matches($relative-uri, '^(css|font|image|js)/')">
 			<z:static/>
 		</p:when>
 		<p:when test="$relative-uri = 'admin' ">
@@ -132,11 +137,6 @@
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
 			</chymistry:list-p5>
-			<chymistry:add-site-navigation/>
-		</p:when>
-		<p:when test="$relative-uri = 'xinclude/' ">
-			<!-- perform xincludes and save results in p5/result -->
-			<chymistry:xinclude/>
 			<chymistry:add-site-navigation/>
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'solr/')">
@@ -198,7 +198,7 @@
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'text/') ">
 			<!-- Represent an individual P5 text as an HTML page -->
-			<p:variable name="uri-parser" select=" 'text/(.*)/' "/>
+			<p:variable name="uri-parser" select=" 'text/(.*)/.*' "/>
 			<p:variable name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
 				<p:pipe step="configuration" port="result"/>
 			</p:variable>
@@ -227,12 +227,14 @@
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
 			</chymistry:highlight-hits>
+			<!--
 			<p:xslt>
 				<p:with-param name="manifest-uri" select="$manifest-uri"/>
 				<p:input port="stylesheet">
 					<p:document href="../xslt/embed-universal-viewer.xsl"/>
 				</p:input>
 			</p:xslt>
+			-->
 			<p:xslt>
 				<p:input port="stylesheet">
 					<p:document href="../xslt/lift-title-attributes-to-popups.xsl"/>
@@ -240,31 +242,15 @@
 			</p:xslt>
 			<chymistry:add-site-navigation/>
 		</p:when>
-		<p:when test="starts-with($relative-uri, 'iiif/') ">
-			<!-- International Image Interoperability API -->
-			<p:choose>
-				<p:when test="ends-with($relative-uri, '/manifest')">
-					<!-- Represent an individual P5 text as a IIIF manifest -->
-					<chymistry:p5-as-iiif>
-						<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
-							<p:pipe step="configuration" port="result"/>
-						</p:with-option>
-					</chymistry:p5-as-iiif>
-				</p:when>
-				<p:when test="matches($relative-uri, '[^/]*/list/.*')">
-					<chymistry:iiif-annotation-list/>
-				</p:when>
-			</p:choose>
-		</p:when>
 		<!-- temporary; for viewing XSLT -->
-		<p:when test="$relative-uri='admin/indexer'">
+		<!--<p:when test="$relative-uri='admin/indexer'">
 			<chymistry:generate-indexer>
 				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
 			</chymistry:generate-indexer>
 			<z:make-http-response/>
-		</p:when>
+		</p:when>-->
 		<p:when test="starts-with($relative-uri, 'search/')">
 			<!-- Display a search form or search results -->
 			<chymistry:search>

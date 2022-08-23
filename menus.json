@@ -1,9 +1,14 @@
 {
-	"Home":"/",
+	"🏠︎ Home":"/",
 	"Search and Browse":"/search/",
-	"Miscellanies":{
-		"Project Information":"/text/acs0000508-01/",
-		"An Introduction to Algernon Charles Swinburne":"/text/acs0000503-01/"
+	"(placeholder)": {
+		"(placeholder)": "/item-1",
+		"(placeholder)": "/item-2",
+		"(placeholder)": "/item-3"
+	},
+	"About": {
+		"Contact Us": "/page/contact",
+		"Technology": "/page/technology"
 	},
 	"Administration":"/admin"
 }

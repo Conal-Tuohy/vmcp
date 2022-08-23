@@ -42,7 +42,6 @@ body.addEventListener(
 		}
 	}
 );
-
 /* keyboard */
 var keys = document.querySelectorAll("button.key");
 for (var i=0; i < keys.length; i = i + 1) {

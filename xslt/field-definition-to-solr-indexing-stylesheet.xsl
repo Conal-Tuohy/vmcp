@@ -21,9 +21,14 @@
 								<add commitWithin="5000">
 									<doc>
 										<field name="id"><output:value-of select="$id"/></field>
-										<xsl:for-each select="field[@name][@xpath]">
+										<xsl:for-each select="//field[@name][@xpath]">
+											<xsl:variable name="field" select="."/>
 											<output:for-each select="{@xpath}">
-												<field name="{@name}"><output:value-of select="normalize-space(.)"/></field>
+												<xsl:for-each select="in-scope-prefixes($field)">
+													<xsl:variable name="prefix" select="."/>
+													<xsl:namespace name="{$prefix}"><xsl:value-of select="namespace-uri-for-prefix($prefix, $field)"/></xsl:namespace>
+												</xsl:for-each>
+												<field name="{@name}"><output:value-of select="normalize-space(string(.))"/></field>
 											</output:for-each>
 										</xsl:for-each>
 									</doc>

@@ -2,6 +2,7 @@
 	xmlns:p="http://www.w3.org/ns/xproc" 
 	xmlns:c="http://www.w3.org/ns/xproc-step" 
 	xmlns:cx="http://xmlcalabash.com/ns/extensions"
+	xmlns:pxf="http://exproc.org/proposed/steps/file"
 	xmlns:z="https://github.com/Conal-Tuohy/XProc-Z" 
 	xmlns:chymistry="tag:conaltuohy.com,2018:chymistry"
 	xmlns:fn="http://www.w3.org/2005/xpath-functions"
@@ -90,6 +91,7 @@
 					<p:with-param name="default-results-limit" select="$default-results-limit"/>
 					<p:input port="stylesheet"><p:document href="../xslt/search-parameters-to-solr-request.xsl"/></p:input>
 				</p:xslt>
+				<chymistry:dump href="../debug/solr-request.xml"/>
 				<p:xslt name="convert-xml-to-json">
 					<p:input port="parameters"><p:empty/></p:input>
 					<p:input port="stylesheet"><p:document href="../xslt/convert-between-xml-and-json.xsl"/></p:input>
@@ -107,12 +109,10 @@
 					</p:input>
 				</p:wrap-sequence>
 				<!-- TODO keep this but control it by some kind of debugging configuration flag -->
-				<!--
-				<p:store href="../debug/search-request-response-and-config.xml" indent="true"/>
-				-->
+				<chymistry:dump href="../debug/search-request-response-and-config.xml"/>
 				<p:xslt name="render-solr-response">
 					<p:with-param name="default-results-limit" select="$default-results-limit"/>
-					<p:input port="source"><p:pipe step="request-and-response" port="result"/></p:input>
+					<!--<p:input port="source"><p:pipe step="request-and-response" port="result"/></p:input>-->
 					<p:input port="stylesheet"><p:document href="../xslt/solr-response-to-html.xsl"/></p:input>
 				</p:xslt>
 				<z:make-http-response content-type="text/html"/>
@@ -155,6 +155,28 @@
 				</p:template>
 			</p:when>
 		</p:choose>
+	</p:declare-step>
+	
+	<!-- a step to aid in debugging: dumps the input to the named location; the output is a copy of the input -->
+	<p:declare-step name="dump" type="chymistry:dump">
+		<p:input port="source"/>
+		<p:output port="result"/>
+		<p:option name="href" required="true"/>
+		<p:variable name="directory" select="replace($href, '(.*)/[^/]*', '$1')"/>
+		<pxf:mkdir name="mkdir" fail-on-error="false">
+			<p:with-option name="href" select="$directory"/>
+		</pxf:mkdir>
+		<p:store name="store-dump" indent="true" cx:depends-on="mkdir">
+			<p:with-option name="href" select="$href"/>
+			<p:input port="source">
+				<p:pipe step="dump" port="source"/>
+			</p:input>
+		</p:store>
+		<p:identity>
+			<p:input port="source">
+				<p:pipe step="dump" port="source"/>
+			</p:input>
+		</p:identity>
 	</p:declare-step>
 	
 </p:library>

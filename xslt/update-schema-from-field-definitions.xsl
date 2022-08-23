@@ -89,7 +89,7 @@
 				</xsl:call-template>
 				
 				<!-- define Solr fields corresponding to the facets and search fields defined in the "search-fields.xml" file -->
-				<xsl:for-each select="/*/document/field">
+				<xsl:for-each select="/*/document//field">
 					<xsl:call-template name="define-field">
 						<xsl:with-param name="name" select="@name"/>
 						<xsl:with-param name="type" select="@type"/>

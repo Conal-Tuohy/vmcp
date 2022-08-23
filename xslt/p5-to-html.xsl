@@ -12,7 +12,7 @@
 	<xsl:key name="char-by-ref" match="char[@xml:id]" use="concat('#', @xml:id)"/>
 	
 	<!-- TODO shouldn't the title be a string constructed from msIdentifer? -->
-	<xsl:variable name="title" select="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/title"/>
+	<xsl:variable name="title" select="/TEI/teiHeader/fileDesc/titleStmt/title"/>
 	
 	<!-- get the IIIF manifest -->
 	<xsl:variable name="embedded-manifest-uri" select="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/altIdentifier/idno[@type='iiif-manifest']"/>
@@ -71,19 +71,22 @@
 				</style>
 			</head>
 			<body class="tei">
-				<div class="tei">
-					<cite><xsl:value-of select="$title"/></cite>
-					<!-- render the document metadata details -->
-					<xsl:apply-templates select="tei:teiHeader"/>
-					<div class="searchable-content">
-						<xsl:apply-templates select="tei:text"/>
+				<main class="content">
+					<div class="tei">
+						<!-- render the document metadata details -->
+						<xsl:apply-templates select="tei:teiHeader"/>
+						<div class="searchable-content">
+							<xsl:apply-templates select="tei:text"/>
+						</div>
+						<!--
+						<xsl:apply-templates mode="toc" select="/TEI/teiHeader/fileDesc/sourceDesc[@n='table-of-contents']"/>
+						-->
 					</div>
-					<xsl:apply-templates mode="toc" select="/TEI/teiHeader/fileDesc/sourceDesc[@n='table-of-contents']"/>
-				</div>
+				</main>
 			</body>
 		</html>
 	</xsl:template>
-	
+
 	<xsl:template mode="toc" match="sourceDesc[@n='table-of-contents']">
 		<div id="toc">
 			<nav class="toc">
@@ -91,6 +94,7 @@
 			</nav>
 		</div>
 	</xsl:template>
+
 	<xsl:template mode="toc" match="bibl[relatedItem/bibl]">
 		<!-- 
 		The bibl represents a node in a hierarchy of bibliographic items in a volume
@@ -164,8 +168,9 @@
 						<h2 class="inline">Physical Location:</h2>
 						<xsl:value-of select="string-join(
 							(
-								$msIdentifier/collection, 
-								$msIdentifier/idno, 
+								$msIdentifier/collection,
+								$msIdentifier/msName,
+								$msIdentifier//idno, 
 								$msIdentifier/repository, 
 								$msIdentifier/institution, 
 								string-join(
@@ -180,42 +185,16 @@
 							'&#160;'
 						)"/>
 					</div>
-					<div>
-						<h2 class="inline">Electronic Publication:</h2>
-						<xsl:value-of select="concat(
-							$msIdentifier/altIdentifier/idno[@type='collection'], 
-							'&#160;', 
-							$msIdentifier/idno, 
-							'. '
-						)"/>
-						<xsl:for-each select="fileDesc/publicationStmt">
-							<xsl:value-of select="concat('Published ', date, ', ', publisher, '&#160;', pubPlace, '.')"/>
-						</xsl:for-each>
-					</div>
 					<xsl:apply-templates select="fileDesc/titleStmt/respStmt" />
 					<div>
 						<h2>Preferred Citation:</h2>
-						<xsl:for-each select="fileDesc/sourceDesc/msDesc/msContents/msItem/author">
-							<xsl:value-of select="concat(., '. ')"/>
-						</xsl:for-each>
-						<xsl:value-of select="
-							concat(
-								'&quot;',
-								fileDesc/sourceDesc/msDesc/msIdentifier/altIdentifier/idno[@type='collection'],
-								'&#160;',
-								fileDesc/sourceDesc/msDesc/msIdentifier/idno,
-								'&quot;.'
-							)
-						"/>
-						<em>The Chymistry of Isaac Newton</em>
-						<xsl:text>.  Ed. </xsl:text>
-						<xsl:value-of select="titleStmt/respStmt/name[@type='editor']"/>
-						<xsl:text>&#160;</xsl:text>
-						<xsl:value-of select="fileDesc/publicationStmt/date"/>
-						<xsl:text>. Retrieved </xsl:text>
-						<xsl:value-of select="format-dateTime($now, '[MNn] [D], [Y]', 'en', (),() )"/>
-						<xsl:text> from: http://purl.dlib.indiana.edu/iudl/newton/</xsl:text>
-						<xsl:value-of select="//altIdentifier/idno[@type='iunp']"/>
+						<p>
+							<cite>
+								<xsl:for-each select="fileDesc/sourceDesc/bibl">
+									<xsl:value-of select="concat(author, '. ', date, '. ', title)"/>
+								</xsl:for-each>
+							</cite>
+						</p>
 					</div>
 				</div>
 			</details>
@@ -717,27 +696,30 @@
 		<xsl:next-match/>
 	</xsl:template>
 	
+	<!-- botanical names -->
+	<xsl:key name="keyword-by-content" match="keywords[@scheme='#plant-names']/term" use="."/>
+	<xsl:template match="name" mode="create-attributes">
+		<xsl:variable name="expansion">
+			<xsl:variable name="vicflora" select="key('keyword-by-content', .)/@ref"/>
+			<xsl:variable name="apni" select="concat('https://biodiversity.org.au/nsl/services/search/names?product=APNI&amp;name=', encode-for-uri(.))"/>
+			<xsl:variable name="vmcp" select="concat('/search/?text=', encode-for-uri(.))"/>
+			<p>Search for <q><xsl:value-of select="."/></q> in
+				<ul class="plant-name-lookup-list">
+					<li><a href="{$vmcp}">This website</a></li>
+					<xsl:if test="$vicflora">
+						<li><a href="{$vicflora}" target="_blank">VicFlora</a></li>
+					</xsl:if>
+					<li><a href="{$apni}" target="_blank">Australian Plant Name Index</a></li>
+				</ul>
+			</p>
+		</xsl:variable>
+		<xsl:attribute name="title" select="serialize($expansion)"/>
+		<xsl:next-match/>
+	</xsl:template>
+	
 	<xsl:template match="name[reg]" mode="create-attributes">
 		<xsl:attribute name="title" select="reg"/>
 	</xsl:template>
 	<xsl:template match="name/reg"/>
-	
-	<!-- maps -->
-	<xsl:template match="figure[@type = 'map']">
-		<xsl:param name="latitude" select="substring-before(normalize-space(.//geo), ' ')"/>
-		<xsl:param name="longitude" select="substring-after(normalize-space(.//geo), ' ')"/>
-		<!--<xsl:param name="google-api-key" select="'AIzaSyC3B5gD68KIlH_n1WboUaDh3qW05TpEoFw'"/>-->
-		<div style="margin-left:auto;margin-right:auto;width:430px;margin-top:1em;">
-			<iframe 
-				sandbox="allow-scripts allow-same-origin allow-popups" 
-				style="border:1px solid black;" 
-				width="425" 
-				height="350" 
-				frameborder="0"
-				scrolling="no" 
-				marginheight="0" 
-				marginwidth="0"
-				src="https://www.google.com/maps/embed/v1/view?key={$google-api-key}&amp;center={$latitude},{$longitude}&amp;zoom=18&amp;maptype=satellite"/>
-		</div>
-	</xsl:template> 	
+
 </xsl:stylesheet>

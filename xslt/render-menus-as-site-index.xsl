@@ -14,17 +14,13 @@
 						<title>Site Index</title>
 					</head>
 					<body>
-						<section class="content">
-							<aside>
-								<header>Site Index</header>
-								<p>If you have any questions or issues, feel free to email us at:</p>
-								<p>chymist [at] indiana.edu</p>
-							</aside>
+						<main class="content">
+							<header>Site Index</header>
 							<div>
 								<h1>Site Index</h1>
 								<xsl:apply-templates select="$menus"/>
 							</div>
-						</section>
+						</main>
 					</body>
 				</html>
 			</c:body>

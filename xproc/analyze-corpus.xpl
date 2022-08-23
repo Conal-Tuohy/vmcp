@@ -1,7 +1,12 @@
-
-<p:library xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:z="https://github.com/Conal-Tuohy/XProc-Z" xmlns:chymistry="tag:conaltuohy.com,2018:chymistry" xmlns:cx="http://xmlcalabash.com/ns/extensions" version="1.0">
+<p:library xmlns:p="http://www.w3.org/ns/xproc" 
+	xmlns:c="http://www.w3.org/ns/xproc-step" 
+	xmlns:z="https://github.com/Conal-Tuohy/XProc-Z" 
+	xmlns:chymistry="tag:conaltuohy.com,2018:chymistry" 
+	xmlns:cx="http://xmlcalabash.com/ns/extensions"
+	xmlns:l="http://xproc.org/library"
+	version="1.0">
 	<p:import href="xproc-z-library.xpl"/>
-	
+	<p:import href="recursive-directory-list.xpl"/>	
 	<p:declare-step name="list-classification-attributes" type="chymistry:list-classification-attributes">
 		<!-- List the values of attributes used to classify elements: e.g. @rend, @type, @place, etc -->
 		<p:input port="source"/>
@@ -124,11 +129,16 @@
 	<p:declare-step name="sample-xml-text" type="chymistry:sample-xml-text">
 		<p:input port="source"/>
 		<p:output port="result"/>
-		<p:directory-list path="../p5" include-filter="^.*.xml$" exclude-filter="schemas\.xml|CHYM000001.xml"/>
+		<p:option name="corpus-base-uri" required="true"/>
+		<l:recursive-directory-list name="list-p5-files">
+			<p:with-option name="path" select="$corpus-base-uri"/>
+		</l:recursive-directory-list>
+		<p:add-xml-base name="add-xml-base" relative="false" all="true"/>
+		<!--<p:directory-list path="../p5" include-filter="^.*.xml$" exclude-filter="schemas\.xml|CHYM000001.xml"/>-->
 		<p:viewport name="item" match="c:file">
 			<p:variable name="name" select="/c:file/@name"/>
 			<p:load>
-				<p:with-option name="href" select="concat('../p5/', $name)"/>
+				<p:with-option name="href" select="resolve-uri(encode-for-uri(/c:file/@name), /c:file/@xml:base)"/>
 			</p:load>
 		</p:viewport>
 		<p:xslt>
@@ -138,16 +148,16 @@
 			<p:input port="stylesheet">
 				<p:inline>
 					<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0" xmlns:c="http://www.w3.org/ns/xproc-step" xmlns:tei="http://www.tei-c.org/ns/1.0">
-						<xsl:key name="elements-by-path" match="tei:*" use="string-join(ancestor-or-self::*!name(), '/')"/>
+						<xsl:key name="elements-by-path" match="tei:*" use="string-join(ancestor-or-self::tei:*!name(), '/')"/>
 						<xsl:template match="/c:directory">
 							<c:response status="200">
 								<c:body content-type="application/xml">
-									<xsl:apply-templates select="*"/>
+									<xsl:apply-templates select="//tei:TEI"/>
 								</c:body>
 							</c:response>
 						</xsl:template>
 						<xsl:template match="*">
-							<xsl:variable name="path" select="string-join(ancestor-or-self::*!name(), '/')"/>
+							<xsl:variable name="path" select="string-join(ancestor-or-self::tei:*!name(), '/')"/>
 							<xsl:variable name="peer-elements" select="key('elements-by-path', $path)"/>
 							<xsl:if test="$peer-elements[1] is .">
 								<xsl:copy>

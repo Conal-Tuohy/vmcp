@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Technology</title>
+	</head>
+	<body>
+		<p>The software was developed for the Gardens by Conal Tuohy, 
+		a freelance software developer based in Brisbane.
+		There are two parts to the system:
+			<ul>
+				<li><a href="https://github.com/Conal-Tuohy/VMCP-upconversion">a pipeline</a> which converts more than 10,000 items of Mueller's correspondence 
+				from Microsoft Word format into TEI XML documents,</li>
+				<li><a href="https://github.com/Conal-Tuohy/vmcp">a web application</a> which publishes the resulting TEI XML files as a searchable website.</li>
+			</ul>
+		</p>
+		<p>The high level structure of the web application is a pipeline written in the XProc 1.0 scripting language. Within the XProc pipeline, 
+		the TEI XML files and HTML pages are processed using XSLT 3.0 stylesheets. The XProc pipeline is hosted by a Java web Servlet 
+		called <a href="https://github.com/Conal-Tuohy/XProc-Z/">XProc-Z</a>, which in turn is hosted in the Java web server Apache Tomcat.</p>
+		<p>The web application uses the Apache Solr to as a search engine to drive the search and browse interface, and perform hit-highlighting. </p>
+	</body>
+</html>

@@ -3,12 +3,7 @@
 	xpath-default-namespace="http://www.w3.org/1999/xhtml">
 	<!-- Inserts replaces e.g. a[class='tei-bibl'] with HTML5 <details> elements for @title attributes which contain serialized HTML; so that we can
 	have popups that include formatting, links etc, in place of simple strings in @title attributes -->
-	<xsl:template match="node()">
-		<xsl:copy>
-			<xsl:copy-of select="@*"/>
-			<xsl:apply-templates/>
-		</xsl:copy>
-	</xsl:template>
+	<xsl:mode on-no-match="shallow-copy"/>
 	
 	<!-- replace a bibliographic reference hyperlink or glossary term with a details/summary combination-->
 	<xsl:template match="a[contains-token(@class, 'tei-bibl')][@title]">
@@ -23,7 +18,8 @@
 	<!-- glossed terms and expanded abbreviations are also displayed as a popups -->
 	<xsl:template match="
 		span[contains-token(@class, 'tei-term')][@title] |
-		abbr[contains-token(@class, 'tei-choice')][@title] 
+		abbr[contains-token(@class, 'tei-choice')][@title] |
+		span[contains-token(@class, 'tei-name')][@title]
 	">
 		<xsl:call-template name="make-popup">
 			<xsl:with-param name="class"  select="@class"/>

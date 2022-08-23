@@ -1,17 +1,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Home</title>
+		<!-- NB the structure of this HTML page will be modified by having global navigation added -->
+		<!-- In order for CSS rules to reliably target the page content, it's enclosed in a div with an id -->
+		<style type="text/css">
+			div#home-page {
+				display: flex;
+				column-gap: 1rem; 
+			}
+		</style>
 	</head>
 	<body>
-		<h1>The <em>Von Mueller Correspondence</em> Project</h1>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut sollicitudin sapien. 
-		Mauris ac bibendum nisl. Nunc non tellus nec dolor viverra egestas ac id purus. 
-		Mauris rutrum odio non pretium dignissim. Suspendisse eget ligula quam. 
-		Mauris porttitor condimentum leo sed interdum. Morbi auctor ipsum dignissim sollicitudin suscipit. 
-		In varius magna vel augue pharetra tincidunt. Morbi placerat dolor in mollis egestas. 
-		Etiam in nunc nulla. Pellentesque augue nisi, blandit vitae eros eget, commodo suscipit orci. 
-		Quisque et risus venenatis, cursus nisl eu, euismod sem. Pellentesque lacus erat, 
-		ultricies et posuere sit amet, semper ut est. Sed efficitur ante accumsan, ullamcorper 
-		leo non, interdum velit. Mauris sit amet neque sed mi pretium convallis. </p>
+		<div id="home-page">
+			<img alt="" src="image/mueller_18_years.jpg" width="400" height="512"/>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut sollicitudin sapien. 
+			Mauris ac bibendum nisl. Nunc non tellus nec dolor viverra egestas ac id purus. 
+			Mauris rutrum odio non pretium dignissim. Suspendisse eget ligula quam. 
+			Mauris porttitor condimentum leo sed interdum. Morbi auctor ipsum dignissim sollicitudin suscipit. 
+			In varius magna vel augue pharetra tincidunt. Morbi placerat dolor in mollis egestas. 
+			Etiam in nunc nulla. Pellentesque augue nisi, blandit vitae eros eget, commodo suscipit orci. 
+			Quisque et risus venenatis, cursus nisl eu, euismod sem. Pellentesque lacus erat, 
+			ultricies et posuere sit amet, semper ut est. Sed efficitur ante accumsan, ullamcorper 
+			leo non, interdum velit. Mauris sit amet neque sed mi pretium convallis. </p>
+		</div>
 	</body>
 </html>

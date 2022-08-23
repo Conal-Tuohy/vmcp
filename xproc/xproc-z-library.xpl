@@ -50,6 +50,9 @@
 						<p:when test="ends-with($path, '.html')">
 							<p:add-attribute match="//c:body" attribute-name="content-type" attribute-value="text/html; charset=UTF-8"/>
 						</p:when>
+						<p:when test="ends-with($path, '.jpg')">
+							<p:add-attribute match="//c:body" attribute-name="content-type" attribute-value="image/jpeg"/>
+						</p:when>
 						<p:otherwise>
 							<p:identity/>
 						</p:otherwise>

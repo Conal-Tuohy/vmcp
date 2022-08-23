@@ -4,7 +4,7 @@ The `vmcp` web application is an XProc pipeline, which is hosted by a Java web S
 
 Solr should be installed as a single server (i.e. not the cloud configuration) and configured to have a single database ("core") for each distinct instance of the web application. In this document the core is called "vmcp".
 
-Download Solr 7 from https://dlcdn.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
+Download Solr from https://dlcdn.apache.org/lucene/solr/8.11.2/solr-8.11.2.tgz
 
 Extract the install script from the tarball, and run it. This installs Solr as a service.
 
@@ -23,6 +23,14 @@ sudo -u solr bin/solr create -c vmcp
 # Install Apache Tomcat
 
 Install Tomcat using the OS package repository.
+
+NB on latest Ubuntu the tomcat9 service is sandboxed by systemd, preventing it from writing to the file system generally. To allow write access to specific directories, 
+you need to override systemd's default restrictions by editing the file `/etc/systemd/system/tomcat9.service.d/override.conf` to include:
+
+```
+[Service]
+ReadWritePaths=/etc/xproc-z/vmcp/
+```
 
 # Install the `vmcp` XProc pipeline
 
@@ -51,7 +59,7 @@ This context file specifies the location of the XProc-Z web archive file, and tw
     antiResourceLocking="false">
   <Valve className="org.apache.catalina.authenticator.BasicAuthenticator" />
   <Parameter name="xproc-z.main" override="false"
-             value="/etc/xproc-z/vmcp/xproc-z.xpl"/>
+             value="/etc/xproc-z/vmcp/xproc/xproc-z.xpl"/>
   <!-- the Solr base URL includes the core name (here "vmcp") -->
   <Parameter name="solr-base-uri" value="http://localhost:8983/solr/vmcp/"/>
 </Context>

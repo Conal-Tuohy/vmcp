@@ -19,8 +19,12 @@
 	The XPath version supported is 3.1.
 -->
 
-<!-- Index all documents except where their status is not "final" -->
-<document exclude-when="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final'" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!-- Exclude documents whose status isn't "final" and which aren't in the "Preliminary" folder -->
+<document xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	exclude-when="
+		(/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final') and 
+		not(starts-with(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='file'], 'data/Preliminary/'))
+	">
 	<!-- 
 	A "title" field containing a composite value aggregated from various components of the msIdentifier.
 	-->

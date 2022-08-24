@@ -95,11 +95,22 @@
 		</html>
 	</xsl:template>
 	
-	<xsl:template name="render-pagination-links">
-		<xsl:if test="$last-page &gt; 1">
-			<!-- there are multiple pages of results -->
-			<nav class="pagination" aria-label="Page navigation">
-				<header><xsl:value-of select="$response/f:map/f:map[@key='response']/f:number[@key='numFound']"/> results</header>
+	<xsl:template name="render-pagination-links" expand-text="yes">
+		<nav class="pagination" aria-label="Page navigation">
+			<xsl:variable name="total-results" select="$response/f:map/f:map[@key='response']/f:number[@key='numFound']"/>
+			<xsl:variable name="first-result" select="1 + number($response/f:map/f:map[@key='response']/f:number[@key='start'])"/>
+			<xsl:variable name="last-result" select="$first-result - 1 + count($response/f:map/f:map[@key='response']/f:array[@key='docs']/f:map)"/>
+			<header>{
+				if ($total-results = 0) then
+					'No results found'
+				else
+					if ($total-results = 1) then 
+						'One result found' 
+					else 
+						'Results ' || $first-result || ' to ' || $last-result || ' of ' || $total-results
+			}</header>
+			<xsl:if test="$last-page &gt; 1">
+				<!-- there are multiple pages of results -->
 				<ul class="pagination">
 					<!-- filter the set of pagination links to include only the first, last, and a fixed-size range centered on the current page -->
 					<xsl:variable name="range" select="$current-page - 3 to $current-page + 3"/>
@@ -112,8 +123,8 @@
 						</xsl:call-template>
 					</xsl:for-each>
 				</ul>
-			</nav>
-		</xsl:if>
+			</xsl:if>
+		</nav>
 	</xsl:template>
 	
 

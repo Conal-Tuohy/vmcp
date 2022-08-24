@@ -1,14 +1,15 @@
 {
 	"🏠︎ Home":"/",
 	"Search and Browse":"/search/",
-	"(placeholder)": {
-		"(placeholder)": "/item-1",
-		"(placeholder)": "/item-2",
-		"(placeholder)": "/item-3"
-	},
 	"About": {
-		"Contact Us": "/page/contact",
-		"Technology": "/page/technology"
+		"Acknowledgements": "/text/Preliminary/Acknowledgements/Acknowledgements/",
+		"Editorial Practice": "/text/Preliminary/Editorial%20%20Practice/Editorial%20practice/",
+		"Permissions": "/text/Preliminary/Permissions/Permission/",
+		"Plant Names": "/text/Preliminary/Plant%20names/Plant%20names/",
+		"Project History": "/text/Preliminary/Project%20history/Project%20History/",
+		"Scope": "/text/Preliminary/Scope/Scope/",
+		"Technology": "/page/technology",
+		"Using the Edition": "/text/Preliminary/Using%20the%20edition/Using%20the%20edition/"
 	},
 	"Administration":"/admin"
 }

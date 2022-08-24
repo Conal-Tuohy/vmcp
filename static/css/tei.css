@@ -152,6 +152,7 @@ details div ul {
 }
 
 details.tei-note.type-footnote,
+details.tei-note.type-annotation,
 details.tei-name
 {
 	color: var(--brand-color);
@@ -159,28 +160,26 @@ details.tei-name
 	text-indent: 0;
 }
 
+/* style summary elements like a hyperlink instead of a twister */
 details.tei-note.type-footnote summary,
+details.tei-note.type-annotation summary,
 details.tei-name summary
 {
 	cursor: help;
-}
-
-/* style summary elements like a hyperlink instead of a twister */
-details.tei-note.type-footnote summary,
-details.tei-name summary
-{
 	list-style: none;
 	display: inline;
 }
 
-/* make footnote superscripted */
-details.tei-note.type-footnote summary {
+/* make footnotes and annotations superscripted */
+details.tei-note.type-footnote summary,
+details.tei-note.type-annotation summary {
 	font-size: 0.67em;
 	vertical-align: super;
 }
 
 /* pop up footnote and botanical names */
 details.tei-note.type-footnote div,
+details.tei-note.type-annotation div,
 details.tei-name div 
 {
 	text-align: left;

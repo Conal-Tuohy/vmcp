@@ -240,7 +240,9 @@
 					<p:document href="../xslt/lift-title-attributes-to-popups.xsl"/>
 				</p:input>
 			</p:xslt>
-			<chymistry:add-site-navigation/>
+			<chymistry:add-site-navigation>
+				<p:with-option name="current-uri" select="concat('/text/', $id, '/')"/>
+			</chymistry:add-site-navigation>
 		</p:when>
 		<!-- temporary; for viewing XSLT -->
 		<!--<p:when test="$relative-uri='admin/indexer'">

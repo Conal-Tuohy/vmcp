@@ -62,30 +62,23 @@
 					<h1>The <em>Von Mueller Correspondence</em> Project</h1>
 				</div>
 			</header>
-			<xsl:choose>
-				<xsl:when test="main">
-					<xsl:apply-templates select="node()"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<main class="content">
-						<!-- contextual sidebar of the menu to which this page belongs, if any -->
-						<xsl:variable name="sub-menu">
-							<xsl:call-template name="sub-menu"/>
-						</xsl:variable>
-						<xsl:choose>
-							<xsl:when test="$sub-menu/*">
-								<xsl:copy-of select="$sub-menu"/>
-								<div>
-									<xsl:apply-templates select="node()"/>
-								</div>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:apply-templates select="node()"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</main>
-				</xsl:otherwise>
-			</xsl:choose>
+			<main class="content">
+				<!-- contextual sidebar of the menu to which this page belongs, if any -->
+				<xsl:variable name="sub-menu">
+					<xsl:call-template name="sub-menu"/>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$sub-menu/*">
+						<xsl:copy-of select="$sub-menu"/>
+						<div>
+							<xsl:apply-templates select="node()"/>
+						</div>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:apply-templates select="node()"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</main>
 			<!-- footer -->
 			<xsl:call-template name="footer"/>
 		</xsl:copy>

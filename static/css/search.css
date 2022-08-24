@@ -86,6 +86,8 @@ button.bucket  /* reset so it doesn't look like a button */
 	text-align: left;
 	text-indent: 0;
 	padding: 0;
+	margin-left: 1em;
+	text-indent: -1em;
 	cursor: pointer;
 	color: button;
 }

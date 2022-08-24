@@ -59,7 +59,7 @@
 							<img src="https://www.rbg.vic.gov.au/assets/images/rbgv-logo-lg.svg" alt="RBGV logo"/>
 						</a>
 					</div>
-					<h1>The <em>Von Mueller Correspondence</em> Project</h1>
+					<h1>The Von Mueller<br/>Correspondence Project</h1>
 				</div>
 			</header>
 			<main class="content">

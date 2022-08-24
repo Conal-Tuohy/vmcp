@@ -199,12 +199,9 @@ details.tei-name div
 .inline {
 	display: inline;
 }
-/*
-div.tei-teiHeader details summary::after {
-	content: "more...";
-	font-style: italic;
+div.tei-teiHeader details {
+	border-bottom: solid 1px black;
 }
-*/
 div.tei-teiHeader details[open] summary::after {
 	content: "";
 	font-style: italic;

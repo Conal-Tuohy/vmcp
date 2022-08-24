@@ -155,7 +155,7 @@
 			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/author" />
 			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/title" />
 			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='description']" />
-			<details class="tei-teiHeader">
+			<details class="tei-teiHeader" open="open">
 				<summary>Document Information</summary>
 				<div>
 					<xsl:variable name="now" select="current-dateTime()"/>

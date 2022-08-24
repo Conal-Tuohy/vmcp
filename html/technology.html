@@ -3,18 +3,25 @@
 		<title>Technology</title>
 	</head>
 	<body>
-		<p>The software was developed for the Gardens by Conal Tuohy, 
-		a freelance software developer based in Brisbane.
-		There are two parts to the system:
+		<p>The software was developed for the Gardens by <a href="https://github.com/Conal-Tuohy">Conal Tuohy</a>, a freelance software 
+		developer based in Brisbane.</p>
+		<p>There are two parts to the system:
 			<ul>
-				<li><a href="https://github.com/Conal-Tuohy/VMCP-upconversion">a pipeline</a> which converts more than 10,000 items of Mueller's correspondence 
-				from Microsoft Word format into TEI XML documents,</li>
-				<li><a href="https://github.com/Conal-Tuohy/vmcp">a web application</a> which publishes the resulting TEI XML files as a searchable website.</li>
+				<li>a <a href="https://github.com/Conal-Tuohy/VMCP-upconversion">batch conversion process</a> which converts the 
+				corpus of more than 10,000 items of Mueller's correspondence from Microsoft Word format into TEI XML documents, and</li>
+				<li>a <a href="https://github.com/Conal-Tuohy/vmcp">web application</a> which organises and presents the resulting TEI 
+				XML files in the form of this website.</li>
 			</ul>
 		</p>
-		<p>The high level structure of the web application is a pipeline written in the XProc 1.0 scripting language. Within the XProc pipeline, 
-		the TEI XML files and HTML pages are processed using XSLT 3.0 stylesheets. The XProc pipeline is hosted by a Java web Servlet 
-		called <a href="https://github.com/Conal-Tuohy/XProc-Z/">XProc-Z</a>, which in turn is hosted in the Java web server Apache Tomcat.</p>
-		<p>The web application uses the Apache Solr to as a search engine to drive the search and browse interface, and perform hit-highlighting. </p>
+		<p>The batch conversion process uses <a href="https://help.libreoffice.org/7.4/en-US/text/shared/guide/start_parameters.html">LibreOffice</a> to
+		convert the Microsoft Word documents into OpenDocument format, and then further processes those OpenDocument files into TEI XML using a
+		sequence of <a href="https://www.w3.org/TR/xslt-30/">XSLT 3.0</a> stylesheets, organised in an 
+		<a href="https://www.w3.org/TR/xproc/">XProc 1.0</a> pipeline.</p>
+		<p>This website is also a pipeline written in the <a href="https://www.w3.org/TR/xproc/">XProc 1.0</a> language, consisting mostly of 
+		<a href="https://www.w3.org/TR/xslt-30/">XSLT 3.0</a> stylesheets. The pipeline handles requests from web browsers, reading TEI XML files, 
+		submitting queries to the search engine,	and formatting pages into HTML. </p>
+		<p>The XProc pipeline is hosted by a Java web Servlet called <a href="https://github.com/Conal-Tuohy/XProc-Z/">XProc-Z</a>, which in turn is 
+		hosted in the Java web server <a href="https://tomcat.apache.org/">Apache Tomcat</a>. The web application uses 
+		<a href="https://solr.apache.org/">Apache Solr</a> as a search engine to drive the search and browse interface, and to perform hit-highlighting. </p>
 	</body>
 </html>

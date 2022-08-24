@@ -87,18 +87,14 @@ button.bucket  /* reset so it doesn't look like a button */
 	text-indent: 0;
 	padding: 0;
 	cursor: pointer;
-	color: var(--brand-color);
+	color: button;
 }
 button.bucket.selected::before {
 	content: "❎\FE0E";
-/*
-	background-color: var(--brand-color);
-	color: white;
-	*/
+	color: var(--brand-color);
 }
 button.bucket.unselected::before {
 	content: "☐";
-	color: black;
 }
 button.bucket::before {
 	margin-right: 0.25em;
@@ -134,6 +130,9 @@ li.result {
 	border-bottom-color: rgb(204, 204, 204);
 }
 li.result cite {
+}
+li.result a {
+	color: black;
 }
 ul.matching-views {
 	list-style-type: none;

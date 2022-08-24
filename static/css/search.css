@@ -87,7 +87,6 @@ button.bucket  /* reset so it doesn't look like a button */
 	text-indent: 0;
 	padding: 0;
 	cursor: pointer;
-	font-size: small;
 	color: var(--brand-color);
 }
 button.bucket.selected::before {
@@ -99,6 +98,7 @@ button.bucket.selected::before {
 }
 button.bucket.unselected::before {
 	content: "☐";
+	color: black;
 }
 button.bucket::before {
 	margin-right: 0.25em;

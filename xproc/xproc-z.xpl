@@ -190,7 +190,7 @@
 			</chymistry:p5-as-xml>
 		</p:when>
 		<!-- image files corresponding to figures within a text -->
-		<!-- e.g. relative URI = 'text/ALCH000001/figure/foo.gif' -->
+		<!-- e.g. relative URI = 'figure/foo.jpg' -->
 		<p:when test="starts-with($relative-uri, 'figure/')">
 			<chymistry:figure>
 				<p:with-option name="relative-uri" select="$relative-uri"/>
@@ -298,7 +298,7 @@
 								<c:header name="X-Powered-By" value="XProc using XML Calabash"/>
 								<c:header name="Server" value="XProc-Z"/>
 								<c:header name="Cache-Control" value="max-age=3600"/>
-								<c:body content-type="image/gif" encoding="base64">
+								<c:body content-type="image/jpeg" encoding="base64">
 									{//c:body/text()}
 								</c:body>
 							</c:response>

@@ -436,10 +436,10 @@
 		<p:load name="text">
 			<p:with-option name="href" select="$href"/>
 		</p:load>
-		<p:xslt name="materialise-rendition-selector-links">
+		<p:xslt name="recognise-figure-filenames">
 			<p:input port="parameters"><p:empty/></p:input>
 			<p:input port="stylesheet">
-				<p:document href="../xslt/evaluate-rendition-selectors.xsl"/>
+				<p:document href="../xslt/recognise-figure-filenames.xsl"/>
 			</p:input>
 		</p:xslt>
 		<p:xslt name="purge-extraneous-word-and-xtf-content">

@@ -1,7 +1,8 @@
 
 /* global variables and settings */
 :root {
-  --brand-color: #ee3f75
+  --brand-color: #ee3f75;
+  --form-text-font: serif;
 }
 
 div.tei {
@@ -126,6 +127,10 @@ ul.tei-list {
 	display: block;
 }
 .place-inline {
+	font-size: small;
+}
+/* reduce font size to try to avoid line-wrapping in cells */
+.tei-table {
 	font-size: small;
 }
 .tei-teiHeader h2,
@@ -458,6 +463,12 @@ TBowman
 }
 */
 /* ***** Text Styles - correspond to rend attr values ***** */
+
+/* text which has been hand-written into a form, displayed in Roman font */
+.rend-form_text {
+	font-family: serif;
+	color: #2f5496;
+}
 .rend-i {
 	font-style: italic;
 }
@@ -466,7 +477,7 @@ TBowman
 	font-weight: bold;
 }
 
-.rend-u {
+.rend-underline {
 	text-decoration: underline;
 }
 

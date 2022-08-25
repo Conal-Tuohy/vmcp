@@ -7,7 +7,6 @@
 	xpath-default-namespace="http://www.tei-c.org/ns/1.0"
 	 expand-text="yes">
 	<!-- transform a TEI document into an HTML page-->
-	<!--<xsl:import href="render-metadata.xsl"/>-->
 	<xsl:param name="google-api-key"/>
 	
 	<xsl:key name="char-by-ref" match="char[@xml:id]" use="concat('#', @xml:id)"/>
@@ -263,12 +262,12 @@
 					concat('tei-', local-name()),
 					for $type in tokenize(@type) return concat('type-', $type),
 					for $place in tokenize(@place) return concat('place-', $place),
+					for $rend in tokenize(@rend) return concat('rend-', $rend),
 					if (@hand) then 'hand' else ()
 				),
 				' '
 			)
 		"/>
-		<xsl:for-each select="@rend"><xsl:attribute name="style" select="."/></xsl:for-each>
 		<xsl:for-each select="@xml:lang"><xsl:attribute name="lang" select="."/></xsl:for-each>
 		<xsl:for-each select="@target">
 			<xsl:attribute name="href" select="chymistry:expand-reference(.)"/>
@@ -277,6 +276,7 @@
 			<xsl:variable name="hand" select="key('hand-note-by-reference', @hand)"/>
 			<xsl:attribute name="title" select="concat('Hand: ', $hand/@scribe)"/>
 		</xsl:if>
+		<xsl:copy-of select="@style"/>
 		<xsl:copy-of select="chymistry:mint-id(.)"/>
 	</xsl:template>
 	

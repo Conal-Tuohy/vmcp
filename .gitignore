@@ -4,6 +4,9 @@
 # debug logging
 /debug
 
+# figure files are maintained in dropbox and only copied to this folder for runtime access
+/figure
+
 # The XML files in "p5" are (currently) just derivatives of TEI files stored in the acsproj repository
 /p5
 

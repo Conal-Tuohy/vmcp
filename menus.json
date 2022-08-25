@@ -11,5 +11,11 @@
 		"Technology": "/page/technology",
 		"Using the Edition": "/text/Preliminary/Using%20the%20edition/"
 	},
+	"Apparatus": {
+		"Biographical register": "/text/Apparatus%20files/Biographical%20Register/Biographical%20Register-%20Work%20in%20Progress%2013%20August%20%202022/",
+		"Editors' citations": "/text/Apparatus%20files/Editors'%20citations/Editors%20citations%2022%20August%202022/",
+		"Honours, awards, & memberships": "/text/Apparatus%20files/Honours%20&c/Honours%20Awards%20Memberships%2010%20August-draft/",
+		"Mueller's publications": "/text/Apparatus%20files/Mueller's%20publications/M%20Pubs%203%20ed%20to%2014%20August%20%202022-draft/"
+	},
 	"Administration":"/admin"
 }

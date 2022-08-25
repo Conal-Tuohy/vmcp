@@ -4,7 +4,8 @@
 	xmlns:tei="http://www.tei-c.org/ns/1.0"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xpath-default-namespace="http://www.tei-c.org/ns/1.0">
+	xpath-default-namespace="http://www.tei-c.org/ns/1.0"
+	 expand-text="yes">
 	<!-- transform a TEI document into an HTML page-->
 	<!--<xsl:import href="render-metadata.xsl"/>-->
 	<xsl:param name="google-api-key"/>
@@ -24,51 +25,7 @@
 				<link href="/css/tei.css" rel="stylesheet" type="text/css"/>
 				<link href="/css/highlighting.css" rel="stylesheet" type="text/css"/>
 				<link href="{$embedded-manifest-uri}" rel="alternate" type="application/ld+json" title="iiif-manifest"/>
-				<!-- output the rendition elements as CSS rules -->
-				<!-- TODO move CSS validation into schematron rules -->
-				<style type="text/css">
-					<xsl:value-of select="
-						let 
-							$properties-regex:='^\s*[^:\s]+\s*:[^;]+(;\s?[^:\s]+\s*:[^;]+)*', (: i.e. 'property:value; property-2: value; ...' :)
-							$css-comment-regex:='/\*.*?\*/' (: i.e. /* this is a comment */ :)
-						return string-join(
-							for $rendition in teiHeader/encodingDesc/tagsDecl/rendition
-								[not(@scheme!='css')] (: rendition specifies CSS, explicitly or implicitly :)
-							return 
-								let 
-									$properties:=normalize-space(string-join(tokenize($rendition, $css-comment-regex))),
-									$selector-for-elements-which-individually-reference-this-rendition:=concat('.rendition-', $rendition/@xml:id), (: e.g. '.rendition-bold' :)
-									$rendition-reference:=concat('#', $rendition/@xml:id), (: URI a tagUsage/@rendition might use to refer to this rendition, e.g. '#bold' :)
-									$selectors-for-elements-having-this-rendition-as-their-default:= (: e.g. '.tei-head', '.tei-docTitle' :)
-										for $element-name in 
-											teiHeader/encodingDesc/tagsDecl/namespace[@name='http://www.tei-c.org/ns/1.0']/
-												tagUsage[contains-token(@rendition, $rendition-reference)]/@gi
-										return
-											concat('.tei-', $element-name),
-									$scoped-selectors:= (: appends CSS pseudo-element classes e.g. ':before' to selectors, where specified in rendition/@scope  :)
-										for $individual-selector in 
-											($selector-for-elements-which-individually-reference-this-rendition, $selectors-for-elements-having-this-rendition-as-their-default)
-										return
-											string-join(($individual-selector, $rendition/@scope), ':'),
-									$composite-selector:=string-join($scoped-selectors, ', ') (: e.g. '.rendition-bold', '.tei-head', '.tei-docTitle' :)								
-								return concat(
-									$composite-selector,
-									' {', codepoints-to-string(10),
-									if (matches($properties, '[{}]') or not(matches($properties, $properties-regex))) then (: rules containing media queries not allowed :)
-										'   /* invalid CSS */'
-									else 
-										string-join(
-											for $property in tokenize($properties, ';')[normalize-space()] 
-											return concat('   ', $property, ';'), 
-											codepoints-to-string(10)
-										),
-									codepoints-to-string(10),
-									'}'
-								),							
-							codepoints-to-string((10, 10))
-						)
-					"/>
-				</style>
+
 			</head>
 			<body class="tei">
 				<main class="content">
@@ -78,9 +35,6 @@
 						<div class="searchable-content">
 							<xsl:apply-templates select="tei:text"/>
 						</div>
-						<!--
-						<xsl:apply-templates mode="toc" select="/TEI/teiHeader/fileDesc/sourceDesc[@n='table-of-contents']"/>
-						-->
 					</div>
 				</main>
 			</body>
@@ -158,41 +112,44 @@
 			<details class="tei-teiHeader" open="open">
 				<summary>Document Information</summary>
 				<div>
-					<xsl:variable name="now" select="current-dateTime()"/>
 					<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/physDesc/objectDesc/supportDesc" />
 					<xsl:apply-templates select="profileDesc/langUsage"/>
 					<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/history" />
 					<!-- identifiers -->
 					<xsl:variable name="msIdentifier" select="fileDesc/sourceDesc/msDesc/msIdentifier"/>
-					<div>
-						<h2 class="inline">Physical Location:</h2>
-						<xsl:value-of select="string-join(
+					<xsl:variable name="physical-location" select="
+						string-join(
 							(
-								$msIdentifier/collection,
 								$msIdentifier/msName,
-								$msIdentifier//idno, 
-								$msIdentifier/repository, 
-								$msIdentifier/institution, 
-								string-join(
-									(
-										$msIdentifier/settlement, 
-										$msIdentifier/region, 
-										$msIdentifier/country
-									),
-									', '
-								)
+								$msIdentifier//idno
 							),
-							'&#160;'
-						)"/>
-					</div>
+							' '
+						)
+					"/>
+					<xsl:if test="$physical-location">
+						<div>
+							<h2 class="inline">Physical Location:</h2>
+							<xsl:value-of select="$physical-location"/>
+						</div>
+					</xsl:if>
 					<xsl:apply-templates select="fileDesc/titleStmt/respStmt" />
 					<div>
 						<h2>Preferred Citation:</h2>
 						<p>
 							<cite>
-								<xsl:for-each select="fileDesc/sourceDesc/bibl">
-									<xsl:value-of select="concat(author, '. ', date, '. ', title)"/>
-								</xsl:for-each>
+								<xsl:variable name="author" select="fileDesc/sourceDesc/bibl/author"/>
+								<xsl:variable name="recipient" select="profileDesc/correspDesc/correspAction[@type='sentTo']/name"/>
+								<xsl:variable name="date" select="fileDesc/sourceDesc/bibl/date"/>
+								<xsl:variable name="filename" select="fileDesc/publicationStmt/idno[@type='filename']"/>
+								<xsl:variable name="current-date" select="current-date() =>  format-date('[MNn] [D], [Y]', 'en', (), () )"/>
+								<xsl:variable name="url" select="
+									(for $segment in tokenize($filename, '/') return encode-for-uri($segment)) 
+									=> string-join('/') 
+									=> replace('^data/(.*).doc$', 'https://vmcp.rbg.vic.gov.au/text/$1/')
+								"/>
+								<xsl:if test="$author and $recipient">{$author} to {$recipient}, {$date}. </xsl:if>
+								<xsl:text>R.W. Home, Thomas A. Darragh, A.M. Lucas, Sara Maroske, D.M. Sinkora, J.H. Voigt and Monika Wells (eds),
+								Correspondence of Ferdinand von Mueller, &lt;{$url}&gt;, accessed {$current-date}</xsl:text>
 							</cite>
 						</p>
 					</div>
@@ -306,9 +263,6 @@
 					concat('tei-', local-name()),
 					for $type in tokenize(@type) return concat('type-', $type),
 					for $place in tokenize(@place) return concat('place-', $place),
-					for $rendition in tokenize(
-						if (@rendition) then @rendition else $tag-usage[@gi=local-name(current())]/@rendition
-					) return concat('rendition-', substring-after($rendition, '#')),
 					if (@hand) then 'hand' else ()
 				),
 				' '

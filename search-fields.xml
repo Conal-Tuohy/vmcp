@@ -137,11 +137,12 @@
 	-->
 	<!-- 
 	This field defines a "Language" facet whose values come from the <language> elements in the header.
+	If there exists a <language> element whose content is not 'English', then the original language is 'Non-English', otherwise it's 'English'
 	-->
 	<field 
 		name="language" 
-		label="Language" 
-		xpath="/TEI/teiHeader/profileDesc/langUsage/language"
+		label="Original language" 
+		xpath="if (/TEI/teiHeader/profileDesc/langUsage/language[. ne 'English']) then 'Non-English' else 'English' "
 		type="facet"/>
 	<!-- The correspondents in the letter -->
 	<field 

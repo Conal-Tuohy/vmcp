@@ -137,8 +137,8 @@
 						<h2>Preferred Citation:</h2>
 						<p>
 							<cite>
-								<xsl:variable name="author" select="fileDesc/sourceDesc/bibl/author"/>
-								<xsl:variable name="recipient" select="profileDesc/correspDesc/correspAction[@type='sentTo']/name"/>
+								<xsl:variable name="author" select="fileDesc/sourceDesc/bibl/author/text()"/>
+								<xsl:variable name="recipient" select="profileDesc/correspDesc/correspAction[@type='sentTo']/name/text()"/>
 								<xsl:variable name="date" select="fileDesc/sourceDesc/bibl/date"/>
 								<xsl:variable name="filename" select="fileDesc/publicationStmt/idno[@type='filename']"/>
 								<xsl:variable name="current-date" select="current-date() =>  format-date('[MNn] [D], [Y]', 'en', (), () )"/>

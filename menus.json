@@ -2,14 +2,14 @@
 	"🏠︎ Home":"/",
 	"Search and Browse":"/search/",
 	"About": {
-		"Acknowledgements": "/text/Preliminary/Acknowledgements/Acknowledgements/",
-		"Editorial Practice": "/text/Preliminary/Editorial%20%20Practice/Editorial%20practice/",
-		"Permissions": "/text/Preliminary/Permissions/Permission/",
-		"Plant Names": "/text/Preliminary/Plant%20names/Plant%20names/",
-		"Project History": "/text/Preliminary/Project%20history/Project%20History/",
-		"Scope": "/text/Preliminary/Scope/Scope/",
+		"Editorial Practice": "/text/Preliminary/Editorial%20practice/",
+		"Notes on Life and Work": "/text/Preliminary/Notes%20on%20Life%20and%20work/",
+		"Permissions": "/text/Preliminary/Permission/",
+		"Plant Names": "/text/Preliminary/Plant%20names/",
+		"Project History": "/text/Preliminary/Project%20History/",
+		"Scope": "/text/Preliminary/Scope/",
 		"Technology": "/page/technology",
-		"Using the Edition": "/text/Preliminary/Using%20the%20edition/Using%20the%20edition/"
+		"Using the Edition": "/text/Preliminary/Using%20the%20edition/"
 	},
 	"Administration":"/admin"
 }

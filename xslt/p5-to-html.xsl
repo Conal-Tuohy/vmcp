@@ -656,7 +656,7 @@
 		<xsl:variable name="expansion">
 			<xsl:variable name="vicflora" select="key('keyword-by-content', .)/@ref"/>
 			<xsl:variable name="apni" select="concat('https://biodiversity.org.au/nsl/services/search/names?product=APNI&amp;name=', encode-for-uri(.))"/>
-			<xsl:variable name="vmcp" select="concat('/search/?text=', encode-for-uri(.))"/>
+			<xsl:variable name="vmcp" select="concat('/search/?text=', encode-for-uri('&quot;' || . || '&quot;'))"/>
 			<p>Search for <q><xsl:value-of select="."/></q> in
 				<ul class="plant-name-lookup-list">
 					<li><a href="{$vmcp}">This website</a></li>

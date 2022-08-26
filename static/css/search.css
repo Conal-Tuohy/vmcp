@@ -4,6 +4,11 @@
   --border-color: rgb(222, 226, 230);
 }
 
+body.search form#quick-search {
+	/* don't show the "quick search" form on the advanced search page */
+	visibility: hidden;
+}
+
 div.fields {
 	grid-column: 1 / 2;
 /*	grid-row-start: 1;

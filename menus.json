@@ -2,14 +2,14 @@
 	"🏠︎ Home":"/",
 	"Search and Browse":"/search/",
 	"About": {
+		"Using the Edition": "/text/Preliminary/Using%20the%20edition/",
 		"Editorial Practice": "/text/Preliminary/Editorial%20practice/",
 		"Notes on Life and Work": "/text/Preliminary/Notes%20on%20Life%20and%20work/",
 		"Permissions": "/text/Preliminary/Permission/",
 		"Plant Names": "/text/Preliminary/Plant%20names/",
 		"Project History": "/text/Preliminary/Project%20History/",
 		"Scope": "/text/Preliminary/Scope/",
-		"Technology": "/page/technology",
-		"Using the Edition": "/text/Preliminary/Using%20the%20edition/"
+		"Technology": "/page/technology"
 	},
 	"Apparatus": {
 		"Biographical register": "/text/Apparatus%20files/Biographical%20Register/Biographical%20Register-%20Work%20in%20Progress/",

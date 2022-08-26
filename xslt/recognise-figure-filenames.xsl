@@ -5,7 +5,7 @@
 	
 	<xsl:mode on-no-match="shallow-copy"/>
 	<xsl:template match="note[not(normalize-space())]"/>
-	<xsl:template match="note//text()[contains(., '.jpg')]">
+	<xsl:template match="(msName | note)//text()[contains(., '.jpg')]">
 		<!-- This text node contains the name of an image file e.g. "For sketch, see 64-10-03_image02.jpg." -->
 		<!-- pathname e.g. "data/Mueller letters/1840-9/1845-9/45-04-00-final.doc" -->
 		<xsl:variable name="pathname" select="/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename']"/>

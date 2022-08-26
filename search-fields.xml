@@ -146,8 +146,8 @@
 		type="facet"/>
 	<!-- The correspondents in the letter -->
 	<field 
-		name="person" 
-		label="Person" 
+		name="correspondent" 
+		label="Correspondents" 
 		xpath="
 			(
 				/TEI/teiHeader/profileDesc/correspDesc/correspAction,

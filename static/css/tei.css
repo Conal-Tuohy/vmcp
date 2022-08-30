@@ -195,8 +195,8 @@ details.tei-note[open] summary::after{
 }
 
 /* pop up footnote and botanical names */
-details.tei-note.type-footnote div,
-details.tei-note.type-annotation div,
+details.tei-note.type-footnote div.tei-note,
+details.tei-note.type-annotation div.tei-note,
 details.tei-name div 
 {
 	text-align: left;
@@ -211,6 +211,8 @@ details.tei-name div
 	border-color: black;
 	border-radius: 0.5em;
 	max-width: 50%;
+	max-height: 50%;
+	overflow-y: scroll;
 	margin-right: 1em;
 }
 

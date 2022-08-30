@@ -636,7 +636,9 @@
 		<details>
 			<xsl:apply-templates mode="create-attributes" select="."/>
 			<summary><xsl:value-of select="@n"/></summary>
-			<xsl:apply-templates/>
+			<div class="tei-note">
+				<xsl:apply-templates/>
+			</div>
 		</details>
 	</xsl:template>
 	

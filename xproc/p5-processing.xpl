@@ -442,6 +442,12 @@
 				<p:document href="../xslt/recognise-figure-filenames.xsl"/>
 			</p:input>
 		</p:xslt>
+		<p:xslt name="recognise-document-filenames">
+			<p:input port="parameters"><p:empty/></p:input>
+			<p:input port="stylesheet">
+				<p:document href="../xslt/recognise-document-filenames.xsl"/>
+			</p:input>
+		</p:xslt>
 		<p:xslt name="purge-extraneous-word-and-xtf-content">
 			<p:input port="parameters"><p:empty/></p:input>
 			<p:input port="stylesheet">

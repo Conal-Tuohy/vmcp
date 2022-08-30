@@ -12,6 +12,8 @@
 		<!-- file-identifier e.g. "45-04-00" -->
 		<xsl:variable name="file-identifier" select="replace($pathname, '^.*/(.*).doc$', '$1')"/>
 		<!-- searching for image file names in the text --> 
+<!-- TODO recognise image filenames which don't end with '.jpg' -->
+<!-- use the presence of "_image" in the filename as the identifying characteristic of an image filename -->
 		<xsl:analyze-string select="." regex="[^\.\s]+\.jpg">
 			<xsl:matching-substring>
 				<graphic url="{encode-for-uri(.)}"/>

@@ -165,6 +165,13 @@
 			</chymistry:purge-index>
 			<chymistry:add-site-navigation/>
 		</p:when>
+		<p:when test="starts-with($relative-uri, 'resolve-document-identifier/')">
+			<chymistry:resolve-document-identifier>
+				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
+					<p:pipe step="configuration" port="result"/>
+				</p:with-option>
+			</chymistry:resolve-document-identifier>
+		</p:when>
 		<p:when test="$relative-uri = 'reindex/' ">
 			<!-- Update the search index -->
 			<chymistry:reindex>

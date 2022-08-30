@@ -25,6 +25,13 @@
 		(/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final') and 
 		not(starts-with(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='file'], 'data/Preliminary/'))
 	">
+	<!--
+	A "document-identifier" field containing the filename (without the '-final.doc' suffix), to resolve cross-references
+	-->
+	<field name="document-identifier"
+		label="ID"
+		xpath="replace(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename'], '.+/([^/]+)-final\.doc', '$1')"
+	/>
 	<!-- 
 	A "title" field containing a composite value aggregated from various components of the msIdentifier.
 	-->

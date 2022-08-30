@@ -69,6 +69,57 @@
 		</p:choose>
 	</p:declare-step>
 	
+	<p:declare-step name="resolve-document-identifier" type="chymistry:resolve-document-identifier">
+		<p:input port="source"/>
+		<p:output port="result"/>
+		<p:option name="solr-base-uri" required="true"/>
+		<p:variable name="document-identifier" select="substring-after(/c:request/@href, '/resolve-document-identifier/')"/>
+		<!-- returns an HTTP redirect to the page of a document identified by its 'document-identifier' field in Solr -->
+		<!-- generate a Solr query to look up a document by document-identifier field, e.g.
+		http://localhost:8983/solr/vmcp/select?fl=id&q=document-identifier%3A%2257-11-15%22&wt=xml
+		-->
+		<p:load>
+			<p:with-option name="href" select="
+				concat(
+					$solr-base-uri, 
+					'select?wt=xml&amp;fl=id&amp;q=document-identifier%3A%22', 
+					encode-for-uri($document-identifier), 
+					'%22'
+				)
+			"/>
+		</p:load>
+		<!--
+		Producing a result like:
+		<response>
+			<lst name="responseHeader">
+			  <int name="status">0</int>
+			  <int name="QTime">1</int>
+			  <lst name="params">
+				<str name="q">document-identifier:"57-11-15"</str>
+				<str name="fl">id</str>
+				<str name="wt">xml</str>
+				<str name="_">1661773439985</str>
+			  </lst>
+			</lst>
+			<result name="response" numFound="1" start="0" numFoundExact="true">
+			  <doc>
+				<str name="id">Mueller%20letters/1850-9/1857/57-11-15-final</str></doc>
+			</result>
+		</response>
+		... and returning an HTTP redirect to an HTML page based on the "id" result
+		-->
+		<p:template name="redirect">
+			<p:input port="parameters"><p:empty/></p:input>
+			<p:input port="template">
+				<p:inline>
+					<c:response status="303">
+						<c:header name="Location" value="/text/{/response/result/doc/str[@name='id'][1]}/"/>
+					</c:response>
+				</p:inline>
+			</p:input>
+		</p:template>
+	</p:declare-step>
+	
 	<p:declare-step name="search" type="chymistry:search">
 		<p:input port="source"/>
 		<p:output port="result"/>

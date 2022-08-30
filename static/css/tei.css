@@ -187,7 +187,7 @@ details.tei-note[open] summary::after{
 	display: block;
 	content: "❎\FE0E";
 	color: var(--brand-color);
-	margin-top: 1.25em;
+	margin-top: 0.25em;
 	margin-left: 0.5em;
 	position: absolute;
 	z-index: 1;

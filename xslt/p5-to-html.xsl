@@ -450,9 +450,14 @@
 	</xsl:template>
 	<xsl:template match="graphic">
 		<xsl:element name="img">
-			<xsl:attribute name="src" select="concat('/figure/', @url)"/>
+			<xsl:apply-templates mode="create-attributes" select="."/>
 		</xsl:element>
 	</xsl:template>
+	<xsl:template match="graphic" mode="create-attributes">
+		<xsl:attribute name="src" select="concat('/figure/', @url)"/>
+		<xsl:next-match/>
+	</xsl:template>
+
 	
 	<!-- glossed terms -->
 	<!-- render the appropriate gloss for this term, and store the result in the @title attribute -->

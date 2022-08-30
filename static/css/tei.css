@@ -214,6 +214,10 @@ details.tei-name div
 	margin-right: 1em;
 }
 
+img.tei-graphic {
+	max-width: 100%;
+}
+
 
 .inline {
 	display: inline;

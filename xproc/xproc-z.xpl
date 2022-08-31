@@ -165,7 +165,7 @@
 			</chymistry:purge-index>
 			<chymistry:add-site-navigation/>
 		</p:when>
-		<p:when test="starts-with($relative-uri, 'resolve-document-identifier/')">
+		<p:when test="starts-with($relative-uri, 'id/')">
 			<chymistry:resolve-document-identifier>
 				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
 					<p:pipe step="configuration" port="result"/>

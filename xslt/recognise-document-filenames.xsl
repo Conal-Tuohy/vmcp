@@ -137,5 +137,5 @@
 		<xsl:param name="day"/>
 		<xsl:sequence select="concat($year, '-', $month, '-', $day)"/>
 	</xsl:function>
-	<xsl:variable name="resolver-base-url" select=" '/resolve-document-identifier/' "/>
+	<xsl:variable name="resolver-base-url" select=" '/id/' "/>
 </xsl:stylesheet>

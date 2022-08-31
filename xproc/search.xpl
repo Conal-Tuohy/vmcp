@@ -73,7 +73,7 @@
 		<p:input port="source"/>
 		<p:output port="result"/>
 		<p:option name="solr-base-uri" required="true"/>
-		<p:variable name="document-identifier" select="substring-after(/c:request/@href, '/resolve-document-identifier/')"/>
+		<p:variable name="document-identifier" select="substring-after(/c:request/@href, '/id/')"/>
 		<!-- returns an HTTP redirect to the page of a document identified by its 'document-identifier' field in Solr -->
 		<!-- generate a Solr query to look up a document by document-identifier field, e.g.
 		http://localhost:8983/solr/vmcp/select?fl=id&q=document-identifier%3A%2257-11-15%22&wt=xml

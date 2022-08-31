@@ -270,7 +270,25 @@
 		"/>
 		<xsl:for-each select="@xml:lang"><xsl:attribute name="lang" select="."/></xsl:for-each>
 		<xsl:for-each select="@target">
-			<xsl:attribute name="href" select="chymistry:expand-reference(.)"/>
+			<!-- expand references which use a custom reference system into a regular URI --> 
+			<xsl:variable name="expanded-reference" select="chymistry:expand-reference(.)"/>
+			<!-- relative URIs that point to an XML file need to be transformed --> 
+			<xsl:attribute name="href">
+				<xsl:choose>
+					<xsl:when test="matches($expanded-reference, '^(/|[^:]+:)')">
+						<!-- an absolute URI -->
+						<xsl:value-of select="$expanded-reference"/>
+					</xsl:when>
+					<xsl:when test="starts-with($expanded-reference, '/')">
+						<!-- root-relative URI -->
+						<xsl:value-of select="replace($expanded-reference, '(\.xml)$', '/')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<!-- other relative URI -->
+						<xsl:value-of select="concat('../', replace($expanded-reference, '(\.xml)$', '/'))"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
 		</xsl:for-each>
 		<xsl:if test="@hand">
 			<xsl:variable name="hand" select="key('hand-note-by-reference', @hand)"/>
@@ -601,7 +619,7 @@
 			<xsl:apply-templates mode="create-content" select="."/>
 		</xsl:element>
 	</xsl:template>
-	<!--<xsl:template match="ref[@type='annotation'][@target]">-->
+	<!-- TODO fix this so that relative links to .xml files are transformed to replace the trailing '.xml' with '/' --> 
 	<xsl:template match="ref[@target]">
 		<!-- a link to an annotation -->
 		<xsl:element name="a">

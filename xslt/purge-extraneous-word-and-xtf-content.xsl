@@ -15,7 +15,7 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 	<!-- these are elements in the text of the Word document which contain metadata. The values have already been copied into the teiHeader -->
-	<xsl:template match="(tei:p|tei:ab)[@rend=('number', 'correspondent', 'location', 'Progress%20note', 'Plant%20names', 'plant%20names')]"/>
+	<xsl:template match="(tei:p|tei:ab)[lower-case(@rend)=('number', 'correspondent', 'location', 'progress%20note', 'plant%20names', 'prelim%20head')]"/>
 	<!-- filter the CSS rules from style attributes, retaining only font-weight and font-style properties --> 
 	<xsl:template match="@style">
 		<xsl:variable name="desired-properties" select="(

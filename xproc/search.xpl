@@ -108,16 +108,53 @@
 		</response>
 		... and returning an HTTP redirect to an HTML page based on the "id" result
 		-->
-		<p:template name="redirect">
-			<p:input port="parameters"><p:empty/></p:input>
-			<p:input port="template">
+		<p:choose>
+			<p:when test="/response/result/doc/str[@name='id']">
+				<p:template name="redirect">
+					<p:input port="parameters"><p:empty/></p:input>
+					<p:input port="template">
+						<p:inline>
+							<c:response status="303">
+								<c:header name="Location" value="/text/{/response/result/doc/str[@name='id'][1]}/"/>
+							</c:response>
+						</p:inline>
+					</p:input>
+				</p:template>
+			</p:when>
+			<p:otherwise>
+				<chymistry:id-unresolved/>
+			</p:otherwise>
+		</p:choose>
+	</p:declare-step>
+	
+	<p:declare-step type="chymistry:id-unresolved">
+		<p:input port="source"/>
+		<p:output port="result"/>
+		<p:identity>
+			<p:input port="source">
 				<p:inline>
-					<c:response status="303">
-						<c:header name="Location" value="/text/{/response/result/doc/str[@name='id'][1]}/"/>
+					<c:response status="404">
+						<c:header name="X-Powered-By" value="XProc using XML Calabash"/>
+						<c:header name="Server" value="XProc-Z"/>
+						<c:body content-type="application/xhtml+xml">
+							<html xmlns="http://www.w3.org/1999/xhtml">
+								<head>
+									<title>Text not found</title>
+								</head>
+								<body>
+									<main>
+									<h1>Text not found</h1>
+									<p>The text you requested was not found.</p>
+									<p>Note that the corpus is still being edited, and there are still some letters which have not yet finished being edited.
+									The text you requested may be one of these, in which case it should appear here at some future date.</p>
+									</main>
+								</body>
+							</html>
+						</c:body>
 					</c:response>
 				</p:inline>
 			</p:input>
-		</p:template>
+		</p:identity>
 	</p:declare-step>
 	
 	<p:declare-step name="search" type="chymistry:search">

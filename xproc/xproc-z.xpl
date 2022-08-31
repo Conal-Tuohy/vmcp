@@ -171,6 +171,7 @@
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
 			</chymistry:resolve-document-identifier>
+			<chymistry:add-site-navigation/>
 		</p:when>
 		<p:when test="$relative-uri = 'reindex/' ">
 			<!-- Update the search index -->
@@ -218,35 +219,43 @@
 			<p:www-form-urldecode name="field-values">
 				<p:with-option name="value" select="substring-after(/c:request/@href, '?')"/>
 			</p:www-form-urldecode>
-			<chymistry:p5-as-html name="text-as-html">
-				<p:with-option name="href" select="$file-absolute-uri"/>
-				<p:with-option name="base-uri" select="$base-uri"/>
-				<p:input port="source">
-					<p:pipe step="main" port="source"/>
-				</p:input>
-			</chymistry:p5-as-html>
-			<chymistry:highlight-hits>
-				<p:with-option name="highlight" select="/c:param-set/c:param[@name='highlight']/@value">
-					<p:pipe step="field-values" port="result"/>
-				</p:with-option>
-				<p:with-option name="id" select="$id"/>
-				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
-					<p:pipe step="configuration" port="result"/>
-				</p:with-option>
-			</chymistry:highlight-hits>
-			<!--
-			<p:xslt>
-				<p:with-param name="manifest-uri" select="$manifest-uri"/>
-				<p:input port="stylesheet">
-					<p:document href="../xslt/embed-universal-viewer.xsl"/>
-				</p:input>
-			</p:xslt>
-			-->
-			<p:xslt>
-				<p:input port="stylesheet">
-					<p:document href="../xslt/lift-title-attributes-to-popups.xsl"/>
-				</p:input>
-			</p:xslt>
+			<p:try>
+				<p:group>
+					<chymistry:p5-as-html name="text-as-html">
+						<p:with-option name="href" select="$file-absolute-uri"/>
+						<p:with-option name="base-uri" select="$base-uri"/>
+						<p:input port="source">
+							<p:pipe step="main" port="source"/>
+						</p:input>
+					</chymistry:p5-as-html>
+					<chymistry:highlight-hits>
+						<p:with-option name="highlight" select="/c:param-set/c:param[@name='highlight']/@value">
+							<p:pipe step="field-values" port="result"/>
+						</p:with-option>
+						<p:with-option name="id" select="$id"/>
+						<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
+							<p:pipe step="configuration" port="result"/>
+						</p:with-option>
+					</chymistry:highlight-hits>
+					<!--
+					<p:xslt>
+						<p:with-param name="manifest-uri" select="$manifest-uri"/>
+						<p:input port="stylesheet">
+							<p:document href="../xslt/embed-universal-viewer.xsl"/>
+						</p:input>
+					</p:xslt>
+					-->
+					<p:xslt>
+						<p:input port="stylesheet">
+							<p:document href="../xslt/lift-title-attributes-to-popups.xsl"/>
+						</p:input>
+					</p:xslt>
+				</p:group>
+				<p:catch>
+					<!-- FIXME actually could be the file was found but processing failed --> 
+					<chymistry:text-not-found/>
+				</p:catch>
+			</p:try>
 			<chymistry:add-site-navigation>
 				<p:with-option name="current-uri" select="concat('/text/', $id, '/')"/>
 			</chymistry:add-site-navigation>
@@ -279,6 +288,34 @@
 			<chymistry:add-site-navigation/>
 		</p:otherwise>
 	</p:choose>
+	
+	<p:declare-step type="chymistry:text-not-found">
+		<p:input port="source"/>
+		<p:output port="result"/>
+		<p:identity>
+			<p:input port="source">
+				<p:inline>
+					<c:response status="404">
+						<c:header name="X-Powered-By" value="XProc using XML Calabash"/>
+						<c:header name="Server" value="XProc-Z"/>
+						<c:body content-type="application/xhtml+xml">
+							<html xmlns="http://www.w3.org/1999/xhtml">
+								<head>
+									<title>Not found</title>
+								</head>
+								<body>
+									<main>
+										<h1>Not found</h1>
+										<p>The requested document could not be found.</p>
+									</main>
+								</body>
+							</html>
+						</c:body>
+					</c:response>
+				</p:inline>
+			</p:input>
+		</p:identity>
+	</p:declare-step>
 	
 	<p:declare-step type="chymistry:figure">
 		<p:option name="relative-uri" required="true"/>

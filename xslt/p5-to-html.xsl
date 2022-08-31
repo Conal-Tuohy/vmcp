@@ -29,9 +29,9 @@
 			<body class="tei">
 				<main class="content">
 					<div class="tei">
-						<!-- render the document metadata details -->
-						<xsl:apply-templates select="tei:teiHeader"/>
 						<div class="searchable-content">
+							<!-- render the document metadata details -->
+							<xsl:apply-templates select="tei:teiHeader"/>
 							<xsl:apply-templates select="tei:text"/>
 						</div>
 					</div>

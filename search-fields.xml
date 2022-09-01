@@ -25,13 +25,6 @@
 		(/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final') and 
 		not(starts-with(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='file'], 'data/Preliminary/'))
 	">
-	<!--
-	A "document-identifier" field containing the filename (without the '-final.doc' suffix), to resolve cross-references
-	-->
-	<field name="document-identifier"
-		label="ID"
-		xpath="replace(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename'], '.+/([^/]+)-final\.doc', '$1')"
-	/>
 	<!-- 
 	A "title" field containing a composite value aggregated from various components of the msIdentifier.
 	-->
@@ -142,6 +135,17 @@
 	<!-- unusable until the metadata can be populated by the upconversion pipeline 
 	<field name="repository" label="Repository" xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/repository" type="facet"/>
 	-->
+	<!-- msName contains the "location" field from MS Word -->
+	<field name="location" 
+		label="Location" 
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/msName"/>
+	<!--
+	A "document-identifier" field containing the filename (without the '-final.doc' suffix), to resolve cross-references
+	-->
+	<field name="document-identifier"
+		label="ID"
+		xpath="replace(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename'], '.+/([^/]+)-final\.doc', '$1')"
+	/>
 	<!-- 
 	This field defines a "Language" facet whose values come from the <language> elements in the header.
 	If there exists a <language> element whose content is not 'English', then the original language is 'Non-English', otherwise it's 'English'

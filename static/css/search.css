@@ -9,6 +9,10 @@ body.search form#quick-search {
 	visibility: hidden;
 }
 
+div.facet > div {
+	max-height: 300px;
+	overflow-y: auto;
+}
 div.fields {
 	grid-column: 1 / 2;
 /*	grid-row-start: 1;

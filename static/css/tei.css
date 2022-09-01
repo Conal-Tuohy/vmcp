@@ -158,7 +158,8 @@ details div ul {
 
 details.tei-note.type-footnote,
 details.tei-note.type-annotation,
-details.tei-name
+details.tei-name,
+details.tei-term
 {
 	color: var(--brand-color);
 	display: inline-block;
@@ -168,7 +169,8 @@ details.tei-name
 /* style summary elements like a hyperlink instead of a twister */
 details.tei-note.type-footnote summary,
 details.tei-note.type-annotation summary,
-details.tei-name summary
+details.tei-name summary,
+details.tei-term summary
 {
 	cursor: help;
 	list-style: none;
@@ -197,7 +199,8 @@ details.tei-note[open] summary::after{
 /* pop up footnote and botanical names */
 details.tei-note.type-footnote div.tei-note,
 details.tei-note.type-annotation div.tei-note,
-details.tei-name div 
+details.tei-name div, 
+details.tei-term div
 {
 	text-align: left;
 	position: absolute;
@@ -224,7 +227,7 @@ img.tei-graphic {
 .inline {
 	display: inline;
 }
-div.tei-teiHeader details {
+div.tei-teiHeader > details {
 	border-bottom: solid 1px black;
 }
 div.tei-teiHeader details[open] summary::after {

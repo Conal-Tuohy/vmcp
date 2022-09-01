@@ -131,6 +131,7 @@
 							<xsl:value-of select="$physical-location"/>
 						</div>
 					</xsl:if>
+					<xsl:call-template name="render-plant-names-list"/>
 					<xsl:apply-templates select="fileDesc/titleStmt/respStmt" />
 					<div>
 						<h2>Preferred Citation:</h2>
@@ -678,27 +679,56 @@
 	<!-- botanical names -->
 	<xsl:key name="keyword-by-content" match="keywords[@scheme='#plant-names']/term" use="."/>
 	<xsl:template match="name" mode="create-attributes">
+		<xsl:variable name="term" select="key('keyword-by-content', .)"/>
 		<xsl:variable name="expansion">
-			<xsl:variable name="vicflora" select="key('keyword-by-content', .)/@ref"/>
-			<xsl:variable name="apni" select="concat('https://biodiversity.org.au/nsl/services/search/names?product=APNI&amp;name=', encode-for-uri(.))"/>
-			<xsl:variable name="vmcp" select="concat('/search/?text=', encode-for-uri('&quot;' || . || '&quot;'))"/>
-			<p>Search for <q><xsl:value-of select="."/></q> in
-				<ul class="plant-name-lookup-list">
-					<li><a href="{$vmcp}">This website</a></li>
-					<xsl:if test="$vicflora">
-						<li><a href="{$vicflora}" target="_blank">VicFlora</a></li>
-					</xsl:if>
-					<li><a href="{$apni}" target="_blank">Australian Plant Name Index</a></li>
-				</ul>
-			</p>
+			<xsl:call-template name="render-plant-name-as-popup">
+				<xsl:with-param name="term" select="$term"/>
+			</xsl:call-template>
 		</xsl:variable>
 		<xsl:attribute name="title" select="serialize($expansion)"/>
 		<xsl:next-match/>
+	</xsl:template>
+	
+	<xsl:template name="render-plant-name-as-popup">
+		<xsl:param name="term"/><!-- the keywords/term to display -->
+		<xsl:variable name="vicflora" select="$term/@ref"/>
+		<xsl:variable name="apni" select="concat('https://biodiversity.org.au/nsl/services/search/names?product=APNI&amp;name=', encode-for-uri($term))"/>
+		<xsl:variable name="vmcp" select="concat('/search/?text=', encode-for-uri('&quot;' || $term || '&quot;'))"/>
+		<p>Search for <q><xsl:value-of select="$term"/></q> in
+			<ul class="plant-name-lookup-list">
+				<li><a href="{$vmcp}">This website</a></li>
+				<xsl:if test="$vicflora">
+					<li><a href="{$vicflora}" target="_blank">VicFlora</a></li>
+				</xsl:if>
+				<li><a href="{$apni}" target="_blank">Australian Plant Name Index</a></li>
+			</ul>
+		</p>
 	</xsl:template>
 	
 	<xsl:template match="name[reg]" mode="create-attributes">
 		<xsl:attribute name="title" select="reg"/>
 	</xsl:template>
 	<xsl:template match="name/reg"/>
+	
+	<xsl:template name="render-plant-names-list">
+		<xsl:variable name="plant-names" select="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term"/>
+		<xsl:if test="$plant-names">
+			<details>
+				<summary>Plant names</summary>
+				<ul class="tei-keywords">
+					<xsl:for-each select="$plant-names">
+						<li>
+							<xsl:variable name="expansion">
+								<xsl:call-template name="render-plant-name-as-popup">
+									<xsl:with-param name="term" select="."/>
+								</xsl:call-template>
+							</xsl:variable>
+							<span class="tei-term" title="{serialize($expansion)}"><xsl:value-of select="."/></span>
+						</li>
+					</xsl:for-each>
+				</ul>
+			</details>			
+		</xsl:if>
+	</xsl:template>
 
 </xsl:stylesheet>

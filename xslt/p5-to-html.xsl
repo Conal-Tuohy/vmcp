@@ -679,7 +679,7 @@
 	<!-- botanical names -->
 	<xsl:key name="keyword-by-content" match="keywords[@scheme='#plant-names']/term" use="."/>
 	<xsl:template match="name" mode="create-attributes">
-		<xsl:variable name="term" select="key('keyword-by-content', .)"/>
+		<xsl:variable name="term" select="key('keyword-by-content', .)[1]"/>
 		<xsl:variable name="expansion">
 			<xsl:call-template name="render-plant-name-as-popup">
 				<xsl:with-param name="term" select="$term"/>
@@ -693,7 +693,7 @@
 		<xsl:param name="term"/><!-- the keywords/term to display -->
 		<xsl:variable name="vicflora" select="$term/@ref"/>
 		<xsl:variable name="apni" select="concat('https://biodiversity.org.au/nsl/services/search/names?product=APNI&amp;name=', encode-for-uri($term))"/>
-		<xsl:variable name="vmcp" select="concat('/search/?text=', encode-for-uri('&quot;' || $term || '&quot;'))"/>
+		<xsl:variable name="vmcp" select="concat('/search/?taxon=', encode-for-uri($term))"/>
 		<p>Search for <q><xsl:value-of select="$term"/></q> in
 			<ul class="plant-name-lookup-list">
 				<li><a href="{$vmcp}">This website</a></li>

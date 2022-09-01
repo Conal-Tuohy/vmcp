@@ -145,8 +145,8 @@
 									<main>
 									<h1>Text not found</h1>
 									<p>The text you requested was not found.</p>
-									<p>Note that the corpus is still being edited, and there are still some letters which have not yet finished being edited.
-									The text you requested may be one of these, in which case it should appear here at some future date.</p>
+									<p> The corpus is still being edited. Letters in draft, or proofed waiting final editing, will not appear. 
+									The text you requested may be one of these, and will appear here when finally edited.    </p>
 									</main>
 								</body>
 							</html>

@@ -196,6 +196,18 @@ details.tei-note[open] summary::after{
 	cursor: auto;
 }
 
+summary > h2 {
+	display: inline-block;
+}
+
+ul.tei-keywords {  list-style: none;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+column-gap: 1rem;
+}
+ul.tei-keywords > li {
+/*	display: block;*/
+}
 /* pop up footnote and botanical names */
 details.tei-note.type-footnote div.tei-note,
 details.tei-note.type-annotation div.tei-note,

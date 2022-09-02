@@ -714,9 +714,10 @@
 		<xsl:variable name="plant-names" select="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term"/>
 		<xsl:if test="$plant-names">
 			<details>
-				<summary>Plant names</summary>
+				<summary><h2>Plant names</h2></summary>
 				<ul class="tei-keywords">
 					<xsl:for-each select="$plant-names">
+						<xsl:sort/>
 						<li>
 							<xsl:variable name="expansion">
 								<xsl:call-template name="render-plant-name-as-popup">

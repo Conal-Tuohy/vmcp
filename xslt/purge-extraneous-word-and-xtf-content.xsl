@@ -19,7 +19,7 @@
 	<!-- filter the CSS rules from style attributes, retaining only font-weight and font-style properties --> 
 	<xsl:template match="@style">
 		<xsl:variable name="desired-properties" select="(
-			'font-weight', 'font-style',
+			'font-weight', 'font-style', 'font-variant',
 			'padding', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
 			'border', 'border-left', 'border-right', 'border-top', 'border-bottom'
 		)"/>

@@ -667,6 +667,10 @@ li {
 	margin-bottom: .25em;
 }
 
+td {
+	vertical-align: top;
+}
+
 td.number {
 	width: 30px;
 	text-align: right;

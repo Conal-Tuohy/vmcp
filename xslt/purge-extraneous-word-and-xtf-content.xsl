@@ -20,6 +20,7 @@
 	<xsl:template match="@style">
 		<xsl:variable name="desired-properties" select="(
 			'font-weight', 'font-style', 'font-variant',
+			'text-align',
 			'padding', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
 			'border', 'border-left', 'border-right', 'border-top', 'border-bottom'
 		)"/>

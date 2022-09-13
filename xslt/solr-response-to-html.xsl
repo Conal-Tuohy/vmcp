@@ -307,6 +307,8 @@
 							<xsl:variable name="buckets" select="$solr-facet/f:array[@key='buckets']/f:map[f:string[@key='val']/text()]"/>
 							<!-- list all the buckets for this facet; if a bucket is currently selected, then clicking the button deselects it. -->
 							<xsl:for-each select="$buckets">
+								<xsl:sort select="$selected-values = string(f:string[@key='val'])" order="descending"/><!-- sort selected buckets to the start of the list -->
+								<xsl:sort select="if ($facet/@sort-by='value') then . else ()"/>
 								<xsl:variable name="value" select="string(f:string[@key='val'])"/>
 								<xsl:variable name="count" select="xs:unsignedInt(f:number[@key='count'])"/>
 								<xsl:variable name="label" select="dashboard:display-value($value, $facet/@format)"/>

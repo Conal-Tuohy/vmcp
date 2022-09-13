@@ -22,8 +22,11 @@
 <!-- Exclude documents whose status isn't "final" and which aren't in the "Preliminary" folder -->
 <document xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-when="
-		(/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final') and 
+		(/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final') 
+		(:
+		and 
 		not(starts-with(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='file'], 'data/Preliminary/'))
+		:)
 	">
 	<!-- 
 	A "title" field containing a composite value aggregated from various components of the msIdentifier.
@@ -145,6 +148,7 @@
 	<field name="document-identifier"
 		label="ID"
 		xpath="replace(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename'], '.+/([^/]+)-final\.doc', '$1')"
+		type="identifier"
 	/>
 	<!-- 
 	This field defines a "Language" facet whose values come from the <language> elements in the header.
@@ -159,21 +163,24 @@
 	<field 
 		name="correspondent" 
 		label="Correspondents" 
+		sort-by="value"
 		xpath="
 			(
 				/TEI/teiHeader/profileDesc/correspDesc/correspAction,
 				/TEI/teiHeader/fileDesc/sourceDesc/bibl/author
-			)
+			) 
 		"
 		type="facet"/>		
 	<field 
 		name="author" 
 		label="Author" 
 		xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/author"
+		sort-by="value"
 		type="facet"/>		
 	<field 
 		name="recipient" 
 		label="Recipient" 
+		sort-by="value"
 		xpath="/TEI/teiHeader/profileDesc/correspDesc/correspAction"
 		type="facet"/>		
 	<!-- 
@@ -194,4 +201,16 @@
 		label="Taxon name"
 		xpath="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term"
 		type="facet"/>
+	<!-- debugging / testing facets -->
+	<!--
+	<field
+		name="debug-duplicated-plant-names"
+		label="Duplicated plant names"
+		xpath="
+			let $plant-names:= /TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term
+			return
+				if (count($plant-names) = count(distinct-values($plant-names))) then () else 'yes' 
+		"
+		type="facet"/>
+		-->
 </document>

@@ -3,7 +3,15 @@
 	
 	<xsl:mode on-no-match="shallow-copy"/>
 	<xsl:template match="note[not(normalize-space())]"/>
-	<xsl:template match="(msName | note)//text()[normalize-space()]">
+	<xsl:template match="
+		(
+			msName | (: the manuscript name often refers to other manuscripts :)
+			note | (: footnotes refer to other manuscripts :)
+			/TEI
+				[teiHeader/fileDesc/publicationStmt/idno[@type='filename'] => starts-with('data/Apparatus files/')]
+				/text (: the entire text of the Apparatus files may refer to manuscripts :) 
+		)
+		//text()[normalize-space()]">
 		<!-- This text node may contain a reference to another letter, which should be converted to a hyperlink.
 		
 		Arthur explains:

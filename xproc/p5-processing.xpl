@@ -154,19 +154,32 @@
 					<p:variable name="file-name" select="/c:file/@name"/>
 					<p:variable name="file-relative-uri" select="encode-for-uri($file-name)"/>
 					<p:variable name="file-absolute-uri" select="resolve-uri($file-relative-uri, /c:file/@xml:base)"/>
+					<p:variable name="counter" select="p:iteration-position()"/>
 					<!-- compute an identifier for the document to use in Solr:
 						get the URI of the XML document relative to the corpus root folder, 
 						strip off the '.xml' extension
 					-->
 					<p:variable name="file-id" select="substring-before(substring-after($file-absolute-uri, $corpus-base-uri), '.xml')"/>
-					<cx:message>
-						<p:with-option name="message" select="concat('indexing ', $file-absolute-uri)"/>
-					</cx:message>
 					<chymistry:convert-p5-to-solr>
 						<p:with-option name="solr-base-uri" select="$solr-base-uri"/>
 						<p:with-option name="href" select="$file-absolute-uri"/>
 						<p:with-option name="id" select="$file-id"/>
 					</chymistry:convert-p5-to-solr>
+					<!--
+					<z:dump>
+						<p:with-option name="href" select="concat('/tmp/index/', $counter, '.xml')"/>
+					</z:dump>
+					<cx:message>
+						<p:with-option name="message" select="
+							concat(
+								'indexing ', 
+								$file-absolute-uri,
+								' operation=',
+								local-name(/c:request/c:body/*)
+							)
+						"/>
+					</cx:message>
+					-->
 					<p:http-request/>
 				</p:for-each>
 			</p:group>

@@ -185,6 +185,28 @@
 			</p:input>
 		</p:identity>
 	</p:declare-step>
+
+	<!-- a step to aid in debugging: dumps the input to the named location; the output is a copy of the input -->
+	<p:declare-step name="dump" type="z:dump"  xmlns:pxf="http://exproc.org/proposed/steps/file">
+		<p:input port="source"/>
+		<p:output port="result"/>
+		<p:option name="href" required="true"/>
+		<p:variable name="directory" select="replace($href, '(.*)/[^/]*', '$1')"/>
+		<pxf:mkdir name="mkdir" fail-on-error="false">
+			<p:with-option name="href" select="$directory"/>
+		</pxf:mkdir>
+		<p:store name="store-dump" indent="true" cx:depends-on="mkdir">
+			<p:with-option name="href" select="$href"/>
+			<p:input port="source">
+				<p:pipe step="dump" port="source"/>
+			</p:input>
+		</p:store>
+		<p:identity>
+			<p:input port="source">
+				<p:pipe step="dump" port="source"/>
+			</p:input>
+		</p:identity>
+	</p:declare-step>
 	
 	<p:declare-step type="z:dump-parameters" name="dump-parameters">
 		<p:input port="parameters" kind="parameter" primary="true"/>

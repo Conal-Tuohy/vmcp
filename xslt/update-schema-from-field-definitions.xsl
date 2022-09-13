@@ -132,9 +132,9 @@
 		</xsl:choose>
 		<xsl:text>:{"name":"</xsl:text>
 		<xsl:value-of select="$name"/>
-		<!-- facets and sort and display fields are indexed as Solr "strings" type (i.e. untokenized), others are tokenized as "text_general" type -->
+		<!-- facets, sort, identifier, and display fields are indexed as Solr "strings" type (i.e. untokenized), others are tokenized as "text_general" type -->
 		<xsl:text>","type":"</xsl:text>
-		<xsl:value-of select="if ($name='id' or $type='sort' or $type='display') then 'string' else if ($type='facet') then 'strings' else 'text_general'"/>
+		<xsl:value-of select="if ($name='id' or $type='sort' or $type='identifier' or $type='display') then 'string' else if ($type='facet') then 'strings' else 'text_general'"/>
 		<xsl:text>"}</xsl:text>
 	</xsl:template>
 </xsl:stylesheet>

@@ -1,6 +1,10 @@
 {
 	"🏠︎ Home":"/",
 	"Search and Browse":"/search/",
+	"Notices": {
+		"Cultural Sensitivity Message": "/text/Preliminary/Cultural%20Sensitivity%20Message/",
+		"Indigenous Cultural Knowledge": "/text/Preliminary/Indigenous%20Cultural%20Knowledge/"
+	},
 	"About": {
 		"Using the Edition": "/text/Preliminary/Using%20the%20edition/",
 		"Editorial Practice": "/text/Preliminary/Editorial%20practice/",

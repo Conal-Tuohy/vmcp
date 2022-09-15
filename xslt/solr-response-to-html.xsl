@@ -19,7 +19,7 @@
 	<xsl:variable name="request" select="/*/c:param-set"/>
 	
 	<!-- the specification of the searchable fields and facets; previously used to convert the above request parameters into a Solr search -->
-	<xsl:variable name="field-definitions" select="/*/document//field[@label]"/>
+	<xsl:variable name="field-definitions" select="/*/document//field"/>
 	<xsl:variable name="facet-definitions" select="$field-definitions[@type='facet']"/>
 	<xsl:variable name="search-field-definitions" select="$field-definitions[not(@type=('facet', 'sort'))]"/>
 
@@ -79,10 +79,10 @@
 							<xsl:call-template name="render-search-fields"/>
 						</div>
 						<div class="facets">
-							<xsl:call-template name="render-facets">
+							<xsl:call-template name="render-hierarchical-facets">
 								<xsl:with-param name="solr-facets" select="$solr-facets"/>
 							</xsl:call-template>
-							<xsl:call-template name="render-hierarchical-facets">
+							<xsl:call-template name="render-facets">
 								<xsl:with-param name="solr-facets" select="$solr-facets"/>
 							</xsl:call-template>
 						</div>
@@ -376,11 +376,14 @@
 				<xsl:if test="$solr-facet"><!-- facet returned some result; this means that Solr results match the facet -->
 				
 					<div class="facet">
-						<h3><xsl:value-of select="$facet/@label"/></h3>
+						<xsl:for-each select="$facet/@label">
+							<h3><xsl:value-of select="."/></h3>
+						</xsl:for-each>
 						<xsl:variable name="selected-values" select="$request/c:param[@name=$solr-facet-key]/@value"/>
 						<xsl:variable name="buckets" select="$solr-facet/f:array[@key='buckets']/f:map[f:string[@key='val']/text()]"/>
 						<!-- list all the buckets for this facet; if a bucket is currently selected, then clicking the button deselects it. -->
 						<xsl:for-each select="$buckets">
+							<xsl:sort select="if ($facet/@sort-by='value') then . else ()"/>
 							<xsl:variable name="value" select="string(f:string[@key='val'])"/>
 							<xsl:variable name="count" select="xs:unsignedInt(f:number[@key='count'])"/>
 							<xsl:variable name="label" select="dashboard:display-value($value, $facet/@format)"/>
@@ -406,6 +409,7 @@
 															[normalize-space(@value)]
 															[@name=$facet-definitions/@name] 
 															[not(@name=$facet/@name and @value=$value)] 
+															[not(@name=$facet/descendant::field/@name)]
 														return concat(
 															encode-for-uri($parameter/@name), '=', encode-for-uri($parameter/@value)
 														)											

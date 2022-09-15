@@ -147,11 +147,22 @@
 					<f:number key="mincount">0</f:number>
 					<f:number key="limit">4000</f:number>
 					<f:boolean key="numBuckets">true</f:boolean>
-					<f:map key="domain">
-						<f:string key="excludeTags"><xsl:value-of select="@name"/></f:string>
-					</f:map>
 					<!-- render nested facets -->
-					<!-- Nested facets work slightly differently to flat facets -->
+					<!-- Hiearchical facets work slightly differently to flat facets -->
+					<!-- Firstly they are exclusive in the sense that you can only choose one bucket within a given level at a time -->
+					<xsl:variable name="is-hierarchical-facet" select="boolean(ancestor::field | descendant::field)"/>
+					<xsl:choose>
+						<xsl:when test="$is-hierarchical-facet">
+						</xsl:when>
+						<xsl:otherwise>
+							<!-- In a non-hierarchical facet, an existing selection does not constrain the domain of the facet; i.e. 
+							selecting a given bucket within the facet will not exclude buckets which don't co-occur with the selected
+							bucket -->
+							<f:map key="domain">
+								<f:string key="excludeTags"><xsl:value-of select="@name"/></f:string>
+							</f:map>
+						</xsl:otherwise>
+					</xsl:choose>
 					<!-- 
 						Only query for nested facets if we have a constraint on the parent facet
 						e.g. if we have a "decade" parent facet containing a "year" child facet, but the user hasn't specified a particular decade,

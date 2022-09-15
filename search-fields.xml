@@ -52,6 +52,7 @@
 	<field
 		name="decade"
 		label="Date"
+		sort-by="value"
 		xpath="
 			let 
 				$when:= /TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when 
@@ -64,7 +65,7 @@
 		type="facet">
 		<field
 			name="year"
-			label="Year"
+			sort-by="value"
 			xpath="
 				for 
 					$date
@@ -76,7 +77,7 @@
 			type="facet">
 			<field
 				name="month"
-				label="Month"
+				sort-by="value"
 				xpath="
 					for 
 						$date
@@ -100,7 +101,7 @@
 				type="facet">
 				<field
 					name="day"
-					label="Day"
+					sort-by="value"
 					xpath="
 						for 
 							$date
@@ -146,7 +147,7 @@
 	A "document-identifier" field containing the filename (without the '-final.doc' suffix), to resolve cross-references
 	-->
 	<field name="document-identifier"
-		label="ID"
+		label="Document ID"
 		xpath="replace(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename'], '.+/([^/]+)-final\.doc', '$1')"
 		type="identifier"
 	/>
@@ -199,6 +200,7 @@
 	<field
 		name="taxon"
 		label="Taxon name"
+		sort-by="value"
 		xpath="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term"
 		type="facet"/>
 	<!-- debugging / testing facets -->

@@ -13,6 +13,15 @@ div.facet > div {
 	max-height: 300px;
 	overflow-y: auto;
 }
+
+div.facet > h3 {
+	margin-bottom: 0.25em;
+}
+
+div.facet div.facet {
+	margin-left: 1em;
+}
+
 div.fields {
 	grid-column: 1 / 2;
 /*	grid-row-start: 1;

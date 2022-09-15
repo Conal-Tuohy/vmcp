@@ -109,7 +109,7 @@
 			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/title" />
 			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='description']" />
 			<details class="tei-teiHeader" open="open">
-				<summary>Document Information</summary>
+				<summary>Document Information </summary>
 				<div>
 					<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/physDesc/objectDesc/supportDesc" />
 					<xsl:apply-templates select="profileDesc/langUsage"/>
@@ -123,18 +123,18 @@
 								$msIdentifier//idno
 							),
 							' '
-						)
+						) || ' '
 					"/>
 					<xsl:if test="$physical-location">
 						<div>
-							<h2 class="inline">Physical Location:</h2>
+							<h2 class="inline">Physical Location: </h2>
 							<xsl:value-of select="$physical-location"/>
 						</div>
 					</xsl:if>
 					<xsl:call-template name="render-plant-names-list"/>
 					<xsl:apply-templates select="fileDesc/titleStmt/respStmt" />
 					<div>
-						<h2>Preferred Citation:</h2>
+						<h2>Preferred Citation: </h2>
 						<p>
 							<cite>
 								<xsl:variable name="author" select="fileDesc/sourceDesc/bibl/author/text()"/>
@@ -182,12 +182,12 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 	<xsl:template match="support" mode="create-content">
-		<h2 class="inline">Physical Description:</h2>
+		<h2 class="inline">Physical Description: </h2>
 		<xsl:apply-templates/>
 	</xsl:template>	
 	<xsl:template match="langUsage" mode="create-content">
-		<h2 class="inline">Languages:</h2>
-		<xsl:value-of select="string-join(language, ', ')"/>
+		<h2 class="inline">Languages: </h2>
+		<xsl:value-of select="string-join(language, ', ') || ' '"/>
 	</xsl:template>
 	
 	<xsl:template match="langUsage/language">
@@ -714,7 +714,7 @@
 		<xsl:variable name="plant-names" select="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term"/>
 		<xsl:if test="$plant-names">
 			<details>
-				<summary><h2>Plant names</h2></summary>
+				<summary><h2>Plant names </h2></summary>
 				<ul class="tei-keywords">
 					<xsl:for-each select="$plant-names">
 						<xsl:sort/>
@@ -724,7 +724,7 @@
 									<xsl:with-param name="term" select="."/>
 								</xsl:call-template>
 							</xsl:variable>
-							<span class="tei-term" title="{serialize($expansion)}"><xsl:value-of select="."/></span>
+							<span class="tei-term" title="{serialize($expansion)}"><xsl:value-of select=". || ' '"/></span>
 						</li>
 					</xsl:for-each>
 				</ul>

@@ -304,6 +304,11 @@
 			</p:input>
 		</p:xslt>
 		<!-- generate an HTML summary of the P5 text, serialized into a Solr field -->
+		<!--
+		NOT USED IN VMCP because the teiHeader-derived "document information" panel is just part of the main text of
+		the page and accessible via the main Solr 'text' field.
+		-->
+		<!--
 		<p:xslt name="metadata-summary-field">
 			<p:input port="parameters"><p:empty/></p:input>
 			<p:input port="source">
@@ -313,6 +318,7 @@
 				<p:document href="../xslt/metadata-summary-as-solr-field.xsl"/>
 			</p:input>
 		</p:xslt>
+		-->
 		<p:insert name="insert-text-fields" match="doc" position="last-child">
 			<p:input port="source">
 				<p:pipe step="metadata-fields" port="result"/>
@@ -323,7 +329,11 @@
 				<p:pipe step="diplomatic-field" port="result"/>
 				-->
 				<p:pipe step="normalized-field" port="result"/>
+				<!--
+				NOT USED IN VMCP because the teiHeader-derived "document information" panel is just part of the main text of
+				the page and accessible via the main Solr 'text' field.
 				<p:pipe step="metadata-summary-field" port="result"/>
+				-->
 			</p:input>
 		</p:insert>
 	</p:declare-step>	

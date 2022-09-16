@@ -2,6 +2,7 @@
 	"🏠︎ Home":"/",
 	"Search and Browse":"/search/",
 	"Notices": {
+		"Copyright": "/text/Preliminary/Notices/Copyright/",
 		"Cultural Sensitivity Message": "/text/Preliminary/Cultural%20Sensitivity%20Message/",
 		"Indigenous Cultural Knowledge": "/text/Preliminary/Indigenous%20Cultural%20Knowledge/"
 	},

@@ -3,6 +3,22 @@
 		<title>Contact Us</title>
 	</head>
 	<body>
-		<p>TODO</p>
+		<h1>Contact Us</h1>
+		<p>To provide feedback or to enquire about the website, please contact us by <a id="email">email</a>. 
+		The website is a work in progress and suggestions for improvement are welcome.</p>
+		<script>
+			user = 'vmc-feedback';
+			domain = 'rbg.vic.gov.au';
+			document
+				.getElementById('email')
+				.setAttribute(
+					'href',
+					'mail' +
+					'to:' + 
+					user + 
+					'@' + 
+					domain
+				);
+		</script>
 	</body>
 </html>

@@ -3,8 +3,8 @@
 	"Search and Browse":"/search/",
 	"Notices": {
 		"Copyright": "/text/Preliminary/Notices/Copyright/",
-		"Cultural Sensitivity Message": "/text/Preliminary/Cultural%20Sensitivity%20Message/",
-		"Indigenous Cultural Knowledge": "/text/Preliminary/Indigenous%20Cultural%20Knowledge/"
+		"Cultural Sensitivity Message": "/text/Preliminary/Notices/Cultural%20Sensitivity%20Message/",
+		"Indigenous Cultural Knowledge": "/text/Preliminary/Notices/Indigenous%20Cultural%20Knowledge/"
 	},
 	"About": {
 		"Using the Edition": "/text/Preliminary/Using%20the%20edition/",

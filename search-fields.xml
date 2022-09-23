@@ -72,7 +72,7 @@
 				in
 					/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when[normalize-space()]
 				return
-					substring-before($date, '-')
+					substring($date, 1, 4)
 				"
 			type="facet">
 			<field

@@ -156,9 +156,9 @@
 										<xsl:text>{$author} to {$recipient}, {$date}</xsl:text>
 										<!-- the identifier contains some alphabetic text in addition to the day's date, which means it's disambiguating the letter
 										from among multiple letters with the same date, so here we output the identifier, whereas otherwise we just omit it -->
-										<xsl:if test="matches($id, '\p{L}')">
+										<xsl:for-each select="$id[matches(., '\p{L}')]">
 											<xsl:text> [{$id}]</xsl:text>
-										</xsl:if>
+										</xsl:for-each>
 										<xsl:text>. </xsl:text>
 									</xsl:when>
 									<xsl:otherwise>

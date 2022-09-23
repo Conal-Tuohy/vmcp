@@ -7,8 +7,9 @@
 # figure files are maintained in dropbox and only copied to this folder for runtime access
 /figure
 
-# The XML files in "p5" are (currently) just derivatives of TEI files stored in the acsproj repository
-/p5
+# The XML files in "p5" are copies/derivatives of TEI files which are maintained elsewhere
+/p5/
+!/p5/README.txt
 
 # Backup files automatically created by JEdit text editor
 /**/*.*~

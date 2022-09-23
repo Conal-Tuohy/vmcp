@@ -54,6 +54,8 @@
 	<!-- proxying to the Latent Semantic Analysis back end service -->
 	<p:import href="lsa.xpl"/>
 	
+	<p:variable name="corpus-base-uri" select="resolve-uri('../p5/')"/>
+	
 	<!-- the "relative URI" is produced by discarding the URL scheme, hostname, and port number (which vary across the dev, test, and production instances) -->
 	<p:variable name="relative-uri" select="
 		replace(
@@ -108,9 +110,7 @@
 		</p:when>
 		<p:when test="$relative-uri = 'analysis/sample-xml-text' ">
 			<chymistry:sample-xml-text>
-				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
-					<p:pipe step="configuration" port="result"/>
-				</p:with-option>
+				<p:with-option name="corpus-base-uri" select="$corpus-base-uri"/>
 			</chymistry:sample-xml-text>
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'page/')">
@@ -133,17 +133,13 @@
 		<p:when test="$relative-uri = 'p5/' ">
 			<!-- list P5 xml files -->
 			<chymistry:list-p5>
-				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
-					<p:pipe step="configuration" port="result"/>
-				</p:with-option>
+				<p:with-option name="corpus-base-uri" select="$corpus-base-uri"/>
 			</chymistry:list-p5>
 			<chymistry:add-site-navigation/>
 		</p:when>
 		<p:when test="starts-with($relative-uri, 'solr/')">
 			<chymistry:p5-as-solr>
-				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
-					<p:pipe step="configuration" port="result"/>
-				</p:with-option>
+				<p:with-option name="corpus-base-uri" select="$corpus-base-uri"/>
 				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
@@ -155,6 +151,15 @@
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
 			</chymistry:update-schema>
+		</p:when>
+		<p:when test="$relative-uri = 'admin/ingest' ">
+			<!-- ingest new TEI P5 files -->
+			<chymistry:ingest>
+				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
+					<p:pipe step="configuration" port="result"/>
+				</p:with-option>
+			</chymistry:ingest>
+			<chymistry:add-site-navigation/>
 		</p:when>
 		<p:when test="$relative-uri = 'admin/purge' ">
 			<!-- purge the search index -->
@@ -179,9 +184,7 @@
 				<p:with-option name="solr-base-uri" select="/c:param-set/c:param[@name='solr-base-uri']/@value">
 					<p:pipe step="configuration" port="result"/>
 				</p:with-option>
-				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
-					<p:pipe step="configuration" port="result"/>
-				</p:with-option>
+				<p:with-option name="corpus-base-uri" select="$corpus-base-uri"/>
 			</chymistry:reindex>
 			<chymistry:add-site-navigation/>
 		</p:when>
@@ -192,9 +195,7 @@
 		<p:when test="starts-with($relative-uri, 'p5/') ">
 			<!-- Represent an individual P5 text as XML (i.e. raw) -->
 			<chymistry:p5-as-xml>
-				<p:with-option name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
-					<p:pipe step="configuration" port="result"/>
-				</p:with-option>
+				<p:with-option name="corpus-base-uri" select="$corpus-base-uri"/>
 			</chymistry:p5-as-xml>
 		</p:when>
 		<!-- image files corresponding to figures within a text -->
@@ -207,9 +208,6 @@
 		<p:when test="starts-with($relative-uri, 'text/') ">
 			<!-- Represent an individual P5 text as an HTML page -->
 			<p:variable name="uri-parser" select=" 'text/(.*)/.*' "/>
-			<p:variable name="corpus-base-uri" select="resolve-uri(/c:param-set/c:param[@name='corpus-base-uri']/@value)">
-				<p:pipe step="configuration" port="result"/>
-			</p:variable>
 			<!-- TODO sanitise the URI so it doesn't start with a slash or contain '../' anywhere -->
 			<p:variable name="id" select="replace($relative-uri, $uri-parser, '$1')"/>
 			<p:variable name="file-relative-uri" select="concat($id, '.xml')"/>

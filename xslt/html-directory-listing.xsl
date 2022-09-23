@@ -35,7 +35,7 @@
 				<h1>List of texts</h1>
 				<table>
 					<xsl:comment><xsl:value-of select="$corpus-base-uri"/></xsl:comment>
-					<xsl:for-each select="//c:file">
+					<xsl:for-each select="//c:file[ends-with(@name, '.xml')]">
 						<xsl:sort select="@name"/>
 						<xsl:variable name="file-name" select="@name"/>
 						<xsl:variable name="file-relative-uri" select="encode-for-uri($file-name)"/>

@@ -11,15 +11,6 @@
   <p:option name="exclude-filter"/>
   <p:option name="depth" select="-1"/>
   
-  <!--
-  <cx:message>
-  	<p:with-option name="message" select="concat('recursive-directory-list with path=', $path)"/>
-  	<p:input port="source">
-  		<p:empty/>
-  	</p:input>
-  </cx:message>
-  -->
-
   <p:choose>
     <p:when test="p:value-available('include-filter')
                   and p:value-available('exclude-filter')">

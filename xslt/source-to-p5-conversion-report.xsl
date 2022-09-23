@@ -5,54 +5,36 @@
 	xmlns:c="http://www.w3.org/ns/xproc-step" 
 	xmlns="http://www.w3.org/1999/xhtml">
 	
-	<xsl:variable name="title" select=" 'Data normalization report' "/>
+	<xsl:variable name="title" select=" 'Ingestion report' "/>
+	
+	<xsl:variable name="ingested" select="//c:file[not(c:errors)]"/>
+	<xsl:variable name="failed" select="//c:file[c:errors]"/>
 
 	<xsl:template match="/c:directory">
 		<html>
 			<head>
 				<title>{$title}</title>
-				<style type="text/css" xsl:expand-text="false">
-					tr.error {
-						background-color: yellow;
-					}
-					td.file-name,
-					td.status {
-						width: 15em;
-					}
-				</style>
 			</head>
 			<body>
-				<h1>{$title}</h1>
-				<table>
-					<xsl:apply-templates select="c:file">
-						<xsl:sort select="@converted"/>
-						<xsl:sort select="@name"/>
-					</xsl:apply-templates>
-				</table>
+				<main>
+					<h1>{$title}</h1>
+					<p>Files ingested: {count($ingested)}.</p>
+					<xsl:if test="$failed">
+						<h2>Errors</h2>
+						<p>See <a href="https://www.w3.org/TR/xproc/#app.step-errors">Error Codes</a></p>
+						<p>Files which were not ingested: {count($failed)}.</p>
+						<xsl:if test="count($failed) gt 100">
+							<p>Showing first 100 errors only.</p>
+						</xsl:if>
+						<ul>
+							<xsl:for-each select="$failed[position() le 100]">
+								<li>{resolve-uri(@name, @xml:base)} failed with error {c:errors/c:error}</li>
+							</xsl:for-each>
+						</ul>
+					</xsl:if>
+				</main>
 			</body>
 		</html>
 	</xsl:template>
 	
-	<xsl:template match="c:file[not(@converted)]"/>
-	
-	<xsl:template match="c:file[@converted='true']">
-		<tr>
-			<td class="file-name"><xsl:value-of select="@name"/></td>
-			<td class="status">Normalization succeeded</td>
-			<td class="message">File ingested</td>
-		</tr>
-	</xsl:template>
-	<xsl:template match="c:file[@converted='false']">
-		<tr class="error">
-			<td class="file-name"><xsl:value-of select="@name"/></td>
-			<td class="status">Normalization failed</td>
-			<td class="message">
-				<xsl:for-each select=".//c:error">
-					<!-- <c:error code="err:XC0027" href="file:/etc/xproc-z/swinburne/xproc/convert-to-p5.xpl" line="34" column="5">The XML parser reported two validation errors</c:error> -->
-					<p>Error <a href="https://www.w3.org/TR/xproc/#err.{substring-after(@code, 'err:X')}">{substring-after(@code, 'err:')}</a> in <a href="{@href}">{@href} line {@line} column {@column}</a>: {.}</p>
-				</xsl:for-each>
-			</td>
-		</tr>
-	</xsl:template>
-		
 </xsl:stylesheet>

@@ -150,7 +150,7 @@
 				</l:recursive-directory-list>
 				<p:add-xml-base name="add-xml-base" relative="false" all="true"/>
 				<p:for-each>
-					<p:iteration-source select="//c:file"/>
+					<p:iteration-source select="//c:file[ends-with(@name, '.xml')]"/>
 					<p:variable name="file-name" select="/c:file/@name"/>
 					<p:variable name="file-relative-uri" select="encode-for-uri($file-name)"/>
 					<p:variable name="file-absolute-uri" select="resolve-uri($file-relative-uri, /c:file/@xml:base)"/>

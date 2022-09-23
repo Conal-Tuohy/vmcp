@@ -42,7 +42,7 @@
 					</f:map>
 					<f:string key="query">*:*</f:string>
 					<!-- request only the values of certain fields -->
-					<f:string key="fields">id title</f:string>
+					<f:string key="fields">id title author recipient day</f:string>
 					<!-- the Solr 'offset' and 'limit' query parameters control pagination -->
 					<!-- if 'page' is blank, then it counts as 1. e.g. if $default-results-limit=2 and page=1 then offset=2*(1-1)=0 -->
 					<xsl:variable name="page" select=" number(($parameters[@name='page']/@value, 1)[1]) "/>

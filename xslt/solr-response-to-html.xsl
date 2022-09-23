@@ -187,8 +187,20 @@
 			<xsl:for-each select="$response/f:map/f:map[@key='response']/f:array[@key='docs']/f:map">
 				<xsl:variable name="id" select="f:string[@key='id']"/>
 				<xsl:variable name="title" select="*[@key='title']"/>
+				<xsl:variable name="author" select="*[@key='author']"/>
+				<xsl:variable name="recipient" select="*[@key='recipient']"/>
+				<xsl:variable name="date" select="*[@key='day']"/>
 				<li class="result">
-					<a href="/text/{$id}/"><cite><xsl:value-of select="$title"/></cite></a>
+					<a href="/text/{$id}/"><cite><xsl:if test="$author and $recipient">
+						<xsl:value-of select="$author"/>
+						<xsl:text> to </xsl:text>
+						<xsl:value-of select="$recipient"/>
+						<xsl:text>, </xsl:text>
+						<xsl:value-of select="$date"/>
+						<xsl:text>.</xsl:text>
+						<br/>
+					</xsl:if>
+					<xsl:value-of select="$title"/></cite></a>
 					<!-- The Solr record contains a summary of the metadata pre-rendered as an HTML summary widget -->
 					<xsl:sequence select="f:string[@key='metadata-summary'] => parse-xml()"/>
 					<!-- list the snippets of matching text which were found in this particular view -->

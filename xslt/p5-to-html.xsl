@@ -140,14 +140,32 @@
 								<xsl:variable name="author" select="fileDesc/sourceDesc/bibl/author/text()"/>
 								<xsl:variable name="recipient" select="profileDesc/correspDesc/correspAction[@type='sentTo']/name/text()"/>
 								<xsl:variable name="date" select="fileDesc/sourceDesc/bibl/date"/>
+								<xsl:variable name="id" select="fileDesc/sourceDesc/msDesc/msIdentifier/altIdentifier/idno"/>
 								<xsl:variable name="filename" select="fileDesc/publicationStmt/idno[@type='filename']"/>
 								<xsl:variable name="current-date" select="current-date() =>  format-date('[MNn] [D], [Y]', 'en', (), () )"/>
+								<xsl:variable name="title" select="fileDesc/titleStmt/title"/>
 								<xsl:variable name="url" select="
 									(for $segment in tokenize($filename, '/') return encode-for-uri($segment)) 
 									=> string-join('/') 
 									=> replace('^data/(.*).doc$', 'https://vmcp.rbg.vic.gov.au/text/$1/')
 								"/>
-								<xsl:if test="$author and $recipient">{$author} to {$recipient}, {$date}. </xsl:if>
+								<xsl:choose>
+									<!-- This part of the citation differs depending on whether the text is a letter or not -->
+									<xsl:when test="$author and $recipient">
+										<!-- the text is a letter, so its title is just an incipit, and we cite it instead by the names of the correspondents, and the date -->
+										<xsl:text>{$author} to {$recipient}, {$date}</xsl:text>
+										<!-- the identifier contains some alphabetic text in addition to the day's date, which means it's disambiguating the letter
+										from among multiple letters with the same date, so here we output the identifier, whereas otherwise we just omit it -->
+										<xsl:if test="matches($id, '\p{L}')">
+											<xsl:text> [{$id}]</xsl:text>
+										</xsl:if>
+										<xsl:text>. </xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<!-- the text is not a letter, so it should have a proper title -->
+										<xsl:text>{$title}. </xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
 								<xsl:text>R.W. Home, Thomas A. Darragh, A.M. Lucas, Sara Maroske, D.M. Sinkora, J.H. Voigt and Monika Wells (eds),
 								Correspondence of Ferdinand von Mueller, &lt;{$url}&gt;, accessed {$current-date}</xsl:text>
 							</cite>

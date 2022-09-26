@@ -15,9 +15,9 @@
 	<xsl:function name="solr:normalize-query-string">
 		<xsl:param name="query-string"/><!-- string may contain quotes, parentheses -->
 		<!-- regex for matching characters which are significant in Solr's DSL; NB these characters are also significant in RegEx, so are escaped here, too -->
-		<xsl:variable name="significant-character" select=" '[\)\(]' "/>
+		<xsl:variable name="significant-character" select=" '([\)\(\?])' "/>
 		<!-- escape any significant characters by prepending a '\' character to each -->
-		<xsl:variable name="escaped-query" select="translate($query-string, $significant-character, '\$1')"/>
+		<xsl:variable name="escaped-query" select="replace($query-string, $significant-character, '\\$1')"/>
 		<!-- ensure quotes match -->
 		<xsl:variable name="quote-stripped-query" select="translate($escaped-query, '&quot;', '')"/>
 		<xsl:variable name="quote-count" select="string-length($escaped-query) - string-length($quote-stripped-query)"/>

@@ -47,9 +47,9 @@
 		  for $match in $explicit-filenames 
 		  return 
 			  let
-				$year:= $match/fn:group[@nr='1'],
-				$month:= $match/fn:group[@nr='2'],
-				$day:= $match/fn:group[@nr='3']
+				$year:= $match/fn:group[@nr='2'],
+				$month:= $match/fn:group[@nr='3'],
+				$day:= $match/fn:group[@nr='4']
 			  return 
 				vmcp:year-month-day-to-date($year, $month, $day)
 		"/>

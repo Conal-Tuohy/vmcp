@@ -203,14 +203,14 @@
 		<h2 class="inline">Physical description: </h2>
 		<xsl:apply-templates/>
 	</xsl:template>	
-	<xsl:template match="langUsage" mode="create-content">
+	<!-- <xsl:template match="langUsage" mode="create-content">
 		<h2 class="inline">Languages: </h2>
 		<xsl:value-of select="string-join(language, ', ') || ' '"/>
 	</xsl:template>
 	
 	<xsl:template match="langUsage/language">
 		<xsl:value-of select="."/><xsl:if test="not(position()=last())">, </xsl:if>
-	</xsl:template>
+	</xsl:template> -->
 	
 	<!-- handle line numbers: l/@n (if @n is divisible by 10) should be displayed floating off to the right of the line -->
 	<xsl:template match="l" mode="create-attributes">

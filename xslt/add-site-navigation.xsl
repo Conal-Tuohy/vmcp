@@ -59,7 +59,7 @@
 							<img src="https://www.rbg.vic.gov.au/assets/images/rbgv-logo-lg.svg" alt="RBGV logo"/>
 						</a>
 					</div>
-					<h1>The correspondence of <br/>Ferdinand von Mueller</h1>
+					<h1>The correspondence of Ferdinand von Mueller</h1>
 				</div>
 			</header>
 			<main class="content">

@@ -202,7 +202,7 @@ div#banner h1 {
 	font-weight: var(--regular-weight);
 	font-size: 2rem;
 	padding-left: 2rem;
-	margin: 0;
+	/* margin: 0; */
 }
 
 footer#page-footer {

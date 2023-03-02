@@ -200,7 +200,7 @@ div#banner {
 div#banner h1 {
 	font-family: var(--font-family);
 	font-weight: var(--regular-weight);
-	font-size: 2rem;
+	font-size: 2.5rem;
 	padding-left: 2rem;
 	/* margin: 0; */
 }

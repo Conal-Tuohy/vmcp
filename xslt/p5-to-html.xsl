@@ -204,8 +204,8 @@
 		<xsl:apply-templates/>
 	</xsl:template>	
 	<xsl:template match="langUsage" mode="create-content">
-		<h2 class="inline">Languages: </h2>
-		<xsl:value-of select="string-join(language, ', ') || ' '"/>
+		<!-- <h2 class="inline">Languages: </h2>
+		<xsl:value-of select="string-join(language, ', ') || ' '"/> -->
 	</xsl:template>
 	
 	<xsl:template match="langUsage/language">

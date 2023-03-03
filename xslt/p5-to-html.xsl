@@ -112,7 +112,7 @@
 				<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/title" />
 				<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='description']" />
 				<details class="tei-teiHeader" open="open">
-					<summary>Document Information </summary>
+					<summary>Document information </summary>
 					<div>
 						<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/physDesc/objectDesc/supportDesc" />
 						<xsl:apply-templates select="profileDesc/langUsage"/>
@@ -130,7 +130,7 @@
 						"/>
 						<xsl:if test="$physical-location">
 							<div>
-								<h2 class="inline">Physical Location: </h2>
+								<h2 class="inline">Physical location: </h2>
 								<xsl:value-of select="$physical-location"/>
 							</div>
 						</xsl:if>

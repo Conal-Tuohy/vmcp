@@ -458,7 +458,7 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 }
 
 
-.apparatus .rend-Heading_2, .tei-p.rend-side_head {
+.apparatus .rend-Heading_2, .apparatus .tei-p.rend-side_head {
 	display: block;
 	font-size: 1.5em;
 	margin-block-start: 0.83em;
@@ -466,6 +466,7 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	margin-inline-start: 0px;
 	margin-inline-end: 0px;
 	font-weight: bold;
+	text-indent: 0;
 }
 
 .apparatus .rend-Entry, .rend-Biog_Reg	{

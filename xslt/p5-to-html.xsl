@@ -18,7 +18,7 @@
 	<xsl:variable name="embedded-manifest-uri" select="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/altIdentifier/idno[@type='iiif-manifest']"/>
 	
 	<xsl:template match="/tei:TEI">
-		<html class="tei">
+		<html class="tei" data-filename="{$filename}">
 			<head>
 				<title><xsl:value-of select="$title"/></title>
 				<link href="/css/tei.css" rel="stylesheet" type="text/css"/>
@@ -103,77 +103,81 @@
 	
 	<xsl:variable name="introduction" select="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='introduction']"/>
 	
+	<xsl:variable name="filename" select="/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename']"/>
+	
 	<xsl:template match="teiHeader">
-		<div class="tei-teiHeader">
-			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/author" />
-			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/title" />
-			<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='description']" />
-			<details class="tei-teiHeader" open="open">
-				<summary>Document Information </summary>
-				<div>
-					<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/physDesc/objectDesc/supportDesc" />
-					<xsl:apply-templates select="profileDesc/langUsage"/>
-					<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/history" />
-					<!-- identifiers -->
-					<xsl:variable name="msIdentifier" select="fileDesc/sourceDesc/msDesc/msIdentifier"/>
-					<xsl:variable name="physical-location" select="
-						string-join(
-							(
-								$msIdentifier/msName,
-								$msIdentifier//idno
-							),
-							' '
-						) || ' '
-					"/>
-					<xsl:if test="$physical-location">
-						<div>
-							<h2 class="inline">Physical Location: </h2>
-							<xsl:value-of select="$physical-location"/>
-						</div>
-					</xsl:if>
-					<xsl:call-template name="render-plant-names-list"/>
-					<xsl:apply-templates select="fileDesc/titleStmt/respStmt" />
+		<xsl:if test="not(contains($filename, 'Apparatus files'))">
+			<div class="tei-teiHeader">
+				<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/author" />
+				<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/title" />
+				<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='description']" />
+				<details class="tei-teiHeader" open="open">
+					<summary>Document Information </summary>
 					<div>
-						<h2>Preferred Citation: </h2>
-						<p>
-							<cite>
-								<xsl:variable name="author" select="fileDesc/sourceDesc/bibl/author/text()"/>
-								<xsl:variable name="recipient" select="profileDesc/correspDesc/correspAction[@type='sentTo']/name/text()"/>
-								<xsl:variable name="date" select="fileDesc/sourceDesc/bibl/date"/>
-								<xsl:variable name="id" select="fileDesc/sourceDesc/msDesc/msIdentifier/altIdentifier/idno"/>
-								<xsl:variable name="filename" select="fileDesc/publicationStmt/idno[@type='filename']"/>
-								<xsl:variable name="current-date" select="current-date() =>  format-date('[MNn] [D], [Y]', 'en', (), () )"/>
-								<xsl:variable name="title" select="fileDesc/titleStmt/title"/>
-								<xsl:variable name="url" select="
-									(for $segment in tokenize($filename, '/') return encode-for-uri($segment)) 
-									=> string-join('/') 
-									=> replace('^data/(.*).doc$', 'https://vmcp.rbg.vic.gov.au/text/$1/')
-								"/>
-								<xsl:choose>
-									<!-- This part of the citation differs depending on whether the text is a letter or not -->
-									<xsl:when test="$author and $recipient">
-										<!-- the text is a letter, so its title is just an incipit, and we cite it instead by the names of the correspondents, and the date -->
-										<xsl:text>{$author} to {$recipient}, {$date}</xsl:text>
-										<!-- the identifier contains some alphabetic text in addition to the day's date, which means it's disambiguating the letter
-										from among multiple letters with the same date, so here we output the identifier, whereas otherwise we just omit it -->
-										<xsl:for-each select="$id[matches(., '\p{L}')]">
-											<xsl:text> [{$id}]</xsl:text>
-										</xsl:for-each>
-										<xsl:text>. </xsl:text>
-									</xsl:when>
-									<xsl:otherwise>
-										<!-- the text is not a letter, so it should have a proper title -->
-										<xsl:text>{$title}. </xsl:text>
-									</xsl:otherwise>
-								</xsl:choose>
-								<xsl:text>R.W. Home, Thomas A. Darragh, A.M. Lucas, Sara Maroske, D.M. Sinkora, J.H. Voigt and Monika Wells (eds),
-								Correspondence of Ferdinand von Mueller, &lt;{$url}&gt;, accessed {$current-date}</xsl:text>
-							</cite>
-						</p>
+						<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/physDesc/objectDesc/supportDesc" />
+						<xsl:apply-templates select="profileDesc/langUsage"/>
+						<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/history" />
+						<!-- identifiers -->
+						<xsl:variable name="msIdentifier" select="fileDesc/sourceDesc/msDesc/msIdentifier"/>
+						<xsl:variable name="physical-location" select="
+							string-join(
+								(
+									$msIdentifier/msName,
+									$msIdentifier//idno
+								),
+								' '
+							) || ' '
+						"/>
+						<xsl:if test="$physical-location">
+							<div>
+								<h2 class="inline">Physical Location: </h2>
+								<xsl:value-of select="$physical-location"/>
+							</div>
+						</xsl:if>
+						<xsl:call-template name="render-plant-names-list"/>
+						<xsl:apply-templates select="fileDesc/titleStmt/respStmt" />
+						<div>
+							<h2>Preferred Citation: </h2>
+							<p>
+								<cite>
+									<xsl:variable name="author" select="fileDesc/sourceDesc/bibl/author/text()"/>
+									<xsl:variable name="recipient" select="profileDesc/correspDesc/correspAction[@type='sentTo']/name/text()"/>
+									<xsl:variable name="date" select="fileDesc/sourceDesc/bibl/date"/>
+									<xsl:variable name="id" select="fileDesc/sourceDesc/msDesc/msIdentifier/altIdentifier/idno"/>
+									<xsl:variable name="filename" select="fileDesc/publicationStmt/idno[@type='filename']"/>
+									<xsl:variable name="current-date" select="current-date() =>  format-date('[MNn] [D], [Y]', 'en', (), () )"/>
+									<xsl:variable name="title" select="fileDesc/titleStmt/title"/>
+									<xsl:variable name="url" select="
+										(for $segment in tokenize($filename, '/') return encode-for-uri($segment)) 
+										=> string-join('/') 
+										=> replace('^data/(.*).doc$', 'https://vmcp.rbg.vic.gov.au/text/$1/')
+									"/>
+									<xsl:choose>
+										<!-- This part of the citation differs depending on whether the text is a letter or not -->
+										<xsl:when test="$author and $recipient">
+											<!-- the text is a letter, so its title is just an incipit, and we cite it instead by the names of the correspondents, and the date -->
+											<xsl:text>{$author} to {$recipient}, {$date}</xsl:text>
+											<!-- the identifier contains some alphabetic text in addition to the day's date, which means it's disambiguating the letter
+											from among multiple letters with the same date, so here we output the identifier, whereas otherwise we just omit it -->
+											<xsl:for-each select="$id[matches(., '\p{L}')]">
+												<xsl:text> [{$id}]</xsl:text>
+											</xsl:for-each>
+											<xsl:text>. </xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<!-- the text is not a letter, so it should have a proper title -->
+											<xsl:text>{$title}. </xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
+									<xsl:text>R.W. Home, Thomas A. Darragh, A.M. Lucas, Sara Maroske, D.M. Sinkora, J.H. Voigt and Monika Wells (eds),
+									Correspondence of Ferdinand von Mueller, &lt;{$url}&gt;, accessed {$current-date}</xsl:text>
+								</cite>
+							</p>
+						</div>
 					</div>
-				</div>
-			</details>
-		</div>
+				</details>
+			</div>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template match="titleStmt/respStmt" mode="create-content">
 		<xsl:if test="name/@type=('editor', 'reviewer', 'transcriber')">

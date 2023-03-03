@@ -126,7 +126,7 @@
 			<div id="rbgv-footer">
 				<div class="rbgv-website">
 					<a href="https://www.rbg.vic.gov.au" target="_blank">
-						<img src="hhttps://vicflora.rbg.vic.gov.au/_nuxt/img/rbgv-logo-lg.fbfa796.svg" alt="RBGV logo"/>
+						<img src="https://vicflora.rbg.vic.gov.au/_nuxt/img/rbgv-logo-lg.fbfa796.svg" alt="RBGV logo"/>
 					</a>
 				</div>
 				<div class="social-media">

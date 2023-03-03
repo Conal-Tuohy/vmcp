@@ -432,6 +432,8 @@ nav.toc .current { /* item in the ToC which represent the currently displayed te
 }
 
 /******************************************************************************/
+
+/* beautify footnote popup */
 details.tei-note[open] summary::after {
 	font-size: 130%;
 	margin-top: 1em;
@@ -442,4 +444,20 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	min-width: 300px;
 	max-height: 400px;
 	overflow-y: auto;
+}
+
+/* format page title and standard paragraph */
+.tei-p.rend-VMCPTitle, .tei-p.rend-VMCP_Title {
+	display: block;
+	font-size: 2em;
+	margin-block-start: 0.67em;
+	margin-block-end: 0.67em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	font-weight: bold;
+	text-indent: 0;
+}
+
+.tei-p.rend-Standard {
+	text-indent: 0;
 }

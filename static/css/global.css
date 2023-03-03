@@ -473,6 +473,6 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	font-weight: bold;
 }
 
-.rend-Entry	{
+.rend-Entry, .Blog_Reg	{
 	text-indent: 0;
 }

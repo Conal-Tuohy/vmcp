@@ -446,8 +446,8 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	overflow-y: auto;
 }
 
-/* format page title and standard paragraph */
-.tei-p.rend-VMCPTitle, .tei-p.rend-VMCP_title {
+/* special format for apparatus pages */
+.apparatus .tei-p.rend-VMCPTitle, .tei-p.rend-VMCP_title {
 	display: block;
 	font-size: 2em;
 	margin-block-start: 0.67em;
@@ -458,12 +458,12 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	text-indent: 0;
 }
 
-.tei-p.rend-Standard {
+.apparatus .tei-p.rend-Standard {
 	text-indent: 0;
 }
 
 
-.rend-Heading_2, .tei-p.rend-side_head {
+.apparatus .rend-Heading_2, .tei-p.rend-side_head {
 	display: block;
 	font-size: 1.5em;
 	margin-block-start: 0.83em;
@@ -473,6 +473,11 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	font-weight: bold;
 }
 
-.rend-Entry, .rend-Biog_Reg	{
+.apparatus .rend-Entry, .rend-Biog_Reg	{
 	text-indent: 0;
+}
+
+.apparatus span.tei-seg.rend-form_text {
+	font-family: inherit;
+	color: #000000;
 }

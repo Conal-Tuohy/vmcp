@@ -29,6 +29,12 @@
 			<xsl:attribute name="style" select="$purified-declarations"/>
 		</xsl:if>
 	</xsl:template>
+	<!-- completely purge any inline formatting from VMCPTitle paragraphs -->
+	<xsl:template match="tei:p[contains-token(@rend, 'VMCPTitle')]/@style"/>
+	<!-- discard any embedded markup from VMCPTitle paragraphs -->
+	<xsl:template match="tei:p[contains-token(@rend, 'VMCPTitle')]/*">
+		<xsl:apply-templates/>
+	</xsl:template>
 	<xsl:template match="@rend">
 		<xsl:attribute name="rend" select="replace(., '(%20)', '_')"/>
 	</xsl:template>

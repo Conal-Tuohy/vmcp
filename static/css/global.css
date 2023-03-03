@@ -476,3 +476,7 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	font-family: inherit;
 	color: #000000;
 }
+
+.apparatus main.content>div>main.content {
+	padding-top: 0;
+}

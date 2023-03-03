@@ -16,9 +16,9 @@
 		"Contact us": "/page/contact"
 	},
 	"Apparatus": {
-		"Biographical register": "/text/Apparatus%20files/Biographical%20Register/Biographical%20Register-%20Work%20in%20Progress/",
-		"Editors' citations": "/text/Apparatus%20files/Editors'%20citations/Editors%20citations/",
-		"Honours, awards, & memberships": "/text/Apparatus%20files/Honours%20&c/Honours%20Awards%20Memberships/",
-		"Mueller's publications": "/text/Apparatus%20files/Mueller's%20publications/M%20Publications/"
+		"Biographical register": "/text/Apparatus%20files/Biographical%20Register/",
+		"Editors' citations": "/text/Apparatus%20files/Editors%20citations/",
+		"Honours, awards, & memberships": "/text/Apparatus%20files/Honours%20Awards%20Memberships/",
+		"Mueller's publications": "/text/Apparatus%20files/Muellers%20publications/"
 	}
 }

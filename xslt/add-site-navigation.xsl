@@ -19,7 +19,7 @@
 			<meta charset="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 			<meta name="description" content="The correspondence of Ferdinand von Mueller"/>
-			<link data-n-head="ssr" rel="icon" type="image/x-icon" href="/favicon.ico">
+			<link data-n-head="ssr" rel="icon" type="image/x-icon" href="/favicon.ico"/>
 			<link href="/css/global.css" rel="stylesheet"/>
 		</xsl:copy>
 	</xsl:template>

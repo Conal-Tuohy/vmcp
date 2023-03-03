@@ -430,3 +430,16 @@ nav.toc li {
 nav.toc .current { /* item in the ToC which represent the currently displayed text or one of its ancestors */
 	font-weight: var(--bold-weight);
 }
+
+/******************************************************************************/
+details.tei-note[open] summary::after {
+	font-size: 130%;
+	margin-top: 1em;
+}
+
+details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation div.tei-note, details.tei-name div, details.tei-term div {
+	max-width: 500px;
+	min-width: 300px;
+	max-height: 400px;
+	overflow-y: auto;
+}

@@ -447,7 +447,7 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 }
 
 /* format page title and standard paragraph */
-.tei-p.rend-VMCPTitle, .tei-p.rend-VMCP_Title {
+.tei-p.rend-VMCPTitle, .tei-p.rend-VMCP_title {
 	display: block;
 	font-size: 2em;
 	margin-block-start: 0.67em;

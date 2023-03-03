@@ -60,7 +60,10 @@
 							<img src="https://vicflora.rbg.vic.gov.au/_nuxt/img/rbgv-logo-lg.fbfa796.svg" alt="RBGV logo"/>
 						</a>
 					</div>
-					<h1>The correspondence of Ferdinand von Mueller</h1>
+					<div class="site-title">
+						<h2>The correspondence of</h2>
+						<h1>Ferdinand von Mueller</h1>
+					</div>
 				</div>
 			</header>
 			<main class="content">

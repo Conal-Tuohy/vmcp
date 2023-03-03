@@ -197,12 +197,12 @@ div#banner {
 	padding-top: 1rem;
 	display: flex;
 }
-div#banner h1 {
+
+div#banner h1, div#banne h2 {
 	font-family: var(--font-family);
 	font-weight: var(--regular-weight);
-	font-size: 2.5rem;
 	padding-left: 2rem;
-	/* margin: 0; */
+	margin: 0;
 }
 
 footer#page-footer {

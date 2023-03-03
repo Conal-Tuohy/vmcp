@@ -26,17 +26,34 @@
 				<link href="{$embedded-manifest-uri}" rel="alternate" type="application/ld+json" title="iiif-manifest"/>
 
 			</head>
-			<body class="tei">
-				<main class="content">
-					<div class="tei">
-						<div class="searchable-content">
-							<!-- render the document metadata details -->
-							<xsl:apply-templates select="tei:teiHeader"/>
-							<xsl:apply-templates select="tei:text"/>
-						</div>
-					</div>
-				</main>
-			</body>
+			<xsl:choose>
+				<xsl:when test="contains($filename, 'Apparatus files')">
+					<body class="tei apparatus">
+						<main class="content">
+							<div class="tei">
+								<div class="searchable-content">
+									<!-- render the document metadata details -->
+									<xsl:apply-templates select="tei:teiHeader"/>
+									<xsl:apply-templates select="tei:text"/>
+								</div>
+							</div>
+						</main>
+					</body>
+				</xsl:when>
+				<xsl:otherwise>
+					<body class="tei">
+						<main class="content">
+							<div class="tei">
+								<div class="searchable-content">
+									<!-- render the document metadata details -->
+									<xsl:apply-templates select="tei:teiHeader"/>
+									<xsl:apply-templates select="tei:text"/>
+								</div>
+							</div>
+						</main>
+					</body>
+				</xsl:otherwise>
+			</xsl:choose>
 		</html>
 	</xsl:template>
 

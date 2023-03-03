@@ -219,8 +219,7 @@ footer#page-footer div {
 div.rbgv-website img {
 	height: 5rem;
 }
-div.social-media {
-}
+
 div.social-media a {
 	padding-left: 0.1rem;
 	padding-right: 0.1rem;
@@ -417,10 +416,6 @@ div#content {
 
 
 /* Table of Contents */
-
-nav.toc {
-	/* TODO lay this out to the left of the main text */
-}
 nav.toc ul {
 	padding-left: 2em;
 }

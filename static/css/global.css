@@ -481,3 +481,11 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 .apparatus main.content>div>main.content {
 	padding-top: 0;
 }
+
+/* special format for home page */
+div#home-page {
+	display: flex;
+	column-gap: 1rem; 
+	align-items: start;
+	margin: 1rem 0;
+}

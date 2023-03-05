@@ -469,7 +469,7 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	text-indent: 0;
 }
 
-.apparatus .rend-Entry, .rend-Biog_Reg	{
+.apparatus .rend-Entry, .apparatus .rend-Biog_Reg, .apparatus .rend-Footnote	{
 	text-indent: 0;
 }
 

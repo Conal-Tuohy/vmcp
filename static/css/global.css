@@ -442,7 +442,8 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 }
 
 /* special format for apparatus pages */
-.apparatus .tei-p.rend-VMCPTitle, .tei-p.rend-VMCP_title {
+html[data-filename^='data/Apparatus files'] .tei-p.rend-VMCPTitle, 
+html[data-filename^='data/Apparatus files'] .tei-p.rend-VMCP_title {
 	display: block;
 	font-size: 2em;
 	margin-block-start: 0.67em;
@@ -453,12 +454,12 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	text-indent: 0;
 }
 
-.apparatus .tei-p.rend-Standard {
+html[data-filename^='data/Apparatus files'] .tei-p.rend-Standard {
 	text-indent: 0;
 }
 
-
-.apparatus .rend-Heading_2, .apparatus .tei-p.rend-side_head {
+html[data-filename^='data/Apparatus files'] .rend-Heading_2, 
+html[data-filename^='data/Apparatus files'] .tei-p.rend-side_head {
 	display: block;
 	font-size: 1.5em;
 	margin-block-start: 0.83em;
@@ -469,16 +470,18 @@ details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation di
 	text-indent: 0;
 }
 
-.apparatus .rend-Entry, .apparatus .rend-Biog_Reg, .apparatus .rend-Footnote	{
+html[data-filename^='data/Apparatus files'] .rend-Entry, 
+html[data-filename^='data/Apparatus files'] .rend-Biog_Reg, 
+html[data-filename^='data/Apparatus files'] .rend-Footnote	{
 	text-indent: 0;
 }
 
-.apparatus span.tei-seg.rend-form_text {
+html[data-filename^='data/Apparatus files'] span.tei-seg.rend-form_text {
 	font-family: inherit;
 	color: #000000;
 }
 
-.apparatus main.content>div>main.content {
+html[data-filename^='data/Apparatus files'] main.content>div>main.content {
 	padding-top: 0;
 }
 

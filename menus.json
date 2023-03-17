@@ -1,6 +1,6 @@
 {
-	"🏠︎ Home": "/",
-	"Search and browse": "/search/",
+	"Home": "/",
+	"Search": "/search/",
 	"Notices": {
 		"Indigenous Cultural Knowledge": "/page/achnowledgement-of-indigenous-cultures",
 		"Copyright": "/page/copyright"
@@ -18,7 +18,7 @@
 	"Apparatus": {
 		"Biographical register": "/page/biographical-register",
 		"Editors' citations": "/text/Apparatus%20files/Editors%20citations/",
-		"Honours, awards, & memberships": "/text/Apparatus%20files/Honours%20Awards%20Memberships/",
+		"Honours, awards, and memberships": "/text/Apparatus%20files/Honours%20Awards%20Memberships/",
 		"Mueller's publications": "/text/Apparatus%20files/Muellers%20Publications/"
 	}
 }

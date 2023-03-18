@@ -485,6 +485,23 @@ html[data-filename^='data/Apparatus files'] main.content>div>main.content {
 	padding-top: 0;
 }
 
+html[data-filename^='data/Apparatus files'] .tei-p.rend-Indent_quote {
+	text-indent: 0;
+	margin-left: 2.5rem;
+	margin-right: 2.5rem;
+	font-size: 90%;
+	color: #333;
+}
+
+html[data-filename^='data/Apparatus files'] .tei-p.rend-bibliog_entry,
+html[data-filename^='data/Apparatus files'] .tei-p.rend-Bibliography_comment {
+	text-indent: 0;
+}
+
+html[data-filename^='data/Apparatus files'] .tei-space {
+	display: none;
+}
+
 /* special format for home page */
 div#home-page {
 	display: flex;

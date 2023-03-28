@@ -19,6 +19,7 @@
 			<meta charset="utf-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 			<meta name="description" content="The correspondence of Ferdinand von Mueller"/>
+			<link data-n-head="ssr" rel="icon" type="image/x-icon" href="/image/favicon.ico"/>
 			<link href="/css/global.css" rel="stylesheet"/>
 		</xsl:copy>
 	</xsl:template>
@@ -56,10 +57,13 @@
 				<div id="banner">
 					<div class="rbgv-website">
 						<a href="https://www.rbg.vic.gov.au" target="_blank">
-							<img src="https://www.rbg.vic.gov.au/assets/images/rbgv-logo-lg.svg" alt="RBGV logo"/>
+							<img src="https://vicflora.rbg.vic.gov.au/_nuxt/img/rbgv-logo-lg.fbfa796.svg" alt="RBGV logo"/>
 						</a>
 					</div>
-					<h1>The correspondence of <br/>Ferdinand von Mueller</h1>
+					<div class="site-title">
+						<h2>The correspondence of</h2>
+						<h1>Ferdinand von Mueller</h1>
+					</div>
 				</div>
 			</header>
 			<main class="content">
@@ -126,7 +130,7 @@
 			<div id="rbgv-footer">
 				<div class="rbgv-website">
 					<a href="https://www.rbg.vic.gov.au" target="_blank">
-						<img src="https://www.rbg.vic.gov.au/assets/images/rbgv-logo-lg.svg" alt="RBGV logo"/>
+						<img src="https://vicflora.rbg.vic.gov.au/_nuxt/img/rbgv-logo-lg.fbfa796.svg" alt="RBGV logo"/>
 					</a>
 				</div>
 				<div class="social-media">

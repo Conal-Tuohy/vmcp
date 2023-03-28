@@ -112,7 +112,7 @@
 				<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/title" />
 				<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/msContents/msItem/note[@type='description']" />
 				<details class="tei-teiHeader" open="open">
-					<summary>Document Information </summary>
+					<summary>Document information </summary>
 					<div>
 						<xsl:apply-templates select="fileDesc/sourceDesc/msDesc/physDesc/objectDesc/supportDesc" />
 						<xsl:apply-templates select="profileDesc/langUsage"/>
@@ -130,7 +130,7 @@
 						"/>
 						<xsl:if test="$physical-location">
 							<div>
-								<h2 class="inline">Physical Location: </h2>
+								<h2 class="inline">Physical location: </h2>
 								<xsl:value-of select="$physical-location"/>
 							</div>
 						</xsl:if>
@@ -186,7 +186,7 @@
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="history" mode="create-content">
-		<h2 class="inline">Custodial History:</h2>
+		<h2 class="inline">Custodial history:</h2>
 		<xsl:apply-templates/>
 	</xsl:template>
 	<xsl:template match="msItem/author" mode="create-content">
@@ -204,12 +204,12 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 	<xsl:template match="support" mode="create-content">
-		<h2 class="inline">Physical Description: </h2>
+		<h2 class="inline">Physical description: </h2>
 		<xsl:apply-templates/>
 	</xsl:template>	
 	<xsl:template match="langUsage" mode="create-content">
-		<h2 class="inline">Languages: </h2>
-		<xsl:value-of select="string-join(language, ', ') || ' '"/>
+		<!-- <h2 class="inline">Languages: </h2>
+		<xsl:value-of select="string-join(language, ', ') || ' '"/> -->
 	</xsl:template>
 	
 	<xsl:template match="langUsage/language">

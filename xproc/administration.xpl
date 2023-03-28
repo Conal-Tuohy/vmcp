@@ -27,21 +27,6 @@
 								<main role="main" class="admin">
 								<div class="container">
 								<div class="row">
-										<div class="col">
-												<h1>Administration</h1>
-												<form method="post" action="admin/ingest">
-													<button title="Make normalized copy of source data files">Ingest source TEI to <code>p5/</code> folder</button>
-												</form>
-												<form method="post" action="admin/purge">
-													<button title="Remove all documents from the Solr index">Purge Solr index</button>
-												</form>
-												<form method="post" action="reindex/">
-													<button>Rebuild Solr index from normalized data files</button>
-												</form>
-												<form method="post" action="update-schema/">
-													<button>Update Solr schema from <em>search-fields.xml</em></button>
-												</form>
-											</div>
 											<div class="col">
 												<h1>Analysis and visualization</h1>
 												<p><a href="../p5/">View texts</a></p>

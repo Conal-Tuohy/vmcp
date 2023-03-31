@@ -148,9 +148,14 @@
 									<xsl:variable name="current-date" select="current-date() =>  format-date('[MNn] [D], [Y]', 'en', (), () )"/>
 									<xsl:variable name="title" select="fileDesc/titleStmt/title"/>
 									<xsl:variable name="url" select="
-										(for $segment in tokenize($filename, '/') return encode-for-uri($segment)) 
-										=> string-join('/') 
-										=> replace('^data/(.*).doc$', 'https://vmcp.rbg.vic.gov.au/text/$1/')
+										concat(
+											'https://vmcp.rbg.vic.gov.au/id/',
+											replace(
+												$filename, 
+												'.+/([^/]+)-final\.doc', 
+												'$1'
+											)
+										)
 									"/>
 									<xsl:choose>
 										<!-- This part of the citation differs depending on whether the text is a letter or not -->

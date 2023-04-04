@@ -1,29 +1,3 @@
-<<<<<<< Updated upstream
-{
-	"Home": "/",
-	"Search": "/search/",
-	"Notices": {
-		"Indigenous Cultural Knowledge": "/page/achnowledgement-of-indigenous-cultures",
-		"Copyright": "/page/copyright"
-	},
-	"About": {
-		"Using this site": "/page/using-this-site",
-		"Editorial practice": "/page/editorial-practice",
-		"Notes on life and work": "/page/notes-on-life-and-work",
-		"Permissions": "/page/permissions",
-		"Project history": "/page/project-history",
-		"Scope": "/page/scope",
-		"Technology": "/page/technology",
-		"Contact us": "/page/contact"
-	},
-	"Apparatus": {
-		"Biographical register": "/page/biographical-register",
-		"Editors' citations": "/page/citations",
-		"Honours, awards, and memberships": "/text/Apparatus%20files/Honours%20Awards%20Memberships/",
-		"Mueller's publications": "/text/Apparatus%20files/Muellers%20Publications/"
-	}
-}
-=======
 {
         "Home": "/",
         "Search": "/search/",
@@ -48,4 +22,3 @@
                 "Mueller's publications": "/text/static/apparatus/muellers-publications/"
         }
 }
->>>>>>> Stashed changes

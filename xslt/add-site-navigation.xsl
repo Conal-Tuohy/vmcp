@@ -178,4 +178,12 @@
 		  gtag('config', 'G-93GMWKCX5X');
 		</script>
 	</xsl:template>
+	
+	<!-- Obfuscate email addresses to foil email-harvester bots -->
+	<!-- Replace the mailto: hyperlink with 'mailbox' and 'domain' data- properties which will reassembled client-side by global.js javascript --> 
+	<xsl:template match="a/@href[starts-with(., 'mailto:')]">
+		<xsl:variable name="address" select="substring-after(., 'mailto:')"/>
+		<xsl:attribute name="data-mailbox" select="substring-before($address, '@')"/>
+		<xsl:attribute name="data-domain" select="substring-after($address, '@')"/>
+	</xsl:template>
 </xsl:stylesheet>

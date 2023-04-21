@@ -70,3 +70,10 @@ for (var i=0; i < inputFields.length; i = i + 1) {
 		}
 	);
 }
+
+/* reassemble mailto: hyperlinks which have been previously obfuscated to foil email-harvester bots */ 
+var mailHyperlinks = document.querySelectorAll("a[data-mailbox][data-domain]");
+for (var i=0; i < mailHyperlinks.length; i = i + 1) {
+	var mailHyperlink = mailHyperlinks.item(i);  
+	mailHyperlink.setAttribute('href', 'mailto:' + mailHyperlink.getAttribute('data-mailbox') + "@" + mailHyperlink.getAttribute('data-domain')); 
+}

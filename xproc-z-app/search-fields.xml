@@ -1,0 +1,218 @@
+<!-- 
+	This file contains field definitions for the search and browse functions of the site.
+	
+	The definition controls three aspects of the fields:
+	1	the field types in the Solr schema (how Solr should interpret the content)
+	2	the field content (how the fields are populated from the TEI XML)
+	3	the field display (how they are queried and displayed)
+	
+	The @name attribute defines the name of the field in Solr and in the HTTP query URIs. Use lower case, single token with no spaces.
+	
+	The @label attribute provides the field's label in the UI. Fields with no @label will not appear in the UI at all.
+	
+	The @type attribute controls how the content of the field is indexed by Solr: a type of "facet" causes the text to be treated as a single token;
+	as does a type of "sort". Otherwise Solr treats the field as free text, and performs various kinds of tokenisation, stemming, etc, on it.
+	
+	The @xpath attribute defines the content of the field. 
+	An XPath which returns a sequence of more than one item will produce a multi-valued field.
+	The TEI namespace is the default. 
+	The XPath version supported is 3.1.
+-->
+
+<!-- Exclude documents whose status isn't "final" and which aren't in the "Preliminary" folder -->
+<document xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	exclude-when="
+		(/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#status']/term != 'final') 
+		(:
+		and 
+		not(starts-with(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='file'], 'data/Preliminary/'))
+		:)
+	">
+	<!-- 
+	A "title" field containing a composite value aggregated from various components of the msIdentifier.
+	-->
+	<field name="title"
+		label="Title"
+		xpath="/TEI/teiHeader/fileDesc/titleStmt/title"
+	/>
+	<!--
+	A text field to contain the name of the MS given in the msIdentifier
+	-->
+	<field name="ms-name" label="Manuscript"
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/msName"
+	/>
+	<!-- Date facet -->
+	<!--
+	<field
+		name="date"
+		label="Date"
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when"
+		type="facet"/>
+		-->
+	<field
+		name="decade"
+		label="Date"
+		sort-by="value"
+		xpath="
+			let 
+				$when:= /TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when 
+			return
+				if ($when) then 
+					substring($when, 1, 3) || '0s'
+				else
+					'unknown date'
+		"
+		type="facet">
+		<field
+			name="year"
+			sort-by="value"
+			xpath="
+				for 
+					$date
+				in
+					/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when[normalize-space()]
+				return
+					substring($date, 1, 4)
+				"
+			type="facet">
+			<field
+				name="month"
+				sort-by="value"
+				xpath="
+					for 
+						$date
+					in
+						/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when[normalize-space()]
+					return
+						let 
+							$date-parts:= tokenize($date, '-'),
+							$year:= $date-parts[1],
+							$month:=$date-parts[2]
+						return
+							string-join(
+								subsequence(
+									($date-parts[1], $date-parts[2], '??'),
+									1,
+									2
+								),
+								'-'
+							)
+				"
+				type="facet">
+				<field
+					name="day"
+					sort-by="value"
+					xpath="
+						for 
+							$date
+						in
+							/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when[normalize-space()]
+						return
+							let 
+								$date-parts:= tokenize($date, '-'),
+								$year:= $date-parts[1],
+								$month:=$date-parts[2],
+								$day:=$date-parts[3]
+							return
+								string-join(
+									subsequence(
+										($year, $month, $day, '??', '??'),
+										1,
+										3
+									),
+									'-'
+								)
+					"
+					type="facet"/>
+			</field>
+		</field>
+	</field>
+	<!-- 
+	An "institution" facet whose value is the name of the institution given in the manuscript description.
+	-->
+	<!-- unusable until the metadata can be populated by the upconversion pipeline 
+	<field name="institution" label="Institution" xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/institution" type="facet"/>
+	-->
+	<!-- 
+	A "repository" facet whose value is the name of the repository given in the manuscript description.
+	-->
+	<!-- unusable until the metadata can be populated by the upconversion pipeline 
+	<field name="repository" label="Repository" xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/repository" type="facet"/>
+	-->
+	<!-- msName contains the "location" field from MS Word -->
+	<field name="location" 
+		label="Location" 
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/msDesc/msIdentifier/msName"/>
+	<!--
+	A "document-identifier" field containing the filename (without the '-final.doc' suffix), to resolve cross-references
+	-->
+	<field name="document-identifier"
+		label="Document ID"
+		xpath="replace(/TEI/teiHeader/fileDesc/publicationStmt/idno[@type='filename'], '.+/([^/]+)-final\.doc', '$1')"
+		type="identifier"
+	/>
+	<!-- 
+	This field defines a "Language" facet whose values come from the <language> elements in the header.
+	If there exists a <language> element whose content is not 'English', then the original language is 'Non-English', otherwise it's 'English'
+	-->
+	<field 
+		name="language" 
+		label="Original language" 
+		xpath="if (/TEI/teiHeader/profileDesc/langUsage/language[. ne 'English']) then 'Non-English' else 'English' "
+		type="facet"/>
+	<!-- The correspondents in the letter -->
+	<field 
+		name="correspondent" 
+		label="Correspondents" 
+		sort-by="value"
+		xpath="
+			(
+				/TEI/teiHeader/profileDesc/correspDesc/correspAction,
+				/TEI/teiHeader/fileDesc/sourceDesc/bibl/author
+			) 
+		"
+		type="facet"/>		
+	<field 
+		name="author" 
+		label="Author" 
+		xpath="/TEI/teiHeader/fileDesc/sourceDesc/bibl/author"
+		sort-by="value"
+		type="facet"/>		
+	<field 
+		name="recipient" 
+		label="Recipient" 
+		sort-by="value"
+		xpath="/TEI/teiHeader/profileDesc/correspDesc/correspAction"
+		type="facet"/>		
+	<!-- 
+	This field, called "sort", is used as a sort key of last resort when displaying search results.
+	When two or more documents are equally relevant to a search (which is the case, for instance, with a blank search,
+	which returns all documents), then the documents will be sorted by date.
+	The field is not intended to be used for searching; only for sorting, so it uses @type="sort" to exclude it from the search form
+	-->
+	<field
+		name="sort"
+		xpath="string(/TEI/teiHeader/fileDesc/sourceDesc/bibl/date/@when)"
+		type="sort"/>
+	<!-- 
+	Taxon facet 
+	-->
+	<field
+		name="taxon"
+		label="Taxon name"
+		sort-by="value"
+		xpath="/TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term"
+		type="facet"/>
+	<!-- debugging / testing facets -->
+	<!--
+	<field
+		name="debug-duplicated-plant-names"
+		label="Duplicated plant names"
+		xpath="
+			let $plant-names:= /TEI/teiHeader/profileDesc/textClass/keywords[@scheme='#plant-names']/term
+			return
+				if (count($plant-names) = count(distinct-values($plant-names))) then () else 'yes' 
+		"
+		type="facet"/>
+		-->
+</document>

@@ -1,0 +1,30 @@
+name: vmcp
+
+services:
+
+  xprocz:
+    image: tomcat:9.0.76-jdk21-openjdk-slim
+    ports:
+      - "8080:8080" # vmcp
+      - "8081:8081" # vmcp-editorial
+    volumes:
+      # server.xml defines two web apps:
+      # - one listening on 8080 and using solr core "vmcp"
+      # - and another listing on 8081 and using solr core "vmcp-editorial"
+      - ./tomcat-config/server.xml:/usr/local/tomcat/conf/server.xml
+      - ./xproc-z.war:/opt/xproc-z/xproc-z.war # both websites use the same Java servlet (XProc-Z)
+      - ./xproc-z-app:/var/lib/xproc-z-app # the XProc, XSLT, etc, source code
+      - ./calabash:/opt/calabash
+      - ./indexer:/var/lib/indexer
+      - /var/lib/vmcp-tei:/var/lib/vmcp-tei # the TEI corpus
+    depends_on:
+      - solr
+
+  solr:
+    image: solr
+    entrypoint: # create a "data" folder for solr cores, create our two cores, and start solr
+      - bash
+      - "-c"
+      - "mkdir /var/solr/data; precreate-core vmcp; precreate-core vmcp-editorial; exec solr -f"
+    ports:
+      - "8983:8983"

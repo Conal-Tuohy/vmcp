@@ -1,0 +1,5 @@
+XPROC="java -cp /opt/calabash/lib/*:/opt/calabash/xmlcalabash-1.5.7-120.jar com.xmlcalabash.drivers.Main --safe-mode=false"
+time $XPROC /var/lib/indexer/xproc/update-schema.xpl solr-base-uri="http://solr:8983/solr/vmcp/" search-fields="/var/lib/xproc-z-app/search-fields.xml"
+time $XPROC /var/lib/indexer/xproc/reindex.xpl solr-base-uri="http://solr:8983/solr/vmcp/" search-fields="/var/lib/xproc-z-app/search-fields.xml" corpus-base-uri="/var/lib/vmcp-tei"
+time $XPROC /var/lib/indexer/xproc/update-schema.xpl solr-base-uri="http://solr:8983/solr/vmcp-editorial/" search-fields="/var/lib/xproc-z-app/search-fields-editorial.xml"
+time $XPROC /var/lib/indexer/xproc/reindex.xpl solr-base-uri="http://solr:8983/solr/vmcp-editorial/" search-fields="/var/lib/xproc-z-app/search-fields-editorial.xml" corpus-base-uri="/var/lib/vmcp-tei"

@@ -1,0 +1,524 @@
+@media print {
+	#branding-bar {
+		display: none;
+	}
+}
+/* fonts */
+@import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@400;700;900&display=swap');
+/* debugging support */
+/*
+* {
+	outline-color: cyan !important;
+	outline-style: solid; 
+	outline-width: 1px; 
+}
+*/
+/* global variables and settings */
+:root {
+  --brand-color: #dd1353;
+  --background-color: #ffffff;
+  --font-family: 'Martel Sans', sans-serif;
+  --regular-weight: 400;
+  --bold-weight: 700;
+  --display-weight: 900;
+  --page-width: 70rem;
+}
+
+p {
+	margin-top: 0;
+}
+
+/* set page width */
+div#banner,
+nav#main-nav,
+footer#page-footer div#rbgv-footer
+{
+	max-width: var(--page-width);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* links */
+a {
+	color: var(--brand-color);
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+header#header {
+	border-bottom-color: var(--brand-color);
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	padding-bottom: 0.5rem;
+	padding-top: 0.5rem;
+}
+
+/* menus */
+form#quick-search {
+	flex: auto;
+	/*
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;*/
+	margin: 0; 
+	padding-right: 0.25rem;
+}
+
+form#quick-search div {
+	height: 2rem;
+	display: flex;
+	justify-content: right;
+}
+form#quick-search input {
+	appearance: none;
+	height: 100%;
+	border-width: 1px;
+	border-style:solid;
+	border-color: var(--brand-color);
+	padding: 0.5rem;
+	border-top-left-radius: 0.3rem;
+	border-bottom-left-radius: 0.3rem;
+	box-shadow: none;
+}
+form#quick-search a {
+	margin-top: 0.25rem;
+	margin-left: 0.5rem;
+	margin-bottom: 0.25rem;
+	float: right;
+	font-size: 0.67em;
+}
+
+form#quick-search button {
+	flex-basis: auto;
+	appearance: none;
+	height: 100%;
+	background-color: var(--brand-color);
+	color: white;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	/*
+	padding-bottom: 5px;
+	padding-top: 5px;
+	*/
+	border: 0;
+	box-shadow: none;
+	border-top-right-radius: 0.3rem;
+	border-bottom-right-radius: 0.3rem;
+	text-align: center;
+	vertical-align: text-bottom;
+}
+
+nav#main-nav {
+	color: var(--brand-color);
+	background-color: var(--background-color);
+	position: relative;
+	top: 0;
+	display: flex;
+	justify-content: space-between;
+}
+nav#main-nav ul {
+	margin-top: 0;
+	flex-basis: auto;
+	padding: 0;
+	/*
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	*/
+}
+nav#main-nav li {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0;
+}
+nav#main-nav details li {
+	display: inherit;
+}
+nav#main-nav a:hover,
+nav#main-nav summary:hover,
+nav#main-nav details ul
+{
+	outline-color: var(--brand-color);
+	outline-width: 1px;
+	outline-style: solid;
+}
+nav#main-nav ul.primary a {
+	display: inline-block;
+}
+nav#main-nav ul.primary a,
+nav#main-nav ul.primary summary {
+	height: 2rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	padding-top: 0.25rem;
+	vertical-align: baseline;
+	cursor: pointer;
+	text-decoration: none;
+}
+nav#main-nav ul.primary summary {
+	list-style-type: none;
+}
+nav#main-nav ul.secondary li a {
+	width: 100%;
+}
+nav#main-nav ul.secondary a {
+	border: none;
+}
+nav#main-nav details {
+	position: relative;
+	z-index: 10;
+}
+nav#main-nav details[open] ul {
+	position: absolute;
+	background-color: var(--background-color);
+	z-index: 10;
+	/*top: 2em;*/
+	left: 0;
+	width: max-content;
+	padding: 0;
+}
+/* end of menus */
+
+body {
+	font-weight: var(--regular-weight);
+	font-family: var(--font-family);
+  	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* body is at least the full height of the viewport */
+	
+	font-size: 14pt;
+	line-height: 1.3;
+	background-color: var(--background-color);
+	margin: 0;
+}
+
+div#banner {
+	padding-top: 1rem;
+	display: flex;
+}
+
+div#banner h1, div#banner h2 {
+	font-family: var(--font-family);
+	font-weight: var(--regular-weight);
+	padding-left: 2rem;
+	margin: 0;
+}
+
+footer#page-footer {
+	border-top-color: var(--brand-color);
+	border-top-style: solid;
+	border-top-width: 1px;
+	padding-top: 0.5rem;
+}
+footer#page-footer div {
+	display: flex;
+	justify-content: space-between;
+}
+
+div.rbgv-website img {
+	height: 5rem;
+}
+
+div.social-media a {
+	padding-left: 0.1rem;
+	padding-right: 0.1rem;
+}
+
+/* up to here */
+ul {
+	margin: 0;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+
+/* These are the components which are horizontally centered in the page */
+header.page-header section div.masthead,
+nav#main-nav ul.primary,
+main.content,
+footer.page-footer div.link-to-top,
+footer.page-footer div.menus,
+footer.page-footer div.links,
+div.tei,
+div.row div.twelvecol
+{
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 70rem;
+}
+main.content {
+	background-color: var(--background-color);
+	padding: 0.5em;
+	display: flex;
+	align-items: flex-start;
+	/* column-gap: 1rem; not used because of poor browser support */
+	margin-bottom: 0.5rem;
+}
+header.page-header section.iub {
+	background-color: rgb(248, 248, 248);
+	border-bottom-color: rgb(192, 192, 192);
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+}
+
+/* sub-menu on a page (copy of the drop down menu),
+or sidebar on some other pages */
+nav.internal,
+aside {
+	background-color: var(--background-color);
+	margin-right: 2rem;
+	margin-top: 1rem;
+	min-width: 10rem;
+	border: thin solid var(--brand-color);
+	border-top-right-radius: 0.4em;
+	border-top-left-radius: 0.4em;
+}
+nav.internal header,
+aside header {
+	border-top-right-radius: 0.4em;
+	border-top-left-radius: 0.4em;
+	border: thin solid var(--brand-color);
+	background-color: var(--brand-color);
+	color: white;
+	font-weight: var(--bold-weight);
+	padding: 0.5em;
+}
+nav.internal div header {
+	border: inherit;
+	padding: inherit;
+	margin-top: 1em;
+	margin-left: 0.5em;
+	color: inherit;
+	background-color: inherit;
+}
+nav.internal ul {
+	padding: 0;
+}
+
+aside p {
+	font-size: small;
+	margin: 0.5em;
+}
+nav.internal ul {
+	list-style-type: none;
+	margin: 1em;
+	font-size: small;
+}
+nav.internal li {
+	margin-top: 0.5em;
+}
+nav.internal a {
+	color: rgb(120, 19, 11);
+	text-decoration: none;
+}
+nav.internal a.current {
+	font-weight: var(--bold-weight);
+	color: black;
+}
+
+/* The menu at the top of a page, or for a search result, for selecting a view of the text */
+div.tei-view-selection {
+	display: flex;
+	font-size: small;
+	margin-top: 1em;
+	justify-content: center; 
+}
+div.tei-view-selection a,
+div.tei-view-selection span {
+	padding: 0.2em;
+	box-shadow: 0 0.4em 0.5em -0.5em #000;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+div.tei-view-selection a {
+	text-decoration: none;
+	color: black;
+}
+div.tei-view-selection a:hover {
+	background-color: #C9C9C9;
+}
+div.tei-view-selection span {
+	font-weight: var(--bold-weight);
+}
+footer.page-footer {
+	background-color: rgb(188, 171, 129);
+}
+footer.page-footer div.link-to-top {
+	padding-top: 0.25rem;
+	display: flex;
+	justify-content: flex-end;
+}
+footer.page-footer div.menus-and-links {
+	background-color: #333;
+}
+footer.page-footer div.menus {
+	background-color: #4F4E4E;
+	display: flex;
+	font-size: small;
+	justify-content: space-between;
+}
+footer.page-footer div.menus div.menu {
+	padding: 1em;
+}
+footer.page-footer div.menus div.menu header {
+	color: #C0C0C0;
+	margin-bottom: 0.5em;
+}
+footer.page-footer div.menus div.menu ul {
+	list-style-type: none;
+	margin-left: 1em;
+}
+footer.page-footer div.menus div.menu a {
+	text-decoration: none;
+	color: #ffc;
+}
+footer.page-footer div.menus div.menu a.current {
+	color: rgb(247, 246, 240);
+}
+footer.page-footer div.menus div.menu a.current::before {
+	content: "» ";
+}
+footer.page-footer div.menus div.menu li {
+	margin-bottom: 0.5em;
+}
+footer.page-footer div.links {
+	background-color: #4F4E4E;
+	color: #fff;
+	font-size: smaller;
+	padding: 1em;
+}
+footer.page-footer div.links a {
+	color: #fff;
+	text-decoration: none;
+}
+ul.site-index-menu {
+	padding-left: 2em;
+}
+ul.site-index-menu p {
+	margin: 0;
+}
+ul.site-index-menu li {
+	margin-top: 0.25em;
+}
+ul.site-index-menu a {
+	text-decoration: none;
+	color: #78130B;
+}
+
+div#content {
+	margin: 3em 5em 3em 5em;
+}
+
+
+/* Table of Contents */
+nav.toc ul {
+	padding-left: 2em;
+}
+nav.toc li {
+	list-style-type: none;
+}
+nav.toc .current { /* item in the ToC which represent the currently displayed text or one of its ancestors */
+	font-weight: var(--bold-weight);
+}
+
+/******************************************************************************/
+
+/* beautify footnote popup */
+details.tei-note[open] summary::after {
+	font-size: 130%;
+	margin-top: 1em;
+}
+
+details.tei-note.type-footnote div.tei-note, details.tei-note.type-annotation div.tei-note, details.tei-name div, details.tei-term div {
+	max-width: 500px;
+	min-width: 300px;
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+/* special format for apparatus pages */
+html[data-filename^='data/Apparatus files'] .tei-p.rend-VMCPTitle, 
+html[data-filename^='data/Apparatus files'] .tei-p.rend-VMCP_title {
+	display: block;
+	font-size: 2em;
+	margin-block-start: 0.67em;
+	margin-block-end: 0.67em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	font-weight: bold;
+	text-indent: 0;
+}
+
+html[data-filename^='data/Apparatus files'] .tei-p.rend-Standard {
+	text-indent: 0;
+}
+
+html[data-filename^='data/Apparatus files'] .rend-Heading_2, 
+html[data-filename^='data/Apparatus files'] .tei-p.rend-side_head {
+	display: block;
+	font-size: 1.5em;
+	margin-block-start: 0.83em;
+	margin-block-end: 0.83em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	font-weight: bold;
+	text-indent: 0;
+}
+
+html[data-filename^='data/Apparatus files'] .rend-Entry, 
+html[data-filename^='data/Apparatus files'] .rend-Biog_Reg, 
+html[data-filename^='data/Apparatus files'] .rend-Footnote	{
+	text-indent: 0;
+}
+
+html[data-filename^='data/Apparatus files'] span.tei-seg.rend-form_text {
+	font-family: inherit;
+	color: #000000;
+}
+
+html[data-filename^='data/Apparatus files'] main.content>div>main.content {
+	padding-top: 0;
+}
+
+html[data-filename^='data/Apparatus files'] .tei-p.rend-Indent_quote {
+	text-indent: 0;
+	margin-left: 2.5rem;
+	margin-right: 2.5rem;
+	font-size: 90%;
+	color: #333;
+}
+
+html[data-filename^='data/Apparatus files'] .tei-p.rend-bibliog_entry,
+html[data-filename^='data/Apparatus files'] .tei-p.rend-Bibliography_comment {
+	text-indent: 0;
+}
+
+html[data-filename^='data/Apparatus files'] .tei-space {
+	display: none;
+}
+
+/* special format for home page */
+div#home-page {
+	display: flex;
+	column-gap: 1rem; 
+	align-items: start;
+	margin: 1rem 0;
+}
+
+/**/
+.last-updated {
+	margin-top: 1rem;
+	margin-bottom: -1.8rem;
+	text-align: right;
+	font-size: 80%;
+	color: #666666;
+}
+
+html[data-filename="data/Apparatus files/Muellers Publications.doc"] .rend-VCMPTitle .tei-note.type-footnote {
+	display: none;
+}

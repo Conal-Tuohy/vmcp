@@ -1,0 +1,15 @@
+mark {
+	background-color: rgb(250, 255, 189);
+}
+mark.match {
+	font-weight: bold;
+	color: #CC0000;
+}
+mark.non-match {
+}
+
+a.hit-link {
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+	text-decoration: none;
+}

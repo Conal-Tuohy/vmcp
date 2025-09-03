@@ -1,0 +1,753 @@
+
+/* global variables and settings */
+:root {
+  --brand-color: #DD1353;
+  --form-text-font: serif;
+}
+
+div.tei {
+	line-height: 1.5em;
+}
+
+
+/* Styles for renditions of TEI elements */
+
+/* Translated texts are modelled as TEI group elements containing a TEI text in English and a text in the other language */
+/* They should appear side by side where possible */
+div.tei-group {
+	display: flex;
+	column-gap: 2rem;
+}
+div.tei-text {
+/*	margin-right: 3em;*/
+flex: 1 1 0;
+}
+
+
+/* forme work centered by default */
+.tei-fw {
+	text-align: center;
+}
+
+div.tei-bibl {
+	display: inline;
+}
+
+.tei-figure img {
+	max-width:90%;
+}
+figure.tei-milestone {
+	margin-top: 3em;
+	text-align: center;
+	color: #7D100B;
+}
+
+figure.tei-milestone img.thumbnail {
+	height: auto;
+	width: auto;
+	max-height: 100px;
+}
+figure.tei-milestone span.thumbnail {
+	font-size: 1em;
+	cursor: zoom-in;
+}
+a.tei-bibl::before {
+	content: "📖";
+	margin-right: 0.25em;
+}
+/* add "help" mouse pointer when title attribute present */
+span[title] {
+	cursor: help;
+}
+.hand {	
+	color: #018B84;
+}
+a.tei-ref.type-annotation::before {
+	content: "📝";
+}
+/* flag editorial interventions by wrapping in angle brackets */
+figure.tei-milestone figcaption::before,
+span.tei-gap::before,
+span.tei-title.type-supplied::before,
+span.tei-supplied::before,
+.tei-note.type-editorial::before
+{
+	content: "<";
+}
+figure.tei-milestone figcaption::after,
+span.tei-gap::after,
+span.tei-title.type-supplied::after,
+span.tei-supplied::after,
+.tei-note.type-editorial::after
+{
+	content: ">";
+}
+span.tei-gap {
+	font-style: italic;
+}
+span.tei-gap {
+	color: rgb(1, 139, 132);
+}
+.tei-supplied,
+.tei-unclear {
+	color: #018B84;
+}
+.tei-sic::after {
+	color: #018B84;
+	content: " <sic> ";
+}
+del {
+	color: #A0A0A0;
+}
+ins {
+	text-decoration: none;
+}
+.rend-strike {
+	text-decoration: line-through;
+}
+ul.type-simple {
+}
+ul.tei-list {
+	list-style-type: none; /* no bullet */
+	/*margin-left: 0;*/
+	padding-left: 0;
+	margin: 0;
+}
+
+.place-infralinear {
+	vertical-align: sub;
+	font-size: 0.85em;
+}
+.place-supralinear {
+	vertical-align: super;
+	font-size: 0.85em;
+}
+.place-right {
+	text-align: right;
+	display: block;
+}
+.place-inline {
+	font-size: small;
+}
+/* reduce font size to try to avoid line-wrapping in cells */
+.tei-table {
+	font-size: small;
+}
+.tei-teiHeader h2,
+.tei-teiHeader .tei-head {
+	font-size: 1em;
+	padding-right: 0.5em;
+	padding-top: 1pt;
+	font-weight: bold;
+}
+.tei-note.type-editorial {
+	font-style: italic;
+}
+.tei-note.type-translation::before {
+	color: #018B84;
+	content: "<Translation>";
+	font-style: italic;
+}
+
+/* TEI footnotes are rendered as details/summary elements */
+/* as are TEI names of plants */
+details div ul {
+	/* override our general suppression of list padding */
+	padding-left: 1em;
+}
+
+details.tei-note.type-footnote,
+details.tei-note.type-annotation,
+details.tei-name,
+details.tei-term
+{
+	color: var(--brand-color);
+	display: inline-block;
+	text-indent: 0;
+}
+
+/* style summary elements like a hyperlink instead of a twister */
+details.tei-note.type-footnote summary,
+details.tei-note.type-annotation summary,
+details.tei-name summary,
+details.tei-term summary
+{
+	cursor: help;
+	list-style: none;
+	display: inline;
+}
+
+/* make footnotes and annotations superscripted */
+details.tei-note.type-footnote summary,
+details.tei-note.type-annotation summary {
+	font-size: 0.67em;
+	vertical-align: super;
+	padding-right: 0.1em;
+}
+
+details.tei-note[open] summary::after{
+	display: block;
+	content: "❎\FE0E";
+	color: var(--brand-color);
+	margin-top: 0.25em;
+	margin-left: 0.5em;
+	position: absolute;
+	z-index: 1;
+	cursor: auto;
+}
+
+summary > h2 {
+	display: inline-block;
+}
+
+ul.tei-keywords {  list-style: none;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+column-gap: 1rem;
+}
+ul.tei-keywords > li {
+/*	display: block;*/
+}
+/* pop up footnote and botanical names */
+details.tei-note.type-footnote div.tei-note,
+details.tei-note.type-annotation div.tei-note,
+details.tei-name div, 
+details.tei-term div
+{
+	text-align: left;
+	position: absolute;
+	color: black;
+	font-size: small;
+	font-weight: normal;
+	background-color: white;
+	padding: 0.75em;
+	border-style: solid;
+	border-width: thin;
+	border-color: black;
+	border-radius: 0.5em;
+	max-width: 50%;
+	max-height: 50%;
+	overflow-y: scroll;
+	margin-right: 1em;
+}
+
+img.tei-graphic {
+	max-width: 100%;
+}
+
+
+.inline {
+	display: inline;
+}
+div.tei-teiHeader > details {
+	border-bottom: solid 1px black;
+}
+div.tei-teiHeader details[open] summary::after {
+	content: "";
+	font-style: italic;
+}
+summary {
+	cursor: pointer;
+}
+details div.expansion {
+	margin: 0;
+/*	padding-top: 1em;*/
+}
+.tei-lg {
+	margin: 1em;
+	line-height: 1.5;
+	overflow: auto; /* ensures the element expands to contain child elements, even if they are floated */
+}
+.tei-l {
+	display: block;
+	/* float: left;
+	clear: left; */
+	width: 100%;
+}
+.tei-l::after {
+	display: block;
+	float: right;
+	text-align: right;
+	content: attr(data-line);
+	color: #999999;
+}
+/* styles copied from legacy site */
+/* ***** Structural elements ***** */
+
+
+.tei-p {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	line-height: 1.5;
+	white-space: normal;
+	text-indent: 1.5em;
+}
+/*
+.tei-p:before {
+	content: "\A0\A0\A0\A0\A0\A0";
+}*/
+
+/* apparently unused 
+.p-flush {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	line-height: 1.5;
+	white-space: normal;
+}
+.whiteSpaceWrap {
+	white-space: normal;
+}
+*/
+/* 
+   ADDED .whiteSpaceWrap element 
+   July 8, 2009 by TBowman to address wrapping
+ */
+
+/* 
+OLD >> ADDED for font-detection Javascript toggle 
+OLD >> Summer 2008 by T Bowman & W Hooper
+
+NEW >> ADDED @font-face 
+NEW >> April 2012
+	
+	@font-face {
+	    font-family: Newton;
+	    src: url('fonts/Newton-2010jan-rev.otf');
+	}
+	.NSymbolFont {
+		display: none;
+		font: 100% Newton;
+		visibility: hidden;
+	}
+	.NSymbolFontShow {
+		display: inline;
+		font: 100%;
+		font-family: "Newton", sans-serif !important;
+		visibility: visible;
+	}
+	.NSymbolImage {
+		display: inline;
+		visibility: visible;
+	}
+	.NSymbolImageHide {
+		display: none;
+		visibility: hidden;
+	}
+*/
+.rend-parallel-docs {
+	display: grid;
+	column-gap: 2em;
+}
+.rend-parallel-left {
+	grid-column: 1;
+}
+.rend-parallel-left-30 {
+	grid-column: 1;
+	width: 30em;
+}
+.rend-parallel-right {
+	grid-column: 2;
+}
+
+/* 
+adapted from http://matthewjamestaylor.com/blog/perfect-2-column-double-page.htm 
+can be combined with the w-XX width elements and the border elements
+much simpler, just requires one extra div parent element
+plus doesn't need the annoying 80em min-width declaration which causes horiz scroll bar
+*/
+/* column container */
+/* div.parallel-container {
+						clear:both;
+						float:left;
+						width:100%;			// width of whole page 
+						overflow:hidden;	// This chops off any overhanging divs 
+					} */
+/* common column settings */
+/*
+div.parallel-insideContainer {
+	float: left;
+	width: 100%;
+	position: relative;
+	height: auto;
+	overflow: auto;
+}
+*/
+/* div.parallel-col1,
+					div.parallel-col2,
+					div.parallel-col3 {
+						float:left;
+						position:relative;
+						padding:0 1em 0 1em;
+						overflow:hidden;
+					}  // can go to many columns... ie. parallel-col4, parallel-col5, etc. */
+/* 
+The above COLUMN FORMATTING 
+ADDED July 8, 2009 by TBowman 
+to address <lb> tags in an ADDITION element 
+*/
+/*
+div.parallel-docs {
+	display: block;
+	float: left;
+	_margin-left: 0;
+	_padding-left: 0em;
+	white-space: nowrap;
+	min-width: 80em;
+}
+
+div.parallel-left-30 {
+	width: 30em;
+	overflow: auto;
+	display: block;
+	float: left;
+	margin-top: 0;
+	_margin-left: 0;
+	_padding-left: 0em;
+	padding-right: 1em;
+	vertical-align: top;
+	white-space: nowrap;
+}
+
+div.parallel-left {
+	display: block;
+	float: left;
+	margin-top: 0;
+	_margin-left: 0;
+	_padding-left: 0em;
+	padding-right: 1em;
+	vertical-align: top;
+	white-space: nowrap;
+}
+
+div.parallel-right {
+	display: block;
+	float: left;
+	padding: 0;
+	margin: 0;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0;
+	vertical-align: top;
+	text-align: left;
+	overflow: auto;
+	white-space: nowrap;
+}
+*/
+
+/* 
+CHANGED July 8, 2008
+Changed 0.02cm to 1px for border-width below
+0.02cm was NOT working in Safari on Windows machines and Mac machines
+TBowman
+*/
+.rend-rule-left-side {
+	border-left-style: solid;
+	border-left-color: black;
+	border-left-width: 1px;
+}
+
+.rend-rule-right-side {
+	border-right-style: solid;
+	border-right-color: black;
+	border-right-width: 1px;
+}
+
+.rend-rule-both-sides {
+	border-left-style: solid;
+	border-left-color: black;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-right-color: black;
+	border-right-width: 1px;
+}
+
+/* .teidiv1 { padding: 0; }
+.teidiv2 { padding: 0; }
+.teidiv3 { padding: 0; }
+.teidiv4 { padding: 0; }
+.teidiv5 { padding: 0; }
+.teidiv6 { padding: 0; } */
+/*
+.teidiv1pad {
+	padding-left: 1em;
+}
+
+.teidiv2pad {
+	padding-left: 2em;
+}
+
+.teidiv3pad {
+	padding-left: 3em;
+}
+
+.teidiv4pad {
+	padding-left: 4em;
+}
+
+.teidiv5pad {
+	padding-left: 5em;
+}
+
+.teidiv6pad {
+	padding-left: 6em;
+}
+*/
+/*
+.footer {
+	font-size: 8pt;
+}
+*/
+/* ***** Text Styles - correspond to rend attr values ***** */
+
+/* text which has been hand-written into a form, displayed in Roman font */
+.rend-form_text {
+	font-family: serif;
+	color: #2f5496;
+}
+.rend-i {
+	font-style: italic;
+}
+
+.rend-b {
+	font-weight: bold;
+}
+
+.rend-underline {
+	text-decoration: underline;
+}
+
+.rend-double-u {
+	border-style: double;
+	border-color: #000000;
+	border-width: 0px 0px 3px 0px;
+	padding: 0px;
+}
+
+.rend-n {
+	font-style: normal;
+}
+
+.rend-sc {
+	font-variant: small-caps;
+}
+
+.rend-mono {
+	font-family: courier, monospace;
+}
+
+.rend-code {
+	font-family: courier, monospace;
+}
+
+.rend-center {
+	display: block;
+	width: 35em;
+	text-align: center;
+	padding: 0;
+}
+.rend-right {
+	text-align: right;
+}
+
+.rend-left {
+	text-align: left;
+}
+.rend-no-indent {
+	text-indent: 0;
+}
+.rend-super {
+	vertical-align: super;
+	display: inline;
+	line-height: 1em;
+	font-size: 85%;
+}
+
+.rend-sub {
+	vertical-align: sub;
+	font-size: 85%;
+}
+
+.rend-inline {
+	display: inline;
+}
+
+.rend-strike {
+	text-decoration: line-through;
+	color: #A0A0A0;
+}
+.tei-space {
+	white-space: break-spaces;
+}
+
+hr {
+	display: block;
+	clear: both;
+	text-align: left;
+	margin-left: 0;
+}
+
+.rend-x-small {
+	font-size: x-small;
+}
+
+.rend-xx-small {
+	font-size: xx-small;
+}
+
+.rend-large {
+	font-size: large;
+}
+
+.rend-x-large {
+	font-size: x-large;
+}
+
+.rend-xx-large {
+	font-size: xx-large;
+}
+
+.rend-small {
+	font-size: small;
+}
+
+.rend-erased {
+	color: #cccccc;
+}
+
+.rend-red {
+	color: red;
+}
+
+.rend-blue {
+	color: blue;
+}
+
+.rend-block {
+	margin: 4em;
+}
+
+
+
+/* ***** Lists ***** */
+ul.rend-inline {
+	display: inline;
+}
+
+ul.rend-none {
+	list-style-type: none;
+}
+
+/*ul.simple { display: inline; list-style: none; }*/
+ul.type-simple {
+	display: inline;
+	list-style: none;
+	margin-left: 0;
+	padding-left: 1em;
+	text-indent: .15em;
+}
+
+
+/*
+dt {
+	font-weight: bold;
+	font-size: 9pt;
+	margin-bottom: .2em;
+	page-break-after: avoid;
+}
+
+dd {
+	margin-bottom: .5em;
+}
+.listStyleNone {
+	list-style-type: none;
+}
+*/
+
+li {
+	margin-bottom: .25em;
+}
+
+td {
+	vertical-align: top;
+}
+
+td.number {
+	width: 30px;
+	text-align: right;
+}
+
+td.label {
+	width: 10em;
+	vertical-align: top;
+}
+
+/* bibliography styles */
+.rendition-i {
+	font-style: italic;
+}
+
+ul.tei-listBibl {
+	list-style-type: none;
+}
+
+ul.tei-listBibl li {
+	margin-top: 1em;
+	margin-bottom: 2em;
+	border-top: solid thin black;
+}
+
+ul.tei-listBibl li h2 {
+	font-size: 1rem;
+	margin-bottom: 2pt;
+}
+
+ul.tei-listBibl li p,
+ul.tei-listBibl li cite
+{
+	font-size: 1rem;
+	margin-top: 2pt;
+}
+
+
+/* bibliographic, glossary, etc. popups */
+details.popup {
+	display: inline;
+	text-indent: 0;
+}
+details.popup summary {
+	display: inline-block;
+}
+details.tei-bibl summary::before {
+	display: inline-block;
+	content: "📖";
+	margin-right: 0.25em;
+	width: 1em;
+}
+details.tei-bibl[open] summary::before{
+	content: "✖";
+}
+details.tei-bibl summary::before {
+	display: inline-block;
+	content: "📖";
+	margin-right: 0.25em;
+	width: 1em;
+}
+details.tei-term[open] summary::after{
+	display: inline-block;
+	content: "❎";
+	margin-left: 0.25em;
+}
+details.tei-term summary,
+details.tei-choice summary
+{
+	text-decoration: underline;
+}
+details.popup div.expansion {
+	position: absolute;
+	background-color: white;
+	padding: 1em;
+	border-style: solid;
+	border-width: thin;
+	border-color: var(--brand-color);
+	border-radius: 0.5em;	
+}

@@ -19,6 +19,7 @@ services:
       - /var/lib/vmcp-tei:/var/lib/vmcp-tei # the TEI corpus
     depends_on:
       - solr
+    restart: unless-stopped
 
   solr:
     image: solr
@@ -28,3 +29,4 @@ services:
       - "mkdir /var/solr/data; precreate-core vmcp; precreate-core vmcp-editorial; exec solr -f"
     ports:
       - "8983:8983"
+    restart: unless-stopped
